@@ -95,6 +95,9 @@
     <ClInclude Include="FPSCounter.h">
       <Filter>Components\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Rotator.h">
+      <Filter>Components\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -151,6 +154,9 @@
       <Filter>Components\Engine</Filter>
     </ClCompile>
     <ClCompile Include="FPSCounter.cpp">
+      <Filter>Components\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Rotator.cpp">
       <Filter>Components\Game</Filter>
     </ClCompile>
   </ItemGroup>
