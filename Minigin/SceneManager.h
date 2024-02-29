@@ -2,11 +2,10 @@
 #define SCENEMANAGER_H
 
 #include "Singleton.h"
+#include "Scene.h"
 
 namespace dae
 {
-	class Scene;
-
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
@@ -24,14 +23,17 @@ namespace dae
 		void Update();
 		void Render() const;
 
+		void SetSceneActive(Scene& scene) { m_pActiveScene = &scene; }
+		Scene& GetActiveScene() const { return *m_pActiveScene; }
+
 		void Destroy();
 
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
 
-		//std::vector<std::unique_ptr<Scene>> m_ScenePtrs;
-		std::vector<Scene*> m_ScenePtrs;
+		std::vector<std::unique_ptr<Scene>> m_ScenePtrs;
+		Scene* m_pActiveScene;
 		std::string m_CreatingScene{};
 	};
 }
