@@ -5,9 +5,9 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
-dae::TextureComponent::TextureComponent(GameObject* pOwner, Texture2D* pTexture)
+dae::TextureComponent::TextureComponent(GameObject* pOwner, std::shared_ptr<Texture2D> pTexture = nullptr)
 	: DrawableComponent(pOwner)
-	, m_pTexture(pTexture)
+	, m_pTexture(std::move(pTexture))
 {
 }
 
