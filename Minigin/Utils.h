@@ -11,4 +11,10 @@
 //	};
 //}
 
+static inline std::string Vec2ToString(const glm::vec2& vec)
+{
+	std::string s = "{ " + std::to_string(vec.x) + " ; " + std::to_string(vec.y) + " }";
+	return s;
+}
+
 #endif // UTILS_H
