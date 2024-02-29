@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Scene.h"
 
-//#include "GameObject.h"
-
 using namespace dae;
 
 unsigned int Scene::m_IdCounter = 0;
@@ -16,17 +14,58 @@ Scene::Scene(std::string name)
 
 Scene::~Scene() = default;
 
-GameObject& Scene::CreateGameObject()
+GameObject& Scene::CreateGameObject(std::string tag)
 {
-	auto pGameObject = std::make_unique<GameObject>();
+	auto pGameObject = std::make_unique<GameObject>(this, std::move(tag));
 	m_GameObjects.emplace_back(std::move(pGameObject));
 	return *m_GameObjects.back();
 }
 
-//void Scene::Remove(std::shared_ptr<GameObject> object)
-//{
-//	std::erase(m_GameObjects, object);
-//}
+void Scene::AddGameObject(GameObject* pGo)
+{
+	m_GameObjects.emplace_back(std::unique_ptr<GameObject>(pGo));
+}
+
+void Scene::AddGameObject(std::unique_ptr<GameObject> pGo)
+{
+	m_GameObjects.emplace_back(std::move(pGo));
+}
+
+GameObject* Scene::GetGameObject(UINT id) const
+{
+	for (const auto& go : m_GameObjects)
+	{
+		if (go->GetId() == id)
+			return go.get();
+
+		if (const auto child = go->GetChild(id);
+			child != nullptr)
+			return child;
+	}
+
+	return nullptr;
+}
+
+std::unique_ptr<GameObject> Scene::GetUniqueGameObject(GameObject* pGo)
+{
+	for (auto it = m_GameObjects.begin(); it < m_GameObjects.end(); ++it)
+	{
+		if (it->get() != pGo)
+			continue;
+
+		auto pUnique{ std::move(*it) };
+		m_GameObjects.erase(it);
+
+		return pUnique;
+	}
+
+	return nullptr;
+}
+
+void Scene::Remove(GameObject* /*pGo*/)
+{
+	m_DeleteGameObject = true;
+}
 
 void Scene::RemoveAll()
 {
@@ -43,29 +82,53 @@ void Scene::Destroy()
 
 void Scene::FixedUpdate()
 {
-	for (const auto& object : m_GameObjects)
-	{
-		object->FixedUpdate();
-	}
+	std::ranges::for_each(m_GameObjects, [](const auto& go)
+		{
+			go->FixedUpdate();
+		});
 }
 
 void Scene::Update()
 {
-	for (const auto& object : m_GameObjects)
+	if (m_IsFirstFrame)
 	{
-		object->Update();
+		std::ranges::for_each(m_GameObjects, [](const auto& go)
+			{
+				go->Start();
+			});
+		m_IsFirstFrame = false;
 	}
 
-	for(const auto& object : m_GameObjects)
+	std::ranges::for_each(m_GameObjects, [](const auto& go)
+		{
+			go->Update();
+		});
+
+	std::ranges::for_each(m_GameObjects, [](const auto& go)
+		{
+			go->LateUpdate();
+		});
+
+	if (m_DeleteGameObject)
 	{
-		object->LateUpdate();
+		for (auto it = m_GameObjects.begin(); it != m_GameObjects.end();)
+		{
+			if ((*it)->IsMarkedForDestroy())
+			{
+				it = m_GameObjects.erase(it);
+			}
+			else
+				++it;
+		}
+
+		m_DeleteGameObject = false;
 	}
 }
 
 void Scene::Render() const
 {
-	for (const auto& object : m_GameObjects)
-	{
-		object->Render();
-	}
+	std::ranges::for_each(m_GameObjects, [](const auto& go)
+		{
+			go->Render();
+		});
 }

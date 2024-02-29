@@ -1,16 +1,14 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "SceneManager.h"
 #include "GameObject.h"
 
 namespace dae
 {
-	//class GameObject;
-
 	class Scene final
 	{
 	public:
+		explicit Scene(std::string name);
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -23,16 +21,21 @@ namespace dae
 
 		const std::string& GetName() const { return m_Name; }
 
-		GameObject& CreateGameObject();
-		//void Remove(std::shared_ptr<GameObject> object);
+		GameObject& CreateGameObject(std::string tag = "");
+		void AddGameObject(GameObject* pGo);
+		void AddGameObject(std::unique_ptr<GameObject> pGo);
+		GameObject* GetGameObject(UINT id) const;
+		std::unique_ptr<GameObject> GetUniqueGameObject(GameObject* pGo);
+		void Remove(GameObject* pGo);
 		void RemoveAll();
+
 
 		void Destroy();
 
 	private:
-		explicit Scene(std::string name);
-		friend Scene& SceneManager::CreateScene(std::string name);
+		friend class GameObject;
 
+		bool m_IsFirstFrame{ true }, m_DeleteGameObject{ false };
 		std::string m_Name;
 		std::vector<std::unique_ptr<GameObject>> m_GameObjects{};
 
