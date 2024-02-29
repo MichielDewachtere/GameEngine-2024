@@ -5,20 +5,23 @@
 
 namespace dae
 {
+	class Scene;
 	class Texture2D;
 
 	class GameObject final
 	{
 	public:
-		explicit GameObject(std::string tag = "");
-		~GameObject();
+		explicit GameObject(Scene * scene, std::string tag = "");
+		~GameObject() = default;
 
 		GameObject(const GameObject& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		// TODO: implement start
+		GameObject& CreateGameObject(std::string tag = "");
+		UINT GetId() const { return m_Id; }
+
 		void Start();
 		void FixedUpdate();
 		void Update();
@@ -26,12 +29,15 @@ namespace dae
 		void Render() const;
 
 		void Destroy();
-		bool IsEnabled() const { return m_IsEnabled && m_IsMarkedForDestroy == false; }
+		bool IsMarkedForDestroy() const { return m_IsMarkedForDestroy; }
+		void SetIsActive(bool isEnabled, bool applyToChildren);
+		bool IsActive() const { return m_IsActive && m_IsMarkedForDestroy == false; }
 
 		void SetTag(std::string tag) { m_Tag = std::move(tag); }
 
 		Transform* GetTransform() const { return m_pTransform.get(); }
 
+#pragma region Component Logic
 		/**
 		* @brief Adds a component to the GameObject.
 		* @tparam T Type of the component to add.
@@ -64,23 +70,41 @@ namespace dae
 		 */
 		template<typename T>
 		bool HasComponent() const;
+#pragma endregion
+#pragma region Parent Logic
+		GameObject* GetParent() const;
+		void SetParent(GameObject* pParent, bool keepWorldPosition);
+		UINT GetChildCount() const;
+		GameObject* GetChildAt(UINT index) const;
+		GameObject* GetChild(UINT id) const;
+		bool IsChild(GameObject* pGo) const;
+#pragma endregion
 
 	private:
 		UINT m_Id;
 		std::string m_Tag;
-		bool m_IsEnabled{ true }, m_IsMarkedForDestroy{ false };
+		bool m_IsActive{ true }, m_IsMarkedForDestroy{ false };
+
+		Scene* m_pScene;
+
 		std::unique_ptr<Transform> m_pTransform{ nullptr };
+		std::vector<std::unique_ptr<Component>> m_pComponents{};
 
-		std::vector<std::unique_ptr<Component>> m_ComponentPtrs{};
+		GameObject* m_pParent{ nullptr };
+		std::vector<std::unique_ptr<GameObject>> m_pChildren{};
+		std::vector<std::unique_ptr<GameObject>> m_pChildrenToAdd{};
 
-		//template<typename T>
-		//std::vector<std::unique_ptr<Component>>::iterator GetComponentIterator();
+#pragma region Component Logic
 		template<typename T>
 		bool IsTransform() const { return std::is_same_v<T, Transform>; }
+#pragma endregion Component Logic
+#pragma region Parent Logic
+#pragma endregion Parent Logic
 
 		static inline UINT m_IdCounter = 0;
 	};
 
+	// TODO: use concepts or smthn, so i dont have to check if it is a concept in code
 	template <typename T, typename ... Args>
 	T* GameObject::AddComponent(Args... args)
 	{
@@ -92,7 +116,7 @@ namespace dae
 
 		std::unique_ptr<T> pComponent = std::make_unique<T>(this, std::forward<Args>(args)...);
 		T* rawPtr = pComponent.get();
-		m_ComponentPtrs.emplace_back(std::move(pComponent));
+		m_pComponents.emplace_back(std::move(pComponent));
 
 		return rawPtr;
 	}
@@ -103,12 +127,12 @@ namespace dae
 		if (IsTransform<T>())
 			return dynamic_cast<T*>(m_pTransform.get());
 
-		const auto it = std::find_if(m_ComponentPtrs.begin(), m_ComponentPtrs.end(), [](const auto& c)
+		const auto it = std::find_if(m_pComponents.begin(), m_pComponents.end(), [](const auto& c)
 			{
 				return dynamic_cast<T*>(c.get()) != nullptr;
 			});
 
-		if (it != m_ComponentPtrs.end())
+		if (it != m_pComponents.end())
 		{
 			return dynamic_cast<T*>(it->get());
 		}
@@ -126,14 +150,14 @@ namespace dae
 			return false;
 		}
 
-		const auto it = std::find_if(m_ComponentPtrs.begin(), m_ComponentPtrs.end(), [](const auto& c)
+		const auto it = std::find_if(m_pComponents.begin(), m_pComponents.end(), [](const auto& c)
 			{
 				return dynamic_cast<T*>(c.get()) != nullptr;
 			});
 
-		if (it != m_ComponentPtrs.end())
+		if (it != m_pComponents.end())
 		{
-			std::erase(m_ComponentPtrs, it);
+			std::erase(m_pComponents, it);
 			return true;
 		}
 
@@ -150,20 +174,20 @@ namespace dae
 			return false;
 		}
 
-		if (m_ComponentPtrs.empty())
+		if (m_pComponents.empty())
 			return false;
 
 		if (IsTransform<T>())
 			return true;
 
-		const auto it = std::find_if(m_ComponentPtrs.begin(), m_ComponentPtrs.end(), [](const auto& c)
+		const auto it = std::find_if(m_pComponents.begin(), m_pComponents.end(), [](const auto& c)
 			{
 				// TODO: Find out why this doesnt work
 				//return std::is_same_v<T, decltype(c)>;
 				return dynamic_cast<T*>(c.get()) != nullptr;
 			});
 
-		if (it == m_ComponentPtrs.end())
+		if (it == m_pComponents.end())
 		{
 			return false;
 		}
@@ -175,7 +199,7 @@ namespace dae
 	//std::vector<std::unique_ptr<Component>>::iterator GameObject::GetComponentIterator()
 	//{
 	//	// ReSharper disable once CppEntityUsedOnlyInUnevaluatedContext
-	//	const auto it = std::find_if(m_ComponentPtrs.begin(), m_ComponentPtrs.end(), [](const auto& c)
+	//	const auto it = std::find_if(m_pComponents.begin(), m_pComponents.end(), [](const auto& c)
 	//		{
 	//			return std::is_same_v<T, decltype(*c)>;
 	//		});
