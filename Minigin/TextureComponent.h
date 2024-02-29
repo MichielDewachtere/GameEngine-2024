@@ -9,7 +9,7 @@ namespace dae
 	class TextureComponent final : public DrawableComponent
 	{
 	public:
-		explicit TextureComponent(GameObject* pOwner, Texture2D* pTexture = nullptr);
+		explicit TextureComponent(GameObject* pOwner, std::shared_ptr<Texture2D> pTexture);
 		explicit TextureComponent(GameObject* pOwner, std::string texturePath = "");
 		virtual ~TextureComponent() override = default;
 
