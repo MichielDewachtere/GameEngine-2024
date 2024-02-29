@@ -23,9 +23,8 @@ namespace dae
 
 		float GetElapsed() const;
 		float GetTotal() const;
-		// TODO: use set precision or smthn
-		UINT GetFPS() const { return m_FPS; };
-		float GetfFPS() const { return m_fFPS; };
+		UINT GetFPS_Unsigned() const { return m_FPS; };
+		float GetFPS_Float() const { return m_fFPS; }
 
 		[[nodiscard]] UINT StartTimer();
 		float EndTimer(UINT id);
