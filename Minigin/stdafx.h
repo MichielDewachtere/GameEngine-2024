@@ -7,12 +7,15 @@
 #define NOMINMAX
 #pragma endregion
 
+#define USE_VLD
+
 #pragma region VLD
 #if _DEBUG
+#ifdef USE_VLD
 // ReSharper disable once CppUnusedIncludeDirective
 #if __has_include(<vld.h>)
 #include <vld.h>
-
+#endif
 #endif
 #endif
 #pragma endregion
