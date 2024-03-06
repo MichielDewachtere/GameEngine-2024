@@ -1,30 +1,36 @@
 #include "stdafx.h"
 #include "TextComponent.h"
 #include "Renderer.h"
-#include "Font.h"
 #include "GameObject.h"
 #include "ResourceManager.h"
-#include "Texture2D.h"
+#include "TextureComponent.h"
 
-dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, const std::shared_ptr<Font> pFont,
-	const SDL_Color& color)
-	: DrawableComponent(pOwner)
+dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::unique_ptr<Font> pFont,
+                                  const SDL_Color& color)
+	: Component(pOwner)
 	, m_Text(std::move(text))
 	, m_Color(color)
-	, m_pFont(pFont)
-	, m_pTextTexture(nullptr)
+	, m_pFont(std::move(pFont))
 {
 }
 
 dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::string fontPath, int fontSize,
                                   const SDL_Color& color)
-	: DrawableComponent(pOwner)
+	: Component(pOwner)
 	, m_Text(std::move(text))
 	, m_Color(color)
 	, m_pFont(nullptr)
-	, m_pTextTexture(nullptr)
 {
 	m_pFont = ResourceManager::GetInstance().LoadFont(fontPath, fontSize);
+}
+
+void dae::TextComponent::Start()
+{
+	m_pTextureComponent = GetOwner()->GetComponent<TextureComponent>();
+	if (m_pTextureComponent == nullptr)
+	{
+		m_pTextureComponent = GetOwner()->AddComponent<TextureComponent>(nullptr);
+	}
 }
 
 void dae::TextComponent::LateUpdate()
@@ -48,29 +54,21 @@ void dae::TextComponent::LateUpdate()
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		m_pTextTexture = std::make_shared<Texture2D>(texture);
+
+		m_pTextureComponent->SetTexture(std::make_unique<Texture2D>(texture));
 		m_IsDirty = false;
 	}
 }
-void dae::TextComponent::Render()
-{
-	if (m_pTextTexture == nullptr)
-		return;
 
-	const auto& pos = GetOwner()->GetTransform()->GetWorldPosition();
-	Renderer::GetInstance().RenderTexture(*m_pTextTexture, pos.x, pos.y);
-}
-
-// This implementation uses the "dirty flag" pattern
 void dae::TextComponent::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_IsDirty = true;
 }
 
-void dae::TextComponent::SetFont(const std::shared_ptr<Font>& pFont)
+void dae::TextComponent::SetFont(std::unique_ptr<Font> pFont)
 {
-	m_pFont = pFont;
+	m_pFont = std::move(pFont);
 	m_IsDirty = true;
 }
 
