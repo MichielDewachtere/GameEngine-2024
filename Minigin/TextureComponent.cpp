@@ -5,17 +5,17 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
-dae::TextureComponent::TextureComponent(GameObject* pOwner, std::shared_ptr<Texture2D> pTexture = nullptr)
+dae::TextureComponent::TextureComponent(GameObject* pOwner, std::unique_ptr<Texture2D> pTexture)
 	: DrawableComponent(pOwner)
 	, m_pTexture(std::move(pTexture))
 {
 }
 
-dae::TextureComponent::TextureComponent(GameObject* pOwner, std::string texturePath)
-	: DrawableComponent(pOwner)
-{
-	m_pTexture = ResourceManager::GetInstance().LoadTexture(std::move(texturePath));
-}
+//dae::TextureComponent::TextureComponent(GameObject* pOwner, std::string texturePath)
+//	: DrawableComponent(pOwner)
+//{
+//	m_pTexture = ResourceManager::GetInstance().LoadTexture(std::move(texturePath));
+//}
 
 void dae::TextureComponent::Render()
 {
