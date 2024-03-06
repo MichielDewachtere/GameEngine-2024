@@ -7,7 +7,7 @@
 #define NOMINMAX
 #pragma endregion
 
-#define USE_VLD
+//#define USE_VLD
 
 #pragma region VLD
 #if _DEBUG
@@ -53,6 +53,15 @@
 #pragma region GML
 
 #include <glm/glm.hpp>
+
+#pragma endregion
+
+#pragma region ImGui
+
+#include "imgui.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_sdlrenderer2.h"
+#include "implot.h"
 
 #pragma endregion
 

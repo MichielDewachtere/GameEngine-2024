@@ -132,3 +132,11 @@ void Scene::Render() const
 			go->Render();
 		});
 }
+
+void Scene::OnGui()
+{
+	std::ranges::for_each(m_GameObjects, [](const auto& go)
+		{
+			go->OnGui();
+		});
+}

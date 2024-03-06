@@ -31,6 +31,11 @@ void dae::SceneManager::Render() const
 	m_pActiveScene->Render();
 }
 
+void dae::SceneManager::OnGui()
+{
+	m_pActiveScene->OnGui();
+}
+
 void dae::SceneManager::Destroy()
 {
 	for (const auto& scene : m_ScenePtrs)

@@ -34,6 +34,18 @@
     <Filter Include="Components\Engine">
       <UniqueIdentifier>{98cda564-b408-4eaa-afad-395dcbae525c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{57ec0102-7dd2-49b9-b22e-25bbe26ade3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\Backend">
+      <UniqueIdentifier>{88d6c403-a671-48a7-975d-bd0943027082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\ImPlot">
+      <UniqueIdentifier>{732b0a70-da8b-47a4-bf97-308dd3ac2e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Game\Labs">
+      <UniqueIdentifier>{be8a4b79-d91a-4d28-9e8a-ad2020433bef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -83,20 +95,53 @@
     <ClInclude Include="Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="TextureComponent.h">
-      <Filter>Components\Base</Filter>
-    </ClInclude>
     <ClInclude Include="TextComponent.h">
       <Filter>Components\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Components\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdlrenderer2.h">
+      <Filter>ImGui\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdl2.h">
+      <Filter>ImGui\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="implot.h">
+      <Filter>ImGui\ImPlot</Filter>
+    </ClInclude>
+    <ClInclude Include="implot_internal.h">
+      <Filter>ImGui\ImPlot</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Components\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="TrashTheCache.h">
+      <Filter>Components\Game\Labs</Filter>
+    </ClInclude>
     <ClInclude Include="FPSCounter.h">
-      <Filter>Components\Game</Filter>
+      <Filter>Components\Game\Labs</Filter>
     </ClInclude>
     <ClInclude Include="Rotator.h">
-      <Filter>Components\Game</Filter>
+      <Filter>Components\Game\Labs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +157,6 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -144,20 +188,54 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="TextureComponent.cpp">
-      <Filter>Components\Base</Filter>
-    </ClCompile>
     <ClCompile Include="TextComponent.cpp">
       <Filter>Components\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Components\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdlrenderer2.cpp">
+      <Filter>ImGui\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdl2.cpp">
+      <Filter>ImGui\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="implot.cpp">
+      <Filter>ImGui\ImPlot</Filter>
+    </ClCompile>
+    <ClCompile Include="implot_items.cpp">
+      <Filter>ImGui\ImPlot</Filter>
+    </ClCompile>
+    <ClCompile Include="implot_demo.cpp">
+      <Filter>ImGui\ImPlot</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Components\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="TrashTheCache.cpp">
+      <Filter>Components\Game\Labs</Filter>
+    </ClCompile>
     <ClCompile Include="FPSCounter.cpp">
-      <Filter>Components\Game</Filter>
+      <Filter>Components\Game\Labs</Filter>
     </ClCompile>
     <ClCompile Include="Rotator.cpp">
-      <Filter>Components\Game</Filter>
+      <Filter>Components\Game\Labs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

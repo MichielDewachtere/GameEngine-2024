@@ -3,17 +3,32 @@
 
 namespace dae
 {
+	struct Settings
+	{
+		UINT width = 640, height = 480, fps = 60;
+		float frameTime = 0.016f;
+		std::string windowTitle, dataPath;
+	};
+
 	class Minigin
 	{
 	public:
-		explicit Minigin(const std::string& dataPath);
+		explicit Minigin(const Settings& settings);
 		~Minigin();
-		void Run(const std::function<void()>& load);
 
 		Minigin(const Minigin& other) = delete;
 		Minigin(Minigin&& other) = delete;
 		Minigin& operator=(const Minigin& other) = delete;
 		Minigin& operator=(Minigin&& other) = delete;
+
+		void Run(const std::function<void()>& load);
+
+	private:
+		Settings m_Settings;
+
+		void InitWindow();
+		void InitImGui();
+		void InitGame();
 	};
 }
 

@@ -153,6 +153,26 @@ void dae::GameObject::Render() const
 	}
 }
 
+void dae::GameObject::OnGui()
+{
+	if (IsActive() == false)
+		return;
+
+	m_pTransform->OnGui();
+	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
+		{
+			c->OnGui();
+		});
+
+	if (m_pChildren.empty() == false)
+	{
+		std::ranges::for_each(m_pChildren, [](const auto& go)
+			{
+				go->OnGui();
+			});
+	}
+}
+
 void dae::GameObject::Destroy()
 {
 	m_IsMarkedForDestroy = true;

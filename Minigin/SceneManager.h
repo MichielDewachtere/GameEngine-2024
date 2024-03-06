@@ -22,6 +22,7 @@ namespace dae
 		void FixedUpdate();
 		void Update();
 		void Render() const;
+		void OnGui();
 
 		void SetSceneActive(Scene& scene) { m_pActiveScene = &scene; }
 		Scene& GetActiveScene() const { return *m_pActiveScene; }

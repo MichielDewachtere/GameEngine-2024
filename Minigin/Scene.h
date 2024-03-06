@@ -18,6 +18,7 @@ namespace dae
 		void FixedUpdate();
 		void Update();
 		void Render() const;
+		void OnGui();
 
 		const std::string& GetName() const { return m_Name; }
 

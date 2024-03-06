@@ -1,6 +1,6 @@
 #include "stdafx.h"
-
 #include "Renderer.h"
+
 #include "SceneManager.h"
 #include "Texture2D.h"
 
@@ -30,12 +30,19 @@ void dae::Renderer::Init(SDL_Window* window)
 
 void dae::Renderer::Render() const
 {
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_pRenderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_pRenderer);
 
 	SceneManager::GetInstance().Render();
-	
+	SceneManager::GetInstance().OnGui();
+
+	ImGui::Render();
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 	SDL_RenderPresent(m_pRenderer);
 }
 

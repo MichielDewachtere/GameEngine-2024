@@ -27,6 +27,7 @@ namespace dae
 		void Update();
 		void LateUpdate();
 		void Render() const;
+		void OnGui();
 
 		void Destroy();
 		bool IsMarkedForDestroy() const { return m_IsMarkedForDestroy; }
@@ -98,8 +99,6 @@ namespace dae
 		template<typename T>
 		bool IsTransform() const { return std::is_same_v<T, Transform>; }
 #pragma endregion Component Logic
-#pragma region Parent Logic
-#pragma endregion Parent Logic
 
 		static inline UINT m_IdCounter = 0;
 	};

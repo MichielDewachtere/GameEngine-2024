@@ -21,9 +21,7 @@ namespace dae
 		virtual void FixedUpdate() {}
 		virtual void Update() {}
 		virtual void LateUpdate() {}
-
-		// This is for ImGui
-		//virtual void OnGui() {}
+		virtual void OnGui() {}
 
 		GameObject* GetOwner() const { return m_pOwner; }
 

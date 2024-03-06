@@ -2,6 +2,7 @@
 #include "InputManager.h"
 
 #include "GameObject.h"
+#include "imgui_impl_sdl2.h"
 #include "SceneManager.h"
 
 void dae::InputManager::Init()
@@ -11,7 +12,9 @@ void dae::InputManager::Init()
 bool dae::InputManager::ProcessInput()
 {
 	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
+	while (SDL_PollEvent(&e)) 
+	{
+		ImGui_ImplSDL2_ProcessEvent(&e);
 		if (e.type == SDL_QUIT) 
 		{
 			return false;
