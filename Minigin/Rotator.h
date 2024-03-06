@@ -19,7 +19,7 @@ public:
 
 private:
 	glm::vec2 m_Pivot;
-	float m_RotationSpeed, m_Rotation, m_Distance;
+	float m_RotationSpeed, m_Rotation, m_Distance{};
 };
 
 #endif // ROTATOR_H
