@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "GameTime.h"
 
+#include <numbers>
+
 Rotator::Rotator(dae::GameObject* pOwner, glm::vec2 pivot, float rotationSpeed)
 	: Component(pOwner)
 	, m_Pivot(pivot)
@@ -25,6 +27,7 @@ void Rotator::Start()
 
 void Rotator::Update()
 {
+	// TODO: could be done in local space
 	const auto pTransform = GetOwner()->GetTransform();
 
 	if (pTransform == nullptr)
