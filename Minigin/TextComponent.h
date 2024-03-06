@@ -1,16 +1,17 @@
 #ifndef TEXTCOMPONENT_H
 #define TEXTCOMPONENT_H
 
-#include "DrawableComponent.h"
+#include "Component.h"
+#include "Font.h"
 
 namespace dae
 {
-	class Font;
-	class Texture2D;
-	class TextComponent final : public DrawableComponent
+	class TextureComponent;
+
+	class TextComponent final : public Component
 	{
 	public:
-		explicit TextComponent(GameObject* pOwner, std::string text = "", std::shared_ptr<Font> pFont = nullptr,
+		explicit TextComponent(GameObject* pOwner, std::string text = "", std::unique_ptr<Font> pFont = nullptr,
 		                       const SDL_Color& color = {255, 255, 255, 255});
 		explicit TextComponent(GameObject* pOwner, std::string text = "", std::string fontPath = "", int fontSize = 16,
 		                       const SDL_Color& color = {255, 255, 255, 255});
@@ -21,13 +22,14 @@ namespace dae
 		TextComponent(TextComponent&& other) = delete;
 		TextComponent& operator=(TextComponent&& other) = delete;
 
+		void Start() override;
+
 		virtual void LateUpdate() override;
-		virtual void Render() override;
 
 		void SetText(const std::string& text);
 		const std::string& GetText() const { return m_Text; }
 
-		void SetFont(const std::shared_ptr<Font>& pFont);
+		void SetFont(std::unique_ptr<Font> pFont);
 		void SetFont(const std::string& fontPath, int size);
 		void SetColor(const SDL_Color& color);
 
@@ -36,9 +38,8 @@ namespace dae
 		std::string m_Text;
 		SDL_Color m_Color;
 
-		std::shared_ptr<Font> m_pFont;
-		// TODO: ADD TextureComponent
-		std::shared_ptr<Texture2D> m_pTextTexture;
+		std::unique_ptr<Font> m_pFont;
+		TextureComponent* m_pTextureComponent;
 	};
 }
 
