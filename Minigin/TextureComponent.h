@@ -9,8 +9,8 @@ namespace dae
 	class TextureComponent final : public DrawableComponent
 	{
 	public:
-		explicit TextureComponent(GameObject* pOwner, std::shared_ptr<Texture2D> pTexture);
-		explicit TextureComponent(GameObject* pOwner, std::string texturePath = "");
+		explicit TextureComponent(GameObject* pOwner, std::unique_ptr<Texture2D> pTexture = nullptr);
+		//explicit TextureComponent(GameObject* pOwner, std::string texturePath = "");
 		virtual ~TextureComponent() override = default;
 
 		TextureComponent(const TextureComponent& other) = delete;
@@ -21,7 +21,7 @@ namespace dae
 		void Update() override {}
 		void Render() override;
 
-		void SetTexture(std::shared_ptr<Texture2D> pTexture) { m_pTexture = std::move(pTexture); }
+		void SetTexture(std::unique_ptr<Texture2D> pTexture) { m_pTexture = std::move(pTexture); }
 		Texture2D* GetTexture() const;
 
 		void SetRenderOffset(const glm::vec2 offset) { m_TextureOffset = offset; }
@@ -30,7 +30,7 @@ namespace dae
 
 
 	private:
-		std::shared_ptr<Texture2D> m_pTexture{ nullptr };
+		std::unique_ptr<Texture2D> m_pTexture{ nullptr };
 		glm::vec2 m_TextureOffset{ 0,0 };
 	};
 }
