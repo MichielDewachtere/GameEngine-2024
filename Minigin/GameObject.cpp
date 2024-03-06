@@ -125,14 +125,7 @@ void dae::GameObject::LateUpdate()
 	{
 		m_pComponents.clear();
 
-		if (m_pParent)
-		{
-			std::erase_if(m_pParent->m_pChildren, [this](const auto& c)
-				{
-					return c->m_Id == m_Id;
-				});
-		}
-		else
+		if (m_pParent == nullptr)
 			m_pScene->Remove(this);
 	}
 }
