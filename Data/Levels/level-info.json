@@ -1,0 +1,14 @@
+{
+    "dimensions": 
+    {
+        "block-width": 16,
+        "level-width": 13,
+        "level-height": 15 
+    },
+    "textures":
+    {
+       "X": "",
+       "*": "",
+       "!": "" 
+    }
+}
