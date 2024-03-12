@@ -158,6 +158,9 @@ void dae::GameObject::OnGui()
 	if (IsActive() == false)
 		return;
 
+	ImGui::PushID(m_Id);
+	ImGui::Text(std::to_string(m_Id).c_str());
+
 	m_pTransform->OnGui();
 	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
 		{
@@ -171,6 +174,8 @@ void dae::GameObject::OnGui()
 				go->OnGui();
 			});
 	}
+
+	ImGui::PopID();
 }
 
 void dae::GameObject::Destroy()

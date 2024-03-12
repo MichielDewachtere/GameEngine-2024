@@ -135,8 +135,11 @@ void Scene::Render() const
 
 void Scene::OnGui()
 {
+	ImGui::Begin("Scene Graph - WIP");
+	//ImGui::SetWindowSize("Scene Graph", { 150,12 });
 	std::ranges::for_each(m_GameObjects, [](const auto& go)
 		{
 			go->OnGui();
 		});
+	ImGui::End();
 }
