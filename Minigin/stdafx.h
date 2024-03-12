@@ -7,7 +7,7 @@
 #define NOMINMAX
 #pragma endregion
 
-//#define USE_VLD
+#define USE_VLD
 
 #pragma region VLD
 #if _DEBUG
