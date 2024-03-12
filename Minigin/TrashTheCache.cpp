@@ -178,13 +178,14 @@ std::map<int, std::vector<float>> TrashTheCache::GatherData(bool outputValues) c
     return data;
 }
 
-std::vector<double> TrashTheCache::AverageResult(std::map<int, std::vector<float>> data)
+std::vector<double> TrashTheCache::AverageResult(std::map<int, std::vector<float>> data) const
 {
     std::vector<double> averages;
 
     for (auto& results : data | std::views::values)
     {
         // Sorting each 'results' vector in ascending order
+        // TODO: Could use accumulate to sum up
         std::sort(results.begin(), results.end(), [](float a, float b)
             {
                 return a < b;
