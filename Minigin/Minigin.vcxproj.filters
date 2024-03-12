@@ -46,6 +46,12 @@
     <Filter Include="Components\Game\Labs">
       <UniqueIdentifier>{be8a4b79-d91a-4d28-9e8a-ad2020433bef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{ed7f302c-d2fb-4ccc-bf25-f763c6c60f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\Game">
+      <UniqueIdentifier>{1b68d793-9b34-4354-8ffb-f0ea1fed19ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -143,6 +149,21 @@
     <ClInclude Include="Rotator.h">
       <Filter>Components\Game\Labs</Filter>
     </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="InputMap.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputTypes.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePad.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCommand.h">
+      <Filter>Command\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -236,6 +257,18 @@
     </ClCompile>
     <ClCompile Include="Rotator.cpp">
       <Filter>Components\Game\Labs</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="InputMap.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePad.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Command\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
