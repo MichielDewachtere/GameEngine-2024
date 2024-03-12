@@ -55,7 +55,7 @@ private:
 	template <typename T>
 	std::map<int, std::vector<float>> GatherData(bool outputValues);
 	std::map<int, std::vector<float>> GatherData(bool outputValues) const;
-	std::vector<double> AverageResult(std::map<int, std::vector<float>> data);
+	std::vector<double> AverageResult(std::map<int, std::vector<float>> data) const;
 };
 
 template <typename T>
