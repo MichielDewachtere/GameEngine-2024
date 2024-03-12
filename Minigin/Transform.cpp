@@ -65,6 +65,17 @@ void dae::Transform::SetWorldPosition(const float x, const float y)
 	SetWorldPosition({ x,y });
 }
 
+void dae::Transform::Translate(const glm::vec2& translation)
+{
+	m_LocalPosition += translation;
+	m_WorldNeedsUpdate = true;
+}
+
+void dae::Transform::Translate(float translationX, float translationY)
+{
+	Translate({ translationX, translationY });
+}
+
 //void dae::Transform::SetRotation(float rotation)
 //{
 //	m_Rotation = rotation;

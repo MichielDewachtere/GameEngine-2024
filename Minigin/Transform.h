@@ -27,6 +27,9 @@ namespace dae
 		void SetWorldPosition(const glm::vec2& );
 		void SetWorldPosition(float x, float y);
 
+		void Translate(const glm::vec2&);
+		void Translate(float x, float y);
+
 		//const glm::vec2& GetPivot() const { return m_Pivot; }
 		//void SetPivot(const glm::vec2& pivot) { m_Pivot = pivot; }
 		//void SetPivot(float x, float y) { SetPivot({ x,y }); }
