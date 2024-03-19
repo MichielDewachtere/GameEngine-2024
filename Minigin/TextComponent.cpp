@@ -29,6 +29,7 @@ void dae::TextComponent::Start()
 	m_pTextureComponent = GetOwner()->GetComponent<TextureComponent>();
 	if (m_pTextureComponent == nullptr)
 	{
+		// TODO: this crashes out if text component is not last in component list
 		m_pTextureComponent = GetOwner()->AddComponent<TextureComponent>(nullptr);
 	}
 }
