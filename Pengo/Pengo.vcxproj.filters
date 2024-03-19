@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{202b0d4b-11fc-4bd6-a17e-51e9e6f865a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{79ccf9b8-6b8e-4a13-b97a-f712ecca59bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{60d9346a-fd6d-4041-b92f-f3869ae10c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Lab">
+      <UniqueIdentifier>{83e16257-f3a8-44f1-be1b-73422afc6927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Lab">
+      <UniqueIdentifier>{3caf9522-0a8e-4473-af9c-401a9e892e1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Lab">
+      <UniqueIdentifier>{ecc38ecf-9f28-424d-b111-c0de529f1f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{dc1961b0-5af5-4b95-87fa-4754f99e6dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{ddb1eee0-98c2-4050-93c9-4d39c79ccdb4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ChangeScoreCommand.cpp">
+      <Filter>Commands\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageCommand.cpp">
+      <Filter>Commands\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadSceneCommand.cpp">
+      <Filter>Commands\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Commands\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="LabScene.cpp">
+      <Filter>Scenes\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="TestSecondScene.cpp">
+      <Filter>Scenes\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderTest.cpp">
+      <Filter>Components\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSCounter.cpp">
+      <Filter>Components\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesDisplay.cpp">
+      <Filter>Components\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Components\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="Rotator.cpp">
+      <Filter>Components\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
+      <Filter>Components\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="TrashTheCache.cpp">
+      <Filter>Components\Lab</Filter>
+    </ClCompile>
+    <ClCompile Include="Level01.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelParser.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChangeScoreCommand.h">
+      <Filter>Commands\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageCommand.h">
+      <Filter>Commands\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadSceneCommand.h">
+      <Filter>Commands\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCommand.h">
+      <Filter>Commands\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="LabScene.h">
+      <Filter>Scenes\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSecondScene.h">
+      <Filter>Scenes\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderTest.h">
+      <Filter>Components\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounter.h">
+      <Filter>Components\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesDisplay.h">
+      <Filter>Components\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Components\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotator.h">
+      <Filter>Components\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
+      <Filter>Components\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="TrashTheCache.h">
+      <Filter>Components\Lab</Filter>
+    </ClInclude>
+    <ClInclude Include="Macros.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Level01.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelParser.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
