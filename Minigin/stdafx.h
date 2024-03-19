@@ -1,13 +1,7 @@
 ﻿#ifndef STDAFX_H
 #define STDAFX_H
 
-#pragma region Windows
-#define WIN32_LEAN_AND_MEAN 
-#include <windows.h>
-#define NOMINMAX
-#pragma endregion
-
-#define USE_VLD
+//#define USE_VLD
 
 #pragma region VLD
 #if _DEBUG
@@ -18,6 +12,12 @@
 #endif
 #endif
 #endif
+#pragma endregion
+
+#pragma region Windows
+#define WIN32_LEAN_AND_MEAN 
+#include <windows.h>
+#define NOMINMAX
 #pragma endregion
 
 #pragma region std
