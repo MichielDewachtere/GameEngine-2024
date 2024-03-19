@@ -12,7 +12,7 @@ namespace dae
 	{
 	public:
 		virtual ~InputManager() override;
-		void Init() override {}
+
 		bool ProcessInput();
 
 		InputMap* AddInputMap(const std::string& name, bool isActive = false);
@@ -42,7 +42,7 @@ namespace dae
 		bool m_KeyboardState0Active{ true };
 		PBYTE m_pCurrentKeyboardState{ nullptr }, m_pOldKeyboardState{ nullptr };
 
-		void ProcessKeyboardInput();
+		void ProcessKeyboardInput() const;
 		void ProcessGamePadInput() const;
 
 		void UpdateKeyboardStates() const;

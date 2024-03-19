@@ -63,7 +63,7 @@ dae::InputMap* dae::InputManager::AddInputMap(const std::string& name, bool isAc
 	if (value == false)
 	{
 		Logger::LogWarning({ "Already an input map with name {}" }, name);
-		return nullptr;
+		return (*it).second.get();
 	}
 
 	if (isActive)
@@ -190,7 +190,7 @@ bool dae::InputManager::IsKeyboardKeyDown(int key, bool previousFrame) const
 
 	return m_pCurrentKeyboardState[key];
 }
-void dae::InputManager::ProcessKeyboardInput()
+void dae::InputManager::ProcessKeyboardInput() const
 {
 	UpdateKeyboardStates();
 
@@ -222,7 +222,7 @@ void dae::InputManager::ProcessGamePadInput() const
 {
 	auto executeCommand = [this](const std::unique_ptr<GamePad>& gp)
 		{
-			for (const auto& action : m_pActiveInputMap->GetGamePadActions().at(gp->GetIndex()))
+			for (const auto& action : m_pActiveInputMap->GetGamePadActions().at(gp->GetIndex()) | std::views::values)
 			{
 				switch (action->inputType)
 				{
