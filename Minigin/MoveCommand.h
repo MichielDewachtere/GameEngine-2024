@@ -6,7 +6,7 @@
 class MoveCommand final : public dae::GameObjectCommand
 {
 public:
-	explicit MoveCommand(dae::GameObject* pGameObject, const glm::ivec2& direction, int speed);
+	explicit MoveCommand(int id, int controllerId, dae::GameObject* pGameObject, const glm::ivec2& direction, int speed);
 	virtual ~MoveCommand() override = default;
 
 	MoveCommand(const MoveCommand& other) = delete;
