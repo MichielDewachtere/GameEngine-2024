@@ -8,6 +8,11 @@ namespace dae
 	class Scene;
 	class Texture2D;
 
+	enum class GameObjectEvent : char
+	{
+		destroyed = 0
+	};
+
 	class GameObject final
 	{
 	public:
@@ -27,6 +32,7 @@ namespace dae
 		void Update();
 		void LateUpdate();
 		void Render() const;
+		void DebugRender() const;
 		void OnGui();
 
 		void Destroy();
@@ -35,8 +41,11 @@ namespace dae
 		bool IsActive() const { return m_IsActive && m_IsMarkedForDestroy == false; }
 
 		void SetTag(std::string tag) { m_Tag = std::move(tag); }
+		std::string GetTag() const { return m_Tag; }
 
 		Transform* GetTransform() const { return m_pTransform.get(); }
+
+		Subject<GameObjectEvent> gameObjectDestroyed;
 
 #pragma region Component Logic
 		/**
