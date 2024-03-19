@@ -1,11 +1,15 @@
 #ifndef MINIGIN_H
 #define MINIGIN_H
 
+#include <functional>
+#include <stdint.h>
+#include <string>
+
 namespace dae
 {
 	struct Settings
 	{
-		UINT width = 640, height = 480, fps = 60;
+		uint32_t width = 640, height = 480, fps = 60;
 		float frameTime = 0.016f;
 		std::string windowTitle, dataPath;
 	};

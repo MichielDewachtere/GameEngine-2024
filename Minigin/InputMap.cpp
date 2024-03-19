@@ -1,5 +1,6 @@
-﻿#include "stdafx.h"
-#include "InputMap.h"
+﻿#include "InputMap.h"
+
+#include <SDL_scancode.h>
 
 dae::InputMap::InputMap(std::string name)
 	: m_Name(std::move(name))

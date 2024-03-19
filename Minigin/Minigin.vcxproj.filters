@@ -43,20 +43,23 @@
     <Filter Include="ImGui\ImPlot">
       <UniqueIdentifier>{732b0a70-da8b-47a4-bf97-308dd3ac2e31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Game\Labs">
-      <UniqueIdentifier>{be8a4b79-d91a-4d28-9e8a-ad2020433bef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Command">
       <UniqueIdentifier>{ed7f302c-d2fb-4ccc-bf25-f763c6c60f25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Command\Game">
-      <UniqueIdentifier>{1b68d793-9b34-4354-8ffb-f0ea1fed19ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Game">
-      <UniqueIdentifier>{a45134c3-fa26-4358-91a4-3648acb1af31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Observer">
       <UniqueIdentifier>{e78eba12-a3b6-4e9c-abb4-5fb514822544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Labs">
+      <UniqueIdentifier>{be8a4b79-d91a-4d28-9e8a-ad2020433bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\Labs">
+      <UniqueIdentifier>{1b68d793-9b34-4354-8ffb-f0ea1fed19ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\Game">
+      <UniqueIdentifier>{1af7a124-c8ae-4724-8651-10d6128045d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Labs">
+      <UniqueIdentifier>{a45134c3-fa26-4358-91a4-3648acb1af31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +90,6 @@
     <ClInclude Include="Singleton.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="Minigin.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -145,15 +147,6 @@
     <ClInclude Include="TextureComponent.h">
       <Filter>Components\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="TrashTheCache.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSCounter.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
-    <ClInclude Include="Rotator.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Command</Filter>
     </ClInclude>
@@ -166,18 +159,6 @@
     <ClInclude Include="GamePad.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCommand.h">
-      <Filter>Command\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadSceneCommand.h">
-      <Filter>Command\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="LabScene.h">
-      <Filter>Scene\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="TestSecondScene.h">
-      <Filter>Scene\Game</Filter>
-    </ClInclude>
     <ClInclude Include="ColliderComponent.h">
       <Filter>Components\Engine</Filter>
     </ClInclude>
@@ -186,24 +167,6 @@
     </ClInclude>
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="ColliderTest.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
-    <ClInclude Include="LivesDisplay.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplay.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
-    <ClInclude Include="ChangeScoreCommand.h">
-      <Filter>Command\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="DamageCommand.h">
-      <Filter>Command\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -231,7 +194,6 @@
     <ClCompile Include="Font.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Minigin.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -289,16 +251,6 @@
     <ClCompile Include="TextureComponent.cpp">
       <Filter>Components\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="TrashTheCache.cpp">
-      <Filter>Components\Game\Labs</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSCounter.cpp">
-      <Filter>Components\Game\Labs</Filter>
-    </ClCompile>
-    <ClCompile Include="Rotator.cpp">
-      <Filter>Components\Game\Labs</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Command</Filter>
     </ClCompile>
@@ -308,18 +260,6 @@
     <ClCompile Include="GamePad.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
-      <Filter>Command\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadSceneCommand.cpp">
-      <Filter>Command\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="LabScene.cpp">
-      <Filter>Scene\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="TestSecondScene.cpp">
-      <Filter>Scene\Game</Filter>
-    </ClCompile>
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Components\Engine</Filter>
     </ClCompile>
@@ -328,24 +268,6 @@
     </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="ColliderTest.cpp">
-      <Filter>Components\Game\Labs</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Components\Game\Labs</Filter>
-    </ClCompile>
-    <ClCompile Include="LivesDisplay.cpp">
-      <Filter>Components\Game\Labs</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreDisplay.cpp">
-      <Filter>Components\Game\Labs</Filter>
-    </ClCompile>
-    <ClCompile Include="ChangeScoreCommand.cpp">
-      <Filter>Command\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageCommand.cpp">
-      <Filter>Command\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

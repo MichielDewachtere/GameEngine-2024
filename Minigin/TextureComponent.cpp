@@ -1,7 +1,9 @@
-﻿#include "stdafx.h"
-#include "TextureComponent.h"
+﻿#include "TextureComponent.h"
+
+#include <SDL_rect.h>
 
 #include "GameObject.h"
+#include "Logger.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 

@@ -1,2 +1,1 @@
-﻿#include "stdafx.h"
-#include "Subject.h"
+﻿#include "Subject.h"

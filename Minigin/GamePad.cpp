@@ -1,6 +1,10 @@
-﻿#include "stdafx.h"
-#include "GamePad.h"
+﻿#include "GamePad.h"
 
+#define WIN32_LEAN_AND_MEAN 
+#include <windows.h>
+#define NOMINMAX
+
+#include "InputManager.h"
 #include "Xinput.h"
 
 class dae::GamePad::GamePadImpl

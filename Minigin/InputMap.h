@@ -1,6 +1,11 @@
 ﻿#ifndef INPUTMAP_H
 #define INPUTMAP_H
 
+#include <map>
+#include <string>
+#include <vector>
+#include <stdexcept>
+
 #include "Command.h"
 #include "InputTypes.h"
 

@@ -1,7 +1,12 @@
 ﻿#ifndef LOGGER_H
 #define LOGGER_H
 
+#include <format>
 #include <source_location>
+#include <string>
+#include <iostream>
+#include <map>
+#include <fstream>
 
 namespace dae
 {

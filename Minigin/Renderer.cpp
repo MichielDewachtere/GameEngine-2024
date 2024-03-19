@@ -1,6 +1,10 @@
-#include "stdafx.h"
 #include "Renderer.h"
 
+#include <SDL_render.h>
+#include <stdexcept>
+
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_sdlrenderer2.h"
 #include "SceneManager.h"
 #include "Texture2D.h"
 

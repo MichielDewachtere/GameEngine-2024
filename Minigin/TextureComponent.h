@@ -1,6 +1,9 @@
 ﻿#ifndef TEXTURECOMPONENT_H
 #define TEXTURECOMPONENT_H
 
+#include <memory>
+#include <glm/vec2.hpp>
+
 #include "DrawableComponent.h"
 #include "Texture2D.h"
 

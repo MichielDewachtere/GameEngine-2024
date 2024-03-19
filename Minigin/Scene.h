@@ -1,6 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <stdint.h>
+
 #include "GameObject.h"
 
 namespace dae
@@ -25,13 +27,13 @@ namespace dae
 
 		const std::string& GetName() const { return m_Name; }
 
-		void SetDefaultInputMap(std::string inputMap) { m_InputMapName = inputMap; }
+		void SetDefaultInputMap(std::string inputMap) { m_InputMapName = std::move(inputMap); }
 		std::string GetDefaultInputMap() const { return m_InputMapName; }
 
 		GameObject& CreateGameObject(std::string tag = "");
 		void AddGameObject(GameObject* pGo);
 		void AddGameObject(std::unique_ptr<GameObject> pGo);
-		GameObject* GetGameObject(UINT id) const;
+		GameObject* GetGameObject(uint32_t id) const;
 		std::unique_ptr<GameObject> GetUniqueGameObject(GameObject* pGo);
 
 		void Remove(GameObject* pGo);

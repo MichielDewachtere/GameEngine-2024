@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "Texture2D.h"
+
+#include <SDL_render.h>
 
 dae::Texture2D::~Texture2D()
 {

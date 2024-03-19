@@ -1,6 +1,8 @@
 ﻿#ifndef GAMEPAD_H
 #define GAMEPAD_H
 
+#include <stdint.h>
+
 namespace dae
 {
 	class GamePad final

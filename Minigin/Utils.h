@@ -1,6 +1,9 @@
 ﻿#ifndef UTILS_H
 #define UTILS_H
 
+#include <string>
+#include <glm/vec2.hpp>
+
 //static SDL_Color I8Vec4ToColor(const glm::i8vec4& vec)
 //{
 //	return SDL_Color{

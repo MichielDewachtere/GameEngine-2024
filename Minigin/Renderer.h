@@ -1,6 +1,12 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+#include <SDL_render.h>
+#include <SDL_video.h>
+#include <vector>
+#include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
+
 #include "Singleton.h"
 
 namespace dae

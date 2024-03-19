@@ -1,10 +1,17 @@
-#include "stdafx.h"
 #include "InputManager.h"
 
+#define WIN32_LEAN_AND_MEAN 
+#include <windows.h>
+#define NOMINMAX
+
 #include <ranges>
+#include <algorithm>
+
+#include <SDL_events.h>
 #include <Xinput.h>
 
 #include "imgui_impl_sdl2.h"
+#include "Logger.h"
 
 dae::InputManager::InputManager()
 {

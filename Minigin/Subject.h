@@ -1,7 +1,10 @@
 ﻿#ifndef SUBJECT_H
 #define SUBJECT_H
 
+#include <vector>
+
 #include "Observer.h"
+#include "Logger.h"
 
 namespace dae
 {

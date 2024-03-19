@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "GameTime.h"
+﻿#include "GameTime.h"
 
 void dae::GameTime::Init()
 {
@@ -37,14 +36,14 @@ float dae::GameTime::GetTotal() const
 	return m_TotalTime;
 }
 
-UINT dae::GameTime::StartTimer()
+uint32_t dae::GameTime::StartTimer()
 {
 	const auto id = m_Timers.size();
 	m_Timers.push_back(std::chrono::high_resolution_clock::now());
-	return static_cast<UINT>(id);
+	return static_cast<uint32_t>(id);
 }
 
-float dae::GameTime::EndTimer(UINT id)
+float dae::GameTime::EndTimer(uint32_t id)
 {
 	const auto endTime = std::chrono::high_resolution_clock::now();
 	const auto duration = endTime - m_Timers[id];

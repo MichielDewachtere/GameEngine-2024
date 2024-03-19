@@ -1,12 +1,17 @@
-#include "stdafx.h"
 #include "TextComponent.h"
+
+#include <SDL_ttf.h>
+
+#include <stdexcept>
+
 #include "Renderer.h"
 #include "GameObject.h"
+#include "Logger.h"
 #include "ResourceManager.h"
 #include "TextureComponent.h"
 
 dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::unique_ptr<Font> pFont,
-                                  const SDL_Color& color)
+                                  const glm::u8vec4& color)
 	: Component(pOwner)
 	, m_Text(std::move(text))
 	, m_Color(color)
@@ -14,15 +19,15 @@ dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::uni
 {
 }
 
-dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::string fontPath, int fontSize,
-                                  const SDL_Color& color)
-	: Component(pOwner)
-	, m_Text(std::move(text))
-	, m_Color(color)
-	, m_pFont(nullptr)
-{
-	m_pFont = ResourceManager::GetInstance().LoadFont(fontPath, fontSize);
-}
+//dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::string fontPath, int fontSize,
+//                                  const glm::u8vec4& color)
+//	: Component(pOwner)
+//	, m_Text(std::move(text))
+//	, m_Color(color)
+//	, m_pFont(nullptr)
+//{
+//	m_pFont = ResourceManager::GetInstance().LoadFont(fontPath, fontSize);
+//}
 
 void dae::TextComponent::Start()
 {
@@ -44,7 +49,7 @@ void dae::TextComponent::LateUpdate()
 		if (m_Text.empty())
 			Logger::LogWarning({ "No text in text component" });
 
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), m_Color);
+		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), { m_Color.r, m_Color.g, m_Color.b, m_Color.a });
 		if (surf == nullptr) 
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -79,7 +84,7 @@ void dae::TextComponent::SetFont(const std::string& fontPath, int size)
 	m_IsDirty = true;
 }
 
-void dae::TextComponent::SetColor(const SDL_Color& color)
+void dae::TextComponent::SetColor(const glm::u8vec4& color)
 {
 	m_Color = color;
 	m_IsDirty = true;

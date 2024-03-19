@@ -1,6 +1,11 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+#include <stdint.h>
+#include <vector>
+#include <memory>
+#include <string>
+
 #include "Transform.h"
 
 namespace dae
@@ -25,7 +30,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 		GameObject& CreateGameObject(std::string tag = "");
-		UINT GetId() const { return m_Id; }
+		uint32_t GetId() const { return m_Id; }
 
 		void Start();
 		void FixedUpdate();
@@ -84,14 +89,14 @@ namespace dae
 #pragma region Parent Logic
 		GameObject* GetParent() const;
 		void SetParent(GameObject* pParent, bool keepWorldPosition);
-		UINT GetChildCount() const;
-		GameObject* GetChildAt(UINT index) const;
-		GameObject* GetChild(UINT id) const;
+		uint32_t GetChildCount() const;
+		GameObject* GetChildAt(uint32_t index) const;
+		GameObject* GetChild(uint32_t id) const;
 		bool IsChild(GameObject* pGo) const;
 #pragma endregion
 
 	private:
-		UINT m_Id;
+		uint32_t m_Id;
 		std::string m_Tag;
 		bool m_IsActive{ true }, m_IsMarkedForDestroy{ false };
 
@@ -109,7 +114,7 @@ namespace dae
 		bool IsTransform() const { return std::is_same_v<T, Transform>; }
 #pragma endregion Component Logic
 
-		static inline UINT m_IdCounter = 0;
+		static inline uint32_t m_IdCounter = 0;
 	};
 
 	// TODO: use concepts or smthn, so i dont have to check if it is a concept in code

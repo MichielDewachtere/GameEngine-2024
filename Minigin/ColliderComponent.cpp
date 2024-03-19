@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "ColliderComponent.h"
+﻿#include "ColliderComponent.h"
 
 #include "GameObject.h"
 #include "Renderer.h"

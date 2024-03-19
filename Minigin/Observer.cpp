@@ -1,2 +1,1 @@
-﻿#include "stdafx.h"
-#include "Observer.h"
+﻿#include "Observer.h"

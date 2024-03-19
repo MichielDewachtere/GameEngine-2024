@@ -1,12 +1,19 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 
+#include <string>
+#include <vector>
+#include <map>
+#include <SDL_events.h>
+
 #include "InputMap.h"
 #include "Singleton.h"
 
 namespace dae
 {
 	class GameObject;
+
+	typedef unsigned char* p_byte;
 
 	class InputManager final : public Singleton<InputManager>
 	{
@@ -40,7 +47,7 @@ namespace dae
 		uint8_t m_MaxAmountOfControllers{ 4 };
 		bool m_KeyboardEnabled{ true }, m_GamePadEnabled{ false };
 		bool m_KeyboardState0Active{ true };
-		PBYTE m_pCurrentKeyboardState{ nullptr }, m_pOldKeyboardState{ nullptr };
+		p_byte m_pCurrentKeyboardState{ nullptr }, m_pOldKeyboardState{ nullptr };
 
 		void ProcessKeyboardInput() const;
 		void ProcessGamePadInput() const;

@@ -1,16 +1,24 @@
-#include "stdafx.h"
 #include "Minigin.h"
+
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_version.h>
+#include <SDL_video.h>
+
+#include <thread>
+
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_sdlrenderer2.h"
+#include "implot.h"
 
 #include "GameTime.h"
 #include "InputManager.h"
+#include "Logger.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 
-#include <thread>
-
 SDL_Window* g_window{};
-
 
 void PrintSDLVersion()
 {

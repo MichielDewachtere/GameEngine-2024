@@ -1,5 +1,8 @@
-#include "stdafx.h"
 #include "Scene.h"
+
+#include <algorithm>
+
+#include "imgui.h"
 
 using namespace dae;
 
@@ -30,7 +33,7 @@ void Scene::AddGameObject(std::unique_ptr<GameObject> pGo)
 	m_GameObjects.emplace_back(std::move(pGo));
 }
 
-GameObject* Scene::GetGameObject(UINT id) const
+GameObject* Scene::GetGameObject(uint32_t id) const
 {
 	for (const auto& go : m_GameObjects)
 	{

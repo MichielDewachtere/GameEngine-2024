@@ -23,20 +23,20 @@ namespace dae
 
 		float GetElapsed() const;
 		float GetTotal() const;
-		UINT GetFPS_Unsigned() const { return m_FPS; };
+		uint32_t GetFPS_Unsigned() const { return m_FPS; };
 		float GetFPS_Float() const { return m_fFPS; }
 
-		[[nodiscard]] UINT StartTimer();
-		float EndTimer(UINT id);
+		[[nodiscard]] uint32_t StartTimer();
+		float EndTimer(uint32_t id);
 
 	private:
 		std::chrono::steady_clock::time_point m_PrevTime{};
 		float m_DeltaTime{};
 		float m_TotalTime{};
 
-		UINT m_FPS = 0;
+		uint32_t m_FPS = 0;
 		float m_fFPS = 0.0f;
-		UINT m_FPSCount = 0;
+		uint32_t m_FPSCount = 0;
 		float m_FPSTimer = 0.0f;
 
 		std::vector<std::chrono::steady_clock::time_point> m_Timers{};

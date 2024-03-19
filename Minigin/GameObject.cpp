@@ -1,7 +1,10 @@
-#include "stdafx.h"
 #include "GameObject.h"
 
+#include <algorithm>
+
 #include "DrawableComponent.h"
+#include "imgui.h"
+#include "Logger.h"
 #include "SceneManager.h"
 
 dae::GameObject::GameObject(Scene* scene, std::string tag)
@@ -283,17 +286,17 @@ void dae::GameObject::SetParent(GameObject* pParent, bool keepWorldPosition)
 		m_pTransform->SetLocalPosition(m_pTransform->GetWorldPosition());
 }
 
-UINT dae::GameObject::GetChildCount() const
+uint32_t dae::GameObject::GetChildCount() const
 {
-	return static_cast<UINT>(m_pChildren.size());
+	return static_cast<uint32_t>(m_pChildren.size());
 }
 
-dae::GameObject* dae::GameObject::GetChildAt(UINT index) const
+dae::GameObject* dae::GameObject::GetChildAt(uint32_t index) const
 {
 	return m_pChildren[index].get();
 }
 
-dae::GameObject* dae::GameObject::GetChild(UINT id) const
+dae::GameObject* dae::GameObject::GetChild(uint32_t id) const
 {
 	for (const auto& child : m_pChildren)
 	{
