@@ -15,17 +15,18 @@ namespace dae
 		SceneManager(SceneManager&& other) = delete;
 		SceneManager& operator=(SceneManager&& other) = delete;
 
-		Scene& CreateScene(std::string name);
-		//Scene& AddScene(std::string name);
-		//bool HasScene(const std::string& name);
+		//Scene& CreateScene(std::string name, const std::string& inputMap);
+		void CreateScene(Scene* pScene);
+
+		void SetSceneActive(Scene& scene, float timer = 0);
+		void SetSceneActive(const std::string& name, float timer = 0);
+
+		Scene& GetActiveScene() const { return *m_pActiveScene; }
 
 		void FixedUpdate();
 		void Update();
 		void Render() const;
 		void OnGui();
-
-		void SetSceneActive(Scene& scene) { m_pActiveScene = &scene; }
-		Scene& GetActiveScene() const { return *m_pActiveScene; }
 
 		void Destroy();
 
@@ -34,8 +35,12 @@ namespace dae
 		SceneManager() = default;
 
 		std::vector<std::unique_ptr<Scene>> m_ScenePtrs;
-		Scene* m_pActiveScene;
-		std::string m_CreatingScene{};
+		Scene* m_pActiveScene{ nullptr };
+		Scene* m_pSceneToLoad{ nullptr };
+		float m_LoadTimer{ 0 };
+
+		void LoadScene();
+		Scene* FindSceneWithName(const std::string& name);
 	};
 }
 

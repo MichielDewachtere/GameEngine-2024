@@ -5,11 +5,10 @@ using namespace dae;
 
 unsigned int Scene::m_IdCounter = 0;
 
-Scene::Scene(std::string name)
+Scene::Scene(std::string name, std::string inputMapName)
 	: m_Name(std::move(name))
+	, m_InputMapName(std::move(inputMapName))
 {
-	//if (SceneManager::GetInstance().HasScene(m_Name) == false)
-	//	SceneManager::GetInstance().AddScene(m_Name);
 }
 
 Scene::~Scene() = default;
@@ -62,14 +61,16 @@ std::unique_ptr<GameObject> Scene::GetUniqueGameObject(GameObject* pGo)
 	return nullptr;
 }
 
-void Scene::Remove(GameObject* /*pGo*/)
+void Scene::Remove(GameObject* pGo)
 {
+	pGo->Destroy();
 	m_DeleteGameObject = true;
 }
 
 void Scene::RemoveAll()
 {
-	m_GameObjects.clear();
+	Destroy();
+	//m_GameObjects.clear();
 }
 
 void Scene::Destroy()
@@ -78,6 +79,7 @@ void Scene::Destroy()
 	{
 		object->Destroy();
 	}
+	m_DeleteGameObject = true;
 }
 
 void Scene::FixedUpdate()
@@ -131,6 +133,13 @@ void Scene::Render() const
 		{
 			go->Render();
 		});
+
+#ifdef _DEBUG
+	std::ranges::for_each(m_GameObjects, [](const auto& go)
+		{
+			go->DebugRender();
+		});
+#endif
 }
 
 void Scene::OnGui()
