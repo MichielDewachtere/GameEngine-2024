@@ -202,9 +202,6 @@
     <ClInclude Include="ChangeScoreCommand.h">
       <Filter>Command\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Components\Game\Labs</Filter>
-    </ClInclude>
     <ClInclude Include="DamageCommand.h">
       <Filter>Command\Game</Filter>
     </ClInclude>
@@ -346,9 +343,6 @@
     </ClCompile>
     <ClCompile Include="ChangeScoreCommand.cpp">
       <Filter>Command\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Components\Game\Labs</Filter>
     </ClCompile>
     <ClCompile Include="DamageCommand.cpp">
       <Filter>Command\Game</Filter>
