@@ -13,7 +13,7 @@ namespace dae
 	class Minigin
 	{
 	public:
-		explicit Minigin(const Settings& settings);
+		explicit Minigin(Settings settings);
 		~Minigin();
 
 		Minigin(const Minigin& other) = delete;

@@ -11,6 +11,7 @@
 
 SDL_Window* g_window{};
 
+
 void PrintSDLVersion()
 {
 	SDL_version version;
@@ -22,7 +23,7 @@ void PrintSDLVersion()
 	printf("We are linking against SDL version %u.%u.%u.\n",
 		version.major, version.minor, version.patch);
 
-	SDL_IMAGE_VERSION(&version);
+	SDL_IMAGE_VERSION(&version)
 	printf("We compiled against SDL_image version %u.%u.%u ...\n",
 		version.major, version.minor, version.patch);
 
@@ -39,10 +40,10 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const Settings& settings)
-	: m_Settings(settings)
+dae::Minigin::Minigin(Settings settings)
+	: m_Settings(std::move(settings))
 {
-	m_Settings.frameTime = 1.f / m_Settings.fps;
+	m_Settings.frameTime = 1.f / static_cast<float>(m_Settings.fps);
 
 	InitWindow();
 	InitGame();
@@ -85,7 +86,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	while (doContinue)
 	{
 		time.Update();
-
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 
 #pragma region Fixed Update
@@ -147,7 +147,6 @@ void dae::Minigin::InitImGui()
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsLight();
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplSDL2_InitForSDLRenderer(g_window, Renderer::GetInstance().GetSDLRenderer());
