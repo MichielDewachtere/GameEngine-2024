@@ -31,7 +31,14 @@ const glm::vec2& dae::Transform::GetLocalPosition()
 void dae::Transform::SetLocalPosition(const glm::vec2& localPos)
 {
 	m_LocalPosition = localPos;
+	localPosChanged.Notify(TransformEvent::localPosChanged, m_LocalPosition);
+
 	m_WorldNeedsUpdate = true;
+	if (worldPosChanged.GetObservers().empty() == false)
+	{
+		GetWorldPosition();
+		worldPosChanged.Notify(TransformEvent::worldPosChanged, m_WorldPosition);
+	}
 }
 
 void dae::Transform::SetLocalPosition(const float x, const float y)
@@ -57,6 +64,16 @@ const glm::vec2& dae::Transform::GetWorldPosition()
 void dae::Transform::SetWorldPosition(const glm::vec2& worldPos)
 {
 	m_WorldPosition = worldPos;
+	worldPosChanged.Notify(TransformEvent::worldPosChanged, m_WorldPosition);
+
+	m_LocalNeedsUpdate = true;
+	if (localPosChanged.GetObservers().empty() == false)
+	{
+		GetLocalPosition();
+		localPosChanged.Notify(TransformEvent::localPosChanged, m_LocalPosition);
+	}
+
+
 	m_LocalNeedsUpdate = true;
 }
 
@@ -68,7 +85,14 @@ void dae::Transform::SetWorldPosition(const float x, const float y)
 void dae::Transform::Translate(const glm::vec2& translation)
 {
 	m_LocalPosition += translation;
+	localPosChanged.Notify(TransformEvent::localPosChanged, m_LocalPosition);
+
 	m_WorldNeedsUpdate = true;
+	if (worldPosChanged.GetObservers().empty() == false)
+	{
+		GetWorldPosition();
+		worldPosChanged.Notify(TransformEvent::worldPosChanged, m_WorldPosition);
+	}
 }
 
 void dae::Transform::Translate(float translationX, float translationY)

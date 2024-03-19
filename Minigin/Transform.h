@@ -2,9 +2,16 @@
 #define TRANSFORM_H
 
 #include "Component.h"
+#include "Subject.h"
 
 namespace dae
 {
+	enum class TransformEvent : bool
+	{
+		worldPosChanged = 0,
+		localPosChanged = 1
+	};
+
 	class Transform final : public Component
 	{
 	public:
@@ -38,6 +45,9 @@ namespace dae
 		//void SetRotation(float rotation);
 		//void IncrementRotation(const float amount);
 		//void DecrementRotation(const float amount);
+
+		Subject<TransformEvent, const glm::vec2&> worldPosChanged;
+		Subject<TransformEvent, const glm::vec2&> localPosChanged;
 
 	private:
 		bool m_LocalNeedsUpdate{ true }, m_WorldNeedsUpdate{ true };
