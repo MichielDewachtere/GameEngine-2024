@@ -17,6 +17,7 @@ namespace dae
 		DrawableComponent& operator=(DrawableComponent&& rhs) = delete;
 
 		virtual void Render() {}
+		virtual void DebugRender() {}
 
 	private:
 

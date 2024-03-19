@@ -25,8 +25,14 @@ namespace dae
 
 		GameObject* GetOwner() const { return m_pOwner; }
 
+		void Disable() { m_IsActive = false; }
+		void Enable() { m_IsActive = true; }
+
+		bool IsActive() const { return m_IsActive; }
+
 	private:
 		GameObject* m_pOwner;
+		bool m_IsActive{ true };
 	};
 }
 
