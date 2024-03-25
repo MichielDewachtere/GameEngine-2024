@@ -7,7 +7,7 @@
 
 namespace dae
 {
-	struct Settings
+	struct WindowSettings
 	{
 		uint32_t width = 640, height = 480, fps = 60;
 		float frameTime = 0.016f;
@@ -17,7 +17,7 @@ namespace dae
 	class Minigin
 	{
 	public:
-		explicit Minigin(Settings settings);
+		explicit Minigin(WindowSettings settings);
 		~Minigin();
 
 		Minigin(const Minigin& other) = delete;
@@ -28,7 +28,7 @@ namespace dae
 		void Run(const std::function<void()>& load);
 
 	private:
-		Settings m_Settings;
+		WindowSettings m_Settings;
 
 		void InitWindow();
 		void InitImGui();

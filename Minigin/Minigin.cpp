@@ -48,7 +48,7 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(Settings settings)
+dae::Minigin::Minigin(WindowSettings settings)
 	: m_Settings(std::move(settings))
 {
 	m_Settings.frameTime = 1.f / static_cast<float>(m_Settings.fps);
