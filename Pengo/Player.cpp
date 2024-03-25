@@ -58,6 +58,8 @@ void Player::AddScore(int score)
 	else
 		m_Score += score;
 
+	// Pass event instead of score
+	// score system takes care of score(?)
 	scoreChanged.Notify(m_Score);
 }
 
