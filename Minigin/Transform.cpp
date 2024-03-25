@@ -99,6 +99,22 @@ void dae::Transform::Translate(float translationX, float translationY)
 	Translate({ translationX, translationY });
 }
 
+void dae::Transform::SetUniformScale(float s)
+{
+	SetScale({ s,s });
+}
+
+void dae::Transform::SetScale(float x, float y)
+{
+	SetScale({ x,y });
+}
+
+void dae::Transform::SetScale(const glm::vec2& scale)
+{
+	m_Scale = scale;
+	scaleChanged.Notify(TransformEvent::scaleChanged, scale);
+}
+
 //void dae::Transform::SetRotation(float rotation)
 //{
 //	m_Rotation = rotation;

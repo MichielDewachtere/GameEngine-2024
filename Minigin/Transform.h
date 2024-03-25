@@ -9,10 +9,11 @@
 
 namespace dae
 {
-	enum class TransformEvent : bool
+	enum class TransformEvent : char
 	{
 		worldPosChanged = 0,
-		localPosChanged = 1
+		localPosChanged = 1,
+		scaleChanged = 2
 	};
 
 	class Transform final : public Component
@@ -40,6 +41,11 @@ namespace dae
 		void Translate(const glm::vec2&);
 		void Translate(float x, float y);
 
+		const glm::vec2 GetScale() const { return m_Scale; }
+		void SetUniformScale(float s);
+		void SetScale(float x, float y);
+		void SetScale(const glm::vec2& scale);
+
 		//const glm::vec2& GetPivot() const { return m_Pivot; }
 		//void SetPivot(const glm::vec2& pivot) { m_Pivot = pivot; }
 		//void SetPivot(float x, float y) { SetPivot({ x,y }); }
@@ -51,10 +57,11 @@ namespace dae
 
 		Subject<TransformEvent, const glm::vec2&> worldPosChanged;
 		Subject<TransformEvent, const glm::vec2&> localPosChanged;
+		Subject<TransformEvent, const glm::vec2&> scaleChanged;
 
 	private:
 		bool m_LocalNeedsUpdate{ true }, m_WorldNeedsUpdate{ true };
-		glm::vec2 m_LocalPosition{}, m_WorldPosition{}/*, m_Pivot{}*/;
+		glm::vec2 m_LocalPosition{ 0,0 }, m_WorldPosition{ 0,0 }, m_Scale{ 1,1 };
 		//float m_Rotation{ 0.f };
 	};
 }
