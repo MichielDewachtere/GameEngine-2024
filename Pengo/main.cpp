@@ -10,11 +10,13 @@
 #include "Macros.h"
 #include "TestSecondScene.h"
 
+dae::WindowSettings g_windowSettings;
+
 void load()
 {
 	using namespace dae;
 
-	SceneManager::GetInstance().CreateScene(new Level01());
+	SceneManager::GetInstance().CreateScene(new Level01(g_windowSettings));
 	SceneManager::GetInstance().CreateScene(new LabScene("labScene", "test"));
 	SceneManager::GetInstance().CreateScene(new TestSecondScene("secondScene", "secondScene"));
 
@@ -23,16 +25,15 @@ void load()
 
 int main(int, char* [])
 {
-	dae::Settings settings;
-	settings.windowTitle = "Prog 4 Engine";
-	settings.dataPath = "../Data/";
-	settings.fps = 60;
-	settings.width = 224 * PIXEL_SCALE;
-	settings.height = 228 * PIXEL_SCALE;
+	g_windowSettings.windowTitle = "Prog 4 Engine";
+	g_windowSettings.dataPath = "../Data/";
+	g_windowSettings.fps = 60;
+	g_windowSettings.width = 224 * PIXEL_SCALE;
+	g_windowSettings.height = 272 * PIXEL_SCALE;
 
 	try
 	{
-		dae::Minigin engine(settings);
+		dae::Minigin engine(g_windowSettings);
 		engine.Run(load);
 	}
 	catch (std::exception& e)
