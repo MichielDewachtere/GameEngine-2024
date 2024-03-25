@@ -24,12 +24,15 @@ void dae::TextureComponent::Render()
 	if (m_pTexture == nullptr)
 		Logger::LogWarning({ "No texture found in texture component" });
 
+
 	const auto pos = GetOwner()->GetTransform()->GetWorldPosition() - m_TextureOffset;
+	const auto size = glm::vec2(m_pTexture->GetSize()) * GetOwner()->GetTransform()->GetScale();
+
 	const SDL_Rect rect{
 		static_cast<int>(pos.x),
 		static_cast<int>(pos.y),
-		m_pTexture->GetSize().x,
-		m_pTexture->GetSize().y
+		static_cast<int>(size.x),
+		static_cast<int>(size.y)
 	};
 	Renderer::GetInstance().RenderTexture(*m_pTexture, rect);
 }

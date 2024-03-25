@@ -10,7 +10,7 @@
 
 namespace dae
 {
-	enum class TransformEvent : bool;
+	enum class TransformEvent : char;
 
 	class ColliderComponent final
 		: public DrawableComponent
@@ -41,7 +41,7 @@ namespace dae
 		void OnSubjectDestroy() override;
 
 	private:
-		glm::vec2 m_Position, m_Size, m_OffsetFromParent{};
+		glm::vec2 m_Position, m_Size, m_OffsetFromParent{}, m_Scale{ 1,1 };
 		bool m_DrawDebug{ false };
 		glm::u8vec4 m_DebugColor{ 0,255,0,255 };
 	};

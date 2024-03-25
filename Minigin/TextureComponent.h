@@ -5,10 +5,13 @@
 #include <glm/vec2.hpp>
 
 #include "DrawableComponent.h"
+#include "Observer.h"
 #include "Texture2D.h"
 
 namespace dae
 {
+	//enum class TransformEvent : char;
+
 	class TextureComponent final : public DrawableComponent
 	{
 	public:

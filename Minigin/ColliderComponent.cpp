@@ -14,16 +14,21 @@ dae::ColliderComponent::~ColliderComponent()
 {
 	const auto transform = GetOwner()->GetTransform();
 	if (transform != nullptr)
+	{
 		transform->worldPosChanged.RemoveObserver(this);
+		transform->scaleChanged.RemoveObserver(this);
+	}
 }
 
 void dae::ColliderComponent::Start()
 {
 	const auto transform = GetOwner()->GetTransform();
 	transform->worldPosChanged.AddObserver(this);
+	transform->scaleChanged.AddObserver(this);
 
 	const auto worldPos= transform->GetWorldPosition();
 	m_OffsetFromParent = worldPos - m_Position;
+	m_Scale = transform->GetScale();
 }
 
 void dae::ColliderComponent::DebugRender()
@@ -31,7 +36,7 @@ void dae::ColliderComponent::DebugRender()
 	if (m_DrawDebug)
 	{
 		Renderer::GetInstance().RenderRectangle(
-			glm::ivec4{m_Position.x, m_Position.y, m_Size.x, m_Size.y}, 
+			glm::ivec4{m_Position.x, m_Position.y, m_Size.x * m_Scale.x, m_Size.y * m_Scale.y },
 			false,
 			m_DebugColor
 		);
@@ -46,17 +51,19 @@ bool dae::ColliderComponent::IsOverlapping(const ColliderComponent& other) const
 	const auto otherSize = other.GetSize();
 	const auto otherPos = other.GetPosition();
 
+	const auto size = m_Size * m_Scale;
+
 	if (m_Position.x > otherPos.x + otherSize.x)
 		return false;
 
-	if (m_Position.x + m_Size.x < otherPos.x)
+	if (m_Position.x + size.x < otherPos.x)
 		return false;
 
 	// Y(0,0) IS ON THE TOP RIGHT OF THE SCREEN
 	if (m_Position.y > otherPos.y + otherSize.y)
 		return false;
 
-	if (m_Position.y + m_Size.y < otherPos.y)
+	if (m_Position.y + size.y < otherPos.y)
 		return false;
 
 	return true;
@@ -74,7 +81,7 @@ bool dae::ColliderComponent::IsEntirelyOverlapping(const ColliderComponent& othe
 	pos.x -= offset.x / 2;
 	pos.y -= offset.y / 2;
 
-	auto size = m_Size;
+	auto size = m_Size * m_Scale;
 	size.x += offset.x;
 	size.y += offset.y;
 
@@ -90,9 +97,12 @@ bool dae::ColliderComponent::IsEntirelyOverlapping(const ColliderComponent& othe
 
 }
 
-void dae::ColliderComponent::HandleEvent(TransformEvent, const glm::vec2& newPos)
+void dae::ColliderComponent::HandleEvent(TransformEvent event, const glm::vec2& data)
 {
-	m_Position = newPos - m_OffsetFromParent;
+	if (event == TransformEvent::worldPosChanged)
+		m_Position = data - m_OffsetFromParent;
+	else if (event == TransformEvent::scaleChanged)
+		m_Scale = data;
 }
 
 void dae::ColliderComponent::OnSubjectDestroy()
@@ -100,5 +110,8 @@ void dae::ColliderComponent::OnSubjectDestroy()
 	auto transform = GetOwner()->GetTransform();
 
 	if (transform != nullptr)
+	{
 		transform->worldPosChanged.RemoveObserver(this);
+		transform->scaleChanged.RemoveObserver(this);
+	}
 }
