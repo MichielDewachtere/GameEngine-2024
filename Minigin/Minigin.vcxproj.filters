@@ -28,9 +28,6 @@
     <Filter Include="Components\Base">
       <UniqueIdentifier>{cc5685ee-ea7c-4d95-b5f9-4f3dbd4d131c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Game">
-      <UniqueIdentifier>{208fe09a-dc1b-4629-9324-13971420d3ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components\Engine">
       <UniqueIdentifier>{98cda564-b408-4eaa-afad-395dcbae525c}</UniqueIdentifier>
     </Filter>
@@ -48,18 +45,6 @@
     </Filter>
     <Filter Include="Observer">
       <UniqueIdentifier>{e78eba12-a3b6-4e9c-abb4-5fb514822544}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Labs">
-      <UniqueIdentifier>{be8a4b79-d91a-4d28-9e8a-ad2020433bef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Labs">
-      <UniqueIdentifier>{1b68d793-9b34-4354-8ffb-f0ea1fed19ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Game">
-      <UniqueIdentifier>{1af7a124-c8ae-4724-8651-10d6128045d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Labs">
-      <UniqueIdentifier>{a45134c3-fa26-4358-91a4-3648acb1af31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +153,15 @@
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
     </ClInclude>
+    <ClInclude Include="Prefab.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Colors.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Components\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -268,6 +262,12 @@
     </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefab.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Components\Engine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
