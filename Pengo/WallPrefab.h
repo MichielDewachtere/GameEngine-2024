@@ -5,9 +5,6 @@
 
 #include <Prefab.h>
 
-#include "ColliderComponent.h"
-#include "ColliderComponent.h"
-
 class WallPrefab final : public dae::Prefab
 {
 public:

@@ -4,11 +4,12 @@
 
 #include <ResourceManager.h>
 #include <GameObject.h>
-#include <TextureComponent.h>
+#include <SpriteComponent.h>
 #include <ColliderComponent.h>
 
 #include "Colors.h"
 #include "Macros.h"
+#include "Wall.h"
 
 WallPrefab::WallPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, bool horizontal)
 	: Prefab(pOwner)
@@ -26,16 +27,33 @@ void WallPrefab::Init(const glm::ivec2& pos, bool horizontal)
 {
 	std::unique_ptr<dae::Texture2D> texture;
 	if (horizontal)
-		texture = dae::ResourceManager::GetInstance().LoadTexture("textures/wall_horizontal_temp.png");
+		texture = dae::ResourceManager::GetInstance().LoadTexture("textures/wall_horizontal.png");
 	else
-		texture = dae::ResourceManager::GetInstance().LoadTexture("textures/wall_vertical_temp.png");
+		texture = dae::ResourceManager::GetInstance().LoadTexture("textures/wall_vertical.png");
 
 	const auto go = GetGameObject();
 	go->GetTransform()->SetLocalPosition(pos);
 	go->GetTransform()->SetUniformScale(PIXEL_SCALE);
-	const auto textComp = go->AddComponent<dae::TextureComponent>(std::move(texture));
-	const auto colliderComponent = go->AddComponent<dae::ColliderComponent>(go->GetTransform()->GetWorldPosition(), textComp->GetTexture()->GetSize());
+
+	dae::SpriteSheet spriteSheet;
+	spriteSheet.pTexture = std::move(texture);
+	if (horizontal)
+	{
+		spriteSheet.rows = 3;
+		spriteSheet.columns = 1;
+	}
+	else
+	{
+		spriteSheet.rows = 1;
+		spriteSheet.columns = 3;
+	}
+	spriteSheet.timePerAnimation = 0.1f;
+	const auto spriteComponent = go->AddComponent<dae::SpriteComponent>(std::move(spriteSheet));
+	spriteComponent->SelectSprite(0);
+
+	const auto colliderComponent = go->AddComponent<dae::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
 	colliderComponent->EnableDrawDebug(true);
 	colliderComponent->SetDebugColor(dae::Colors::purple);
-	// TODO: Add functionality
+
+	go->AddComponent<Wall>();
 }
