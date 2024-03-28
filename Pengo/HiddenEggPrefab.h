@@ -8,8 +8,8 @@
 class HiddenEggPrefab final : public dae::Prefab
 {
 public:
-	explicit HiddenEggPrefab(dae::GameObject* pOwner, const glm::ivec2& pos);
-	explicit HiddenEggPrefab(dae::Scene* pScene, const glm::ivec2& pos);
+	explicit HiddenEggPrefab(dae::GameObject* pOwner);
+	explicit HiddenEggPrefab(dae::Scene* pScenes);
 	virtual ~HiddenEggPrefab() override = default;
 
 	HiddenEggPrefab(const HiddenEggPrefab& other) = delete;
@@ -18,7 +18,7 @@ public:
 	HiddenEggPrefab& operator=(HiddenEggPrefab&& rhs) = delete;
 
 protected:
-	void Init(const glm::ivec2& pos);
+	void Init();
 };
 
 #endif // HIDDENEGGPREFAB_H
