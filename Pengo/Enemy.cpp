@@ -3,7 +3,7 @@
 #include <GameObject.h>
 #include <SpriteComponent.h>
 
-#include "HiddenEgg.h"
+#include "Game.h"
 #include "Macros.h"
 #include "Maze.h"
 #include "Move.h"
@@ -23,20 +23,16 @@ Enemy::Enemy(dae::GameObject* pOwner)
 {
 }
 
-Enemy::~Enemy()
-{
-}
+Enemy::~Enemy() = default;
 
 void Enemy::Start()
 {
 	m_pMoveComponent = GetOwner()->GetComponent<Move>();
-	m_pMoveComponent->Animate(false);
-	//m_pMoveComponent->Disable();
-
 	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
-	m_pSpriteComponent->PlayAnimation(0, 5, 0);
-
 	m_PushableComponent = GetOwner()->GetComponent<Pushable>();
+
+	m_pMoveComponent->Animate(false);
+	m_pSpriteComponent->PlayAnimation(0, 5, 0);
 }
 
 void Enemy::Update()

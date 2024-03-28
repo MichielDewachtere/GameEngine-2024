@@ -5,15 +5,17 @@
 #include <vector>
 #include <Observer.h>
 
+enum class GameEvents : bool;
 class HiddenEgg;
 
 class EnemyHandler final
 	: public dae::Component
 	, public dae::Observer<>
+	, public dae::Observer<GameEvents>
 {
 public:
 	explicit EnemyHandler(dae::GameObject* pOwner, int difficulty);
-	virtual ~EnemyHandler() override = default;
+	virtual ~EnemyHandler() override;
 
 	EnemyHandler(const EnemyHandler& other) = delete;
 	EnemyHandler& operator=(const EnemyHandler& rhs) = delete;
@@ -23,6 +25,7 @@ public:
 	virtual void Start() override;
 
 	virtual void HandleEvent() override;
+	virtual void HandleEvent(GameEvents) override;
 	virtual void OnSubjectDestroy() override {}
 
 	void AddEnemySpawn(dae::GameObject* go);

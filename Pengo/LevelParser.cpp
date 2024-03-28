@@ -3,8 +3,11 @@
 #include <Minigin.h>
 
 #include "EnemyHandler.h"
+#include "Game.h"
+#include "GameInfo.h"
 #include "Macros.h"
 #include "Maze.h"
+#include "PlayerManager.h"
 #include "StarBlockManager.h"
 
 void LevelParser::ParseLevel(dae::Scene* pScene, const std::string& levelPath, int difficulty)
@@ -17,11 +20,14 @@ void LevelParser::ParseLevel(dae::Scene* pScene, const std::string& levelPath, i
 	}
 
 	// Create Level Object
-	auto& level = pScene->CreateGameObject();
+	auto& level = pScene->CreateGameObject(Tags::game);
 	level.GetTransform()->SetLocalPosition({ 0, 16 * PIXEL_SCALE });
-	const auto mazeComponent = level.AddComponent<Maze>(glm::ivec2{ MAZE_WIDTH, MAZE_HEIGHT});
 	level.AddComponent<EnemyHandler>(difficulty);
+	const auto mazeComponent = level.AddComponent<Maze>(glm::ivec2{ MAZE_WIDTH, MAZE_HEIGHT});
 	level.AddComponent<StarBlockManager>();
+	level.AddComponent<Game>();
+
+	PlayerManager::GetInstance().Reset();
 
 	int counter = 0;
 

@@ -52,11 +52,6 @@ void StarBlockManager::HandleEvent(MoveEvents event, const glm::ivec2&)
 	}
 }
 
-void StarBlockManager::OnSubjectDestroy()
-{
-	RemoveObserver();
-}
-
 void StarBlockManager::AddStarBlock(dae::GameObject* go, const glm::ivec2& pos)
 {
 	for (auto& [block, blockPos] : m_pStarBlocks)
@@ -128,15 +123,20 @@ bool StarBlockManager::IsAdjacent(const glm::ivec2& pos1, const glm::ivec2& pos2
 	m_IsTouchingWall = IsTouchingWall(pos2);
 
 	// Check if pos2 is adjacent to pos1 horizontally or vertically
-	if ((pos1.x == pos2.x + 1 || pos1.x == pos2.x - 1) && pos1.y == pos2.y)
+	if ((pos1.x == pos2.x + 1 || pos1.x == pos2.x - 1) && pos1.y == pos2.y
+		&& (m_Orientation == Orientation::none || m_Orientation == Orientation::horizontal))
 	{
-		m_Orientation = Orientation::horizontal;
+		if (m_Orientation == Orientation::none)
+			m_Orientation = Orientation::horizontal;
+
 		return true;
 	}
 
-	if ((pos1.y == pos2.y + 1 || pos1.y == pos2.y - 1) && pos1.x == pos2.x)
+	if ((pos1.y == pos2.y + 1 || pos1.y == pos2.y - 1) && pos1.x == pos2.x
+		&& (m_Orientation == Orientation::none || m_Orientation == Orientation::vertical))
 	{
-		m_Orientation = Orientation::vertical;
+		if (m_Orientation == Orientation::none)
+			m_Orientation = Orientation::vertical;
 		return true;
 	}
 

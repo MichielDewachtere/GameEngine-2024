@@ -4,6 +4,7 @@
 #include <SpriteComponent.h>
 
 #include "EnemyHandler.h"
+#include "Game.h"
 #include "Move.h"
 
 IceBlock::IceBlock(dae::GameObject* pOwner, bool hidesEgg)
@@ -12,15 +13,16 @@ IceBlock::IceBlock(dae::GameObject* pOwner, bool hidesEgg)
 {
 }
 
+IceBlock::~IceBlock()
+{
+	GetOwner()->GetParent()->GetComponent<Game>()->gameStarted.RemoveObserver(this);
+}
+
 void IceBlock::Start()
 {
 	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
 
-	if (m_HidesEgg)
-	{
-		m_pSpriteComponent->PlayAnimation(0, 1, 3, 0.5f);
-		m_StartAnimation = true;
-	}
+	GetOwner()->GetParent()->GetComponent<Game>()->gameStarted.AddObserver(this);
 }
 
 void IceBlock::Update()
@@ -47,6 +49,15 @@ void IceBlock::Update()
 			m_pSpriteComponent->SelectSprite(0);
 			m_StartAnimation = false;
 		}
+	}
+}
+
+void IceBlock::HandleEvent(GameEvents event)
+{
+	if (event == GameEvents::start && m_HidesEgg)
+	{
+		m_pSpriteComponent->PlayAnimation(0, 1, 3, 0.5f);
+		m_StartAnimation = true;
 	}
 }
 

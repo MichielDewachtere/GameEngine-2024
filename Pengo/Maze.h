@@ -43,6 +43,8 @@ public:
 	// Therefore it is best to only call it in the LevelGenerator class
 	void Init();
 
+	virtual void Start() override;
+
 	void SetBlock(const glm::ivec2& pos, BlockType type, dae::GameObject* go = nullptr);
 
 	BlockType GetBlock(const glm::ivec2& pos) const;

@@ -4,6 +4,7 @@
 #include <Subject.h>
 #include <Component.h>
 
+
 namespace dae
 {
 	enum class GameObjectEvent : char;
@@ -12,6 +13,7 @@ namespace dae
 
 class Pushable;
 enum class Direction : char;
+enum class GameEvents : bool;
 class Move;
 
 class Enemy final

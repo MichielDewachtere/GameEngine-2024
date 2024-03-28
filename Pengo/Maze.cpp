@@ -7,6 +7,7 @@
 #include <InputManager.h>
 
 #include "EnemyHandler.h"
+#include "GameInfo.h"
 #include "HiddenEggPrefab.h"
 #include "PlayerPrefab.h"
 #include "IcePrefab.h"
@@ -14,6 +15,7 @@
 
 #include "Macros.h"
 #include "PlayerManager.h"
+#include "PrintMazeCommand.h"
 #include "StarBlockManager.h"
 #include "WallPrefab.h"
 
@@ -95,6 +97,14 @@ void Maze::Init()
 
         std::cout << '\n';
     }
+}
+
+void Maze::Start()
+{
+#ifdef _DEBUG
+    const auto map = dae::InputManager::GetInstance().GetActiveInputMap();
+    map->AddKeyboardAction<PrintMazeCommand>(InputCommands::print_maze, dae::KeyState::keyDown, SDL_SCANCODE_F5, GetOwner());
+#endif
 }
 
 void Maze::SetBlock(const glm::ivec2& pos, BlockType type, dae::GameObject* go)

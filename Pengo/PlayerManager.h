@@ -6,6 +6,10 @@
 
 #include <Singleton.h>
 
+#include "Observer.h"
+
+enum class GameEvents : bool;
+
 namespace dae
 {
 	class GameObject;
@@ -18,7 +22,9 @@ struct PlayerInfo
 	uint8_t controllerId;
 };
 
-class PlayerManager final : public dae::Singleton<PlayerManager>
+class PlayerManager final
+	: public dae::Singleton<PlayerManager>
+	, public dae::Observer<GameEvents>
 {
 public:
 	~PlayerManager() override = default;
@@ -28,6 +34,12 @@ public:
 	PlayerManager(PlayerManager&& other) = delete;
 	PlayerManager& operator=(PlayerManager&& rhs) = delete;
 
+	void Reset();
+
+	// TODO: link to subject
+	void HandleEvent(GameEvents) override;
+	void OnSubjectDestroy() override;
+
 	void RegisterPlayer(PlayerInfo info);
 
 	bool RequestPlayer() const;
@@ -36,7 +48,6 @@ public:
 private:
 	friend class Singleton<PlayerManager>;
 	explicit PlayerManager() = default;
-
 	uint8_t m_AmountOfPlayers{ 0 };
 	std::vector<PlayerInfo> m_pPlayers;
 };

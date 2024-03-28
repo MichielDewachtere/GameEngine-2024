@@ -37,6 +37,12 @@
     <Filter Include="Components\Enemy">
       <UniqueIdentifier>{f4d24849-0887-41f9-ada3-e1c831ad0096}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Blocks">
+      <UniqueIdentifier>{b8f35789-723f-4bc2-85ea-4888eb1a652d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Util">
+      <UniqueIdentifier>{a063c170-37a8-4a03-973c-693c3d2d3ddd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -103,12 +109,6 @@
     <ClCompile Include="PlayerPrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
-    <ClCompile Include="Maze.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Move.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
@@ -118,20 +118,8 @@
     <ClCompile Include="PlayerManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="IceBlock.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="HiddenEgg.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyPrefab.cpp">
       <Filter>Prefabs</Filter>
-    </ClCompile>
-    <ClCompile Include="Pushable.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Components\Enemy</Filter>
@@ -143,7 +131,31 @@
       <Filter>Components\Player</Filter>
     </ClCompile>
     <ClCompile Include="StarBlockManager.cpp">
-      <Filter>Components</Filter>
+      <Filter>Components\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Components\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="HiddenEgg.cpp">
+      <Filter>Components\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="IceBlock.cpp">
+      <Filter>Components\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="Maze.cpp">
+      <Filter>Components\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Components\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Pushable.cpp">
+      <Filter>Components\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Components\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintMazeCommand.cpp">
+      <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,12 +228,6 @@
     <ClInclude Include="PlayerPrefab.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
-    <ClInclude Include="Maze.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Move.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="MoveCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
@@ -234,20 +240,8 @@
     <ClInclude Include="PlayerManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="IceBlock.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="HiddenEgg.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyPrefab.h">
       <Filter>Prefabs</Filter>
-    </ClInclude>
-    <ClInclude Include="Pushable.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Components\Enemy</Filter>
@@ -259,7 +253,31 @@
       <Filter>Components\Player</Filter>
     </ClInclude>
     <ClInclude Include="StarBlockManager.h">
-      <Filter>Components</Filter>
+      <Filter>Components\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Components\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="HiddenEgg.h">
+      <Filter>Components\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="IceBlock.h">
+      <Filter>Components\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="Maze.h">
+      <Filter>Components\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Components\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Pushable.h">
+      <Filter>Components\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Components\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintMazeCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

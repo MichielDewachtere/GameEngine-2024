@@ -35,7 +35,7 @@ public:
 	virtual void Update() override;
 
 	virtual void HandleEvent(MoveEvents, const glm::ivec2&) override;
-	virtual void OnSubjectDestroy() override;
+	virtual void OnSubjectDestroy() override {}
 
 	void AddStarBlock(dae::GameObject* go, const glm::ivec2&);
 

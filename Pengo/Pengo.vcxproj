@@ -162,6 +162,7 @@
     <ClCompile Include="EnemyHandler.cpp" />
     <ClCompile Include="EnemyPrefab.cpp" />
     <ClCompile Include="FPSCounter.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="HiddenEgg.cpp" />
     <ClCompile Include="HiddenEggPrefab.cpp" />
     <ClCompile Include="IceBlock.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="PlayerPrefab.cpp" />
+    <ClCompile Include="PrintMazeCommand.cpp" />
     <ClCompile Include="Pushable.cpp" />
     <ClCompile Include="Rotator.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
@@ -200,6 +202,7 @@
     <ClInclude Include="EnemyHandler.h" />
     <ClInclude Include="EnemyPrefab.h" />
     <ClInclude Include="FPSCounter.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameUtil.h" />
     <ClInclude Include="HiddenEgg.h" />
@@ -222,6 +225,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="PlayerPrefab.h" />
+    <ClInclude Include="PrintMazeCommand.h" />
     <ClInclude Include="Pushable.h" />
     <ClInclude Include="Rotator.h" />
     <ClInclude Include="ScoreDisplay.h" />

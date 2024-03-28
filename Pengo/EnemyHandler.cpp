@@ -6,6 +6,7 @@
 
 #include "Enemy.h"
 #include "EnemyPrefab.h"
+#include "Game.h"
 #include "HiddenEgg.h"
 #include "Move.h"
 
@@ -19,14 +20,14 @@ EnemyHandler::EnemyHandler(dae::GameObject* pOwner, int difficulty)
     m_AmountOfEnemiesAtOnce = spawns;
 }
 
+EnemyHandler::~EnemyHandler()
+{
+    GetOwner()->GetComponent<Game>()->gameStarted.RemoveObserver(this);
+}
+
 void EnemyHandler::Start()
 {
-    for (int i{0}; i < m_AmountOfEnemiesAtOnce; ++i)
-    {
-        m_EnemySpawns.back()->PopEgg();
-        SpawnSnoBee();
-        m_EnemySpawns.pop_back();
-    }
+    GetOwner()->GetComponent<Game>()->gameStarted.AddObserver(this);
 }
 
 void EnemyHandler::HandleEvent()
@@ -37,6 +38,19 @@ void EnemyHandler::HandleEvent()
     m_EnemySpawns.back()->PopEgg();
     SpawnSnoBee();
     m_EnemySpawns.pop_back();
+}
+
+void EnemyHandler::HandleEvent(GameEvents event)
+{
+    if (event == GameEvents::start)
+    {
+        for (int i{ 0 }; i < m_AmountOfEnemiesAtOnce; ++i)
+        {
+            m_EnemySpawns.back()->PopEgg();
+            SpawnSnoBee();
+            m_EnemySpawns.pop_back();
+        }
+    }
 }
 
 void EnemyHandler::AddEnemySpawn(dae::GameObject* go)

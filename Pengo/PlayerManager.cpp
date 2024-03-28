@@ -1,10 +1,43 @@
 ﻿#include "PlayerManager.h"
 
+#include <algorithm>
 #include <InputManager.h>
 
+#include "Game.h"
 #include "GameInfo.h"
+#include "GameObject.h"
 #include "InteractCommand.h"
 #include "MoveCommand.h"
+#include "SceneManager.h"
+
+void PlayerManager::Reset()
+{
+	std::ranges::for_each(m_pPlayers, [](PlayerInfo& p)
+		{
+			p.object = nullptr;
+		});
+
+	auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
+	v.front()->GetComponent<Game>()->gameStarted.AddObserver(this);
+}
+
+void PlayerManager::HandleEvent(GameEvents event)
+{
+	if (event == GameEvents::start)
+	{
+		std::ranges::for_each(m_pPlayers, [](const PlayerInfo& p)
+			{
+				p.object->GetComponent<Move>()->Enable();
+			});
+	}
+}
+
+void PlayerManager::OnSubjectDestroy()
+{
+	auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
+	if (v.empty() == false)
+		v.front()->GetComponent<Game>()->gameStarted.RemoveObserver(this);
+}
 
 void PlayerManager::RegisterPlayer(const PlayerInfo info)
 {
