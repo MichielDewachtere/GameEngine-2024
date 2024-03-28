@@ -212,6 +212,7 @@ namespace dae
 	}
 
 	template <typename T>
+	// TODO: Improve this, use mark for destroy on commands
 	bool GameObject::RemoveComponent()
 	{
 		if (IsTransform<T>())
