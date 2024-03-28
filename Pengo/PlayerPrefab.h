@@ -8,8 +8,8 @@
 class PlayerPrefab final : public dae::Prefab
 {
 public:
-	explicit PlayerPrefab(dae::GameObject* pOwner, const glm::ivec2& pos);
-	explicit PlayerPrefab(dae::Scene* pScene, const glm::ivec2& pos);
+	explicit PlayerPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos);
+	explicit PlayerPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos);
 	virtual ~PlayerPrefab() override = default;
 
 	PlayerPrefab(const PlayerPrefab& other) = delete;
@@ -17,7 +17,7 @@ public:
 	PlayerPrefab(PlayerPrefab&& other) = delete;
 	PlayerPrefab& operator=(PlayerPrefab&& rhs) = delete;
 
-	void Init(const glm::ivec2& pos);
+	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos);
 
 private:
 
