@@ -23,5 +23,5 @@ void Level01::Load()
 	if (idx != UCHAR_MAX)
 		PlayerManager::GetInstance().RegisterPlayer({ nullptr, false, idx });
 
-	LevelParser::ParseLevel(this, "../data/levels/level1.lvl", 1);
+	LevelParser::ParseLevel(this, "../data/levels/test_level.lvl", 5);
 }
