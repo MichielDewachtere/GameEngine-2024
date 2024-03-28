@@ -6,25 +6,6 @@
 
 dae::SceneManager::~SceneManager() = default;
 
-//dae::Scene& dae::SceneManager::CreateScene(std::string name, const std::string& inputMap)
-//{
-//	if (FindSceneWithName(name) != nullptr)
-//	{
-//		Logger::LogError({ "Already a scene created with this name ({})" }, name);
-//		throw std::runtime_error("Already a scene created with this name (" + name+ ')');
-//	}
-//
-//	auto pScene = std::make_unique<Scene>(name, inputMap);
-//	m_ScenePtrs.emplace_back(std::move(pScene));
-//
-//	if (m_ScenePtrs.size() == 1)
-//	{
-//		m_pActiveScene = m_ScenePtrs.back().get();
-//		InputManager::GetInstance().SetInputMapActive(inputMap);
-//	}
-//
-//	return *m_ScenePtrs.back();
-//}
 
 void dae::SceneManager::CreateScene(Scene* pScene)
 {
@@ -72,6 +53,7 @@ void dae::SceneManager::FixedUpdate()
 {
 	m_pActiveScene->FixedUpdate();
 }
+
 void dae::SceneManager::Update()
 {
 	if (m_pSceneToLoad != nullptr)
@@ -109,6 +91,9 @@ void dae::SceneManager::LoadScene()
 	if (m_pActiveScene != nullptr)
 	{
 		m_pActiveScene->Destroy();
+
+		exitScene.Notify(SceneEvents::exit, m_pActiveScene);
+
 		// One last update to actually remove the objects
 		m_pActiveScene->Update();
 	}
@@ -118,6 +103,8 @@ void dae::SceneManager::LoadScene()
 
 	m_pActiveScene->Load();
 	m_pActiveScene->FirstFrame();
+
+	loadScene.Notify(SceneEvents::load, m_pActiveScene);
 
 	if (m_pActiveScene->GetDefaultInputMap().empty() == false)
 		InputManager::GetInstance().SetInputMapActive(m_pActiveScene->GetDefaultInputMap());

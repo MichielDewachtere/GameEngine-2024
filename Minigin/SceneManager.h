@@ -6,6 +6,13 @@
 
 namespace dae
 {
+	enum  class SceneEvents : char
+	{
+		exit = 0,
+		load = 1
+	};
+
+	// TODO: Add scene switch events
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
@@ -29,6 +36,9 @@ namespace dae
 		void OnGui();
 
 		void Destroy();
+
+		dae::Subject<SceneEvents, Scene*> exitScene;
+		dae::Subject<SceneEvents, Scene*> loadScene;
 
 	private:
 		friend class Singleton<SceneManager>;
