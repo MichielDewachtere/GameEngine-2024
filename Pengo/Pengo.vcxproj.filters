@@ -142,7 +142,7 @@
     <ClCompile Include="Interact.cpp">
       <Filter>Components\Player</Filter>
     </ClCompile>
-    <ClCompile Include="StarBlock.cpp">
+    <ClCompile Include="StarBlockManager.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -258,7 +258,7 @@
     <ClInclude Include="Interact.h">
       <Filter>Components\Player</Filter>
     </ClInclude>
-    <ClInclude Include="StarBlock.h">
+    <ClInclude Include="StarBlockManager.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
