@@ -83,8 +83,18 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect rect) const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &rect);
 }
 
+void dae::Renderer::RenderSprite(const Texture2D& texture, glm::ivec4 src, glm::ivec4 dst, float angle,
+	glm::ivec2 center, RenderFlip flip) const
+{
+	const SDL_Rect srcRect = GlmToSDLRect(src);
+	const SDL_Rect dstRect = GlmToSDLRect(dst);
+
+	RenderSpriteOrTexture(texture, &srcRect, dstRect, angle, center, flip);
+}
+
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_pRenderer; }
 
+#pragma region geometry
 void dae::Renderer::RenderRectangle(const glm::ivec4& rect, bool isFilled, glm::u8vec4 color) const
 {
 	SDL_Color originalColor;
@@ -100,7 +110,6 @@ void dae::Renderer::RenderRectangle(const glm::ivec4& rect, bool isFilled, glm::
 	SDL_SetRenderDrawColor(m_pRenderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
 
 }
-
 void dae::Renderer::RenderPoint(int x, int y, glm::u8vec4 color) const
 {
 	SDL_Color originalColor;
@@ -110,7 +119,6 @@ void dae::Renderer::RenderPoint(int x, int y, glm::u8vec4 color) const
 	SDL_RenderDrawPoint(GetSDLRenderer(), x, y);
 	SDL_SetRenderDrawColor(m_pRenderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
 }
-
 void dae::Renderer::RenderLine(int x1, int y1, int x2, int y2, glm::u8vec4 color) const
 {
 	SDL_Color originalColor;
@@ -120,7 +128,6 @@ void dae::Renderer::RenderLine(int x1, int y1, int x2, int y2, glm::u8vec4 color
 	SDL_RenderDrawLine(GetSDLRenderer(), x1, y1, x2, y2);
 	SDL_SetRenderDrawColor(m_pRenderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
 }
-
 void dae::Renderer::RenderShape(const glm::ivec2* points, int count, glm::u8vec4 color) const
 {
 	SDL_Color originalColor;
@@ -135,10 +142,22 @@ void dae::Renderer::RenderShape(const glm::ivec2* points, int count, glm::u8vec4
 	SDL_SetRenderDrawColor(m_pRenderer, originalColor.r, originalColor.g, originalColor.b, originalColor.a);
 
 }
-
 void dae::Renderer::RenderShape(const std::vector<glm::ivec2>& points, glm::u8vec4 color) const
 {
 	RenderShape(&points.front(), static_cast<int>(points.size()), color);
+}
+#pragma endregion geometry
+void dae::Renderer::RenderSpriteOrTexture(const Texture2D& texture, const SDL_Rect* srcRect, const SDL_Rect& dstRect,
+	float angle, glm::ivec2 center, RenderFlip flip) const
+{
+	const SDL_Point rotationCenter = GlmToSDLPoint(center);
+
+	SDL_RendererFlip sdlFlip = SDL_FLIP_NONE;
+	if (flip == RenderFlip::vertical) sdlFlip = SDL_FLIP_VERTICAL;
+	else if (flip == RenderFlip::horizontal) sdlFlip = SDL_FLIP_HORIZONTAL;
+
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(),
+		srcRect, &dstRect, static_cast<double>(angle), &rotationCenter, sdlFlip);
 }
 
 SDL_Point dae::Renderer::GlmToSDLPoint(const glm::ivec2& point)
@@ -147,4 +166,14 @@ SDL_Point dae::Renderer::GlmToSDLPoint(const glm::ivec2& point)
 	sdlPoint.x = point.x;
 	sdlPoint.y = point.y;
 	return sdlPoint;
+}
+
+SDL_Rect dae::Renderer::GlmToSDLRect(const glm::ivec4& rect)
+{
+	SDL_Rect sdlRect;
+	sdlRect.x = rect.x;
+	sdlRect.y = rect.y;
+	sdlRect.w = rect.z;
+	sdlRect.h = rect.w;
+	return sdlRect;
 }

@@ -12,9 +12,14 @@
 namespace dae
 {
 	class Texture2D;
-	/**
-	 * Simple RAII wrapper for the SDL renderer
-	 */
+
+	enum class RenderFlip : char
+	{
+		none = 0,
+		vertical = 1,
+		horizontal = 2
+	};
+
 	class Renderer final : public Singleton<Renderer>
 	{
 	public:
@@ -25,6 +30,9 @@ namespace dae
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
 		void RenderTexture(const Texture2D& texture, SDL_Rect rect) const;
+
+		void RenderSprite(const Texture2D& texture, glm::ivec4 src, glm::ivec4 dst, float angle = 0,
+			glm::ivec2 center = { 0, 0 }, RenderFlip flip = RenderFlip::none) const;
 
 		SDL_Renderer* GetSDLRenderer() const;
 
@@ -42,7 +50,11 @@ namespace dae
 		SDL_Window* m_pWindow{};
 		SDL_Color m_ClearColor{};
 
+		void RenderSpriteOrTexture(const Texture2D& texture, const SDL_Rect* srcRect, const SDL_Rect& dstRect,
+			float angle, glm::ivec2 center, RenderFlip flip) const;
+
 		static SDL_Point GlmToSDLPoint(const glm::ivec2& point);
+		static SDL_Rect GlmToSDLRect(const glm::ivec4& rect);
 	};
 }
 
