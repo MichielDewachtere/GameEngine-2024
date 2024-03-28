@@ -128,6 +128,8 @@ void dae::SpriteComponent::PlayAnimation(int startIdx, int endIdx, int loops, fl
 	m_AccuLoops = 0;
 	m_Loops = loops;
 
+	m_PlaySelectedIdcs = false;
+
 	m_Pause = false;
 	m_Stop = false;
 	m_IsAnimationPlaying = true;
