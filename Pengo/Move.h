@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <glm/vec2.hpp>
+#include <Subject.h>
 
 #include "Maze.h"
 
@@ -20,6 +21,12 @@ enum class Direction : char
 	left = 2,
 	down = 3,
 	amountOfDirs = 4
+};
+
+enum class MoveEvents : bool
+{
+	startedMoving = 0,
+	moved = 1
 };
 
 class Move final : public dae::Component
@@ -46,6 +53,9 @@ public:
 
 	bool IsMoving() const { return m_Move; }
 	void Animate(bool animate) { m_Animate = animate; }
+
+	dae::Subject<MoveEvents> startedMoving;
+	dae::Subject<MoveEvents, const glm::ivec2&> moved;
 
 private:
 	glm::ivec2 m_MazePosition, m_NewPosition{}, m_DirectionVec{};

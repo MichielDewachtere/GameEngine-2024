@@ -8,8 +8,8 @@
 class StarBlockPrefab final : public dae::Prefab
 {
 public:
-	explicit StarBlockPrefab(dae::GameObject* pOwner, const glm::ivec2& pos);
-	explicit StarBlockPrefab(dae::Scene* pScene, const glm::ivec2& pos);
+	explicit StarBlockPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos);
+	explicit StarBlockPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos);
 	virtual ~StarBlockPrefab() override = default;
 
 	StarBlockPrefab(const StarBlockPrefab& other) = delete;
@@ -18,7 +18,7 @@ public:
 	StarBlockPrefab& operator=(StarBlockPrefab&& rhs) = delete;
 
 protected:
-	void Init(const glm::ivec2& pos);
+	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos);
 };
 
 #endif // STARBLOCKPREFAB_H

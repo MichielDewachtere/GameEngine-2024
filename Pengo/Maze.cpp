@@ -14,6 +14,7 @@
 
 #include "Macros.h"
 #include "PlayerManager.h"
+#include "StarBlockManager.h"
 #include "WallPrefab.h"
 
 Maze::Maze(dae::GameObject* pOwner, const glm::ivec2& size)
@@ -51,7 +52,7 @@ void Maze::Init()
             auto scaledPos = glm::vec2(x * BLOCK_SIZE * PIXEL_SCALE + WALL_WIDTH * PIXEL_SCALE, y * BLOCK_SIZE * PIXEL_SCALE + WALL_WIDTH * PIXEL_SCALE);
 
             // TODO: Second player spawn: [6][10]
-            bool needsPlayer = PlayerManager::GetInstance().RequestPlayer();
+            const bool needsPlayer = PlayerManager::GetInstance().RequestPlayer();
             if (needsPlayer 
                 && (x == 6 && y == 6 || x == 6 && y == 10))
             {
@@ -64,22 +65,23 @@ void Maze::Init()
             {
             case BlockType::ice:
             {
-                auto ice = std::make_unique<IcePrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y });
+                const auto ice = std::make_unique<IcePrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y });
                 m_Maze[x][y].second = ice->GetGameObject();
                 std::cout << "X";
                 break;
             }
             case BlockType::star:
             {
-                auto starBlock = std::make_unique<StarBlockPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y });
+	            const auto starBlock = std::make_unique<StarBlockPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y });
                 m_Maze[x][y].second = starBlock->GetGameObject();
+                GetOwner()->GetComponent<StarBlockManager>()->AddStarBlock(starBlock->GetGameObject(), glm::ivec2{ x,y });
                 std::cout << "*";
                 break;
             }
             case BlockType::egg:
             {
 	            const auto iceBlock = std::make_unique<IcePrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, true);
-                auto hiddenEgg = std::make_unique<HiddenEggPrefab>(iceBlock->GetGameObject());
+	            const auto hiddenEgg = std::make_unique<HiddenEggPrefab>(iceBlock->GetGameObject());
                 GetOwner()->GetComponent<EnemyHandler>()->AddEnemySpawn(hiddenEgg->GetGameObject());
                 m_Maze[x][y].second = iceBlock->GetGameObject();
                 std::cout << "!";

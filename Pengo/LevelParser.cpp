@@ -5,6 +5,7 @@
 #include "EnemyHandler.h"
 #include "Macros.h"
 #include "Maze.h"
+#include "StarBlockManager.h"
 
 void LevelParser::ParseLevel(dae::Scene* pScene, const std::string& levelPath, int difficulty)
 {
@@ -20,6 +21,7 @@ void LevelParser::ParseLevel(dae::Scene* pScene, const std::string& levelPath, i
 	level.GetTransform()->SetLocalPosition({ 0, 16 * PIXEL_SCALE });
 	const auto mazeComponent = level.AddComponent<Maze>(glm::ivec2{ MAZE_WIDTH, MAZE_HEIGHT});
 	level.AddComponent<EnemyHandler>(difficulty);
+	level.AddComponent<StarBlockManager>();
 
 	int counter = 0;
 

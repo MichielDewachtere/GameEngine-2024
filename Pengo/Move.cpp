@@ -62,6 +62,8 @@ void Move::Update()
 
 		transform->SetLocalPosition(m_NewPosition);
 
+		moved.Notify(MoveEvents::moved, m_MazePosition);
+
 		if (m_MoveUntilStopped)
 		{
 			MoveInDirection(m_Direction, true);
@@ -99,6 +101,7 @@ bool Move::MoveInDirection(Direction dir, bool untilStopped)
 	m_NewPosition = scaledNewPos;
 	m_Move = true;
 	m_MoveUntilStopped = untilStopped;
+	startedMoving.Notify(MoveEvents::startedMoving);
 
 	return true;
 }
