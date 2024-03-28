@@ -1,7 +1,5 @@
 #include "GameObject.h"
 
-#include <algorithm>
-
 #include "DrawableComponent.h"
 #include "imgui.h"
 #include "Logger.h"
@@ -61,7 +59,8 @@ void dae::GameObject::FixedUpdate()
 	m_pTransform->FixedUpdate();
 	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
 		{
-			c->FixedUpdate();
+			if (c->IsActive())
+				c->FixedUpdate();
 		});
 
 	if (m_pChildren.empty() == false)
@@ -78,10 +77,22 @@ void dae::GameObject::Update()
 	if (IsActive() == false)
 		return;
 
+	if (m_pChildrenToAdd.empty() == false)
+	{
+		for (auto& pChild : m_pChildrenToAdd)
+		{
+			m_pChildren.push_back(std::move(pChild));
+			m_pChildren.back()->Start();
+		}
+
+		m_pChildrenToAdd.clear();
+	}
+
 	m_pTransform->Update();
 	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
 		{
-			c->Update();
+			if (c->IsActive())
+				c->Update();
 		});
 
 	if (m_pChildren.empty() == false)
@@ -95,41 +106,46 @@ void dae::GameObject::Update()
 
 void dae::GameObject::LateUpdate()
 {
-	if (IsActive())
-	{
-		if (m_pChildren.empty() == false)
-		{
-			for (auto it = m_pChildren.begin(); it != m_pChildren.end(); )
-			{
-				const auto& pChild = *it;
-
-				if (IsActive())
-					pChild->LateUpdate();
-
-				if (pChild->IsMarkedForDestroy() && pChild->GetId() <= m_IdCounter)
-				{
-					it = m_pChildren.erase(it);
-				}
-				else
-				{
-					++it;
-				}
-			}
-		}
-
-		m_pTransform->LateUpdate();
-		std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
-			{
-				c->LateUpdate();
-			});
-	}
-
 	if (m_IsMarkedForDestroy)
 	{
+		if (GetId() == 29)
+			std::cout << "test\n";
+
 		m_pComponents.clear();
 
 		if (m_pParent == nullptr)
 			m_pScene->Remove(this);
+	}
+
+	if (m_pChildren.empty() == false)
+	{
+		for (auto it = m_pChildren.begin(); it != m_pChildren.end(); )
+		{
+			const auto& pChild = *it;
+
+			//if (IsActive())
+			pChild->LateUpdate();
+
+			if (pChild->IsMarkedForDestroy() && pChild->GetId() <= m_IdCounter)
+			{
+				it->reset();
+				it = m_pChildren.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+
+	if (IsActive())
+	{
+		m_pTransform->LateUpdate();
+		std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
+			{
+				if (c->IsActive())
+					c->LateUpdate();
+			});
 	}
 }
 
@@ -138,15 +154,6 @@ void dae::GameObject::Render() const
 	if (IsActive() == false)
 		return;
 
-	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
-			{
-				if (const auto drawable = dynamic_cast<DrawableComponent*>(c.get());
-					drawable != nullptr)
-				{
-					drawable->Render();
-				}
-			});
-
 	if (m_pChildren.empty() == false)
 	{
 		std::ranges::for_each(m_pChildren, [](const auto& go)
@@ -154,21 +161,22 @@ void dae::GameObject::Render() const
 			   go->Render();
 		   });
 	}
+
+	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
+			{
+				if (const auto drawable = dynamic_cast<DrawableComponent*>(c.get());
+					drawable != nullptr)
+				{
+					if (drawable->IsActive())
+						drawable->Render();
+				}
+			});
 }
 
 void dae::GameObject::DebugRender() const
 {
 	if (IsActive() == false)
 		return;
-
-	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
-		{
-			if (const auto drawable = dynamic_cast<DrawableComponent*>(c.get());
-				drawable != nullptr)
-			{
-				drawable->DebugRender();
-			}
-		});
 
 	if (m_pChildren.empty() == false)
 	{
@@ -177,6 +185,16 @@ void dae::GameObject::DebugRender() const
 				go->DebugRender();
 			});
 	}
+
+	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
+		{
+			if (const auto drawable = dynamic_cast<DrawableComponent*>(c.get());
+				drawable != nullptr)
+			{
+				if (drawable->IsActive())
+					drawable->DebugRender();
+			}
+		});
 }
 
 void dae::GameObject::OnGui()
@@ -206,14 +224,14 @@ void dae::GameObject::OnGui()
 
 void dae::GameObject::Destroy()
 {
-	m_IsMarkedForDestroy = true;
-
 	gameObjectDestroyed.Notify(GameObjectEvent::destroyed);
 
 	std::ranges::for_each(m_pChildren, [](const auto& go)
 		{
 			go->Destroy();
 		});
+
+	m_IsMarkedForDestroy = true;
 }
 
 void dae::GameObject::SetIsActive(bool isEnabled, bool applyToChildren)
@@ -291,6 +309,18 @@ uint32_t dae::GameObject::GetChildCount() const
 	return static_cast<uint32_t>(m_pChildren.size());
 }
 
+std::vector<dae::GameObject*> dae::GameObject::GetChildren() const
+{
+	std::vector<GameObject*> v{};
+
+	std::ranges::for_each(m_pChildren, [&v](const auto& c)
+	{
+		v.push_back(c.get());
+	});
+
+	return v;
+}
+
 dae::GameObject* dae::GameObject::GetChildAt(uint32_t index) const
 {
 	return m_pChildren[index].get();
@@ -318,4 +348,26 @@ bool dae::GameObject::IsChild(GameObject* pGo) const
 		{
 			return pChild->GetId() == pGo->GetId();
 		});
+}
+
+std::vector<dae::GameObject*> dae::GameObject::GetGameObjectsWithTag(const std::string& tag) const
+{
+	std::vector<GameObject*> v;
+
+	if (m_pChildren.empty() == false)
+	{
+		for (const auto& go : m_pChildren)
+		{
+			if (go->IsMarkedForDestroy())
+				continue;
+
+			if (go->GetTag() == tag)
+				v.push_back(go.get());
+
+			auto sub = go->GetGameObjectsWithTag(tag);
+			v.insert(v.end(), sub.begin(), sub.end());
+		}
+	}
+
+	return v;
 }

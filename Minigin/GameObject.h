@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <algorithm>
 
 #include "Transform.h"
 
@@ -21,7 +22,7 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		explicit GameObject(Scene * scene, std::string tag = "");
+		explicit GameObject(Scene * scene, std::string tag = "none");
 		~GameObject() = default;
 
 		GameObject(const GameObject& other) = delete;
@@ -71,6 +72,12 @@ namespace dae
 		*/
 		template<typename T>
 		T* GetComponent();
+		template<typename T>
+			requires std::is_base_of_v<Component, T>
+		T* GetComponentInChildren();
+		template<typename T>
+			requires std::is_base_of_v<Component, T>
+		std::vector<T*> GetComponentsInChildren();
 		/**
 		 * @brief Removes a component from the GameObject.
 		 * @tparam T Type of the component to remove.
@@ -90,10 +97,13 @@ namespace dae
 		GameObject* GetParent() const;
 		void SetParent(GameObject* pParent, bool keepWorldPosition);
 		uint32_t GetChildCount() const;
+		std::vector<GameObject*> GetChildren() const;
 		GameObject* GetChildAt(uint32_t index) const;
 		GameObject* GetChild(uint32_t id) const;
 		bool IsChild(GameObject* pGo) const;
 #pragma endregion
+
+		std::vector<GameObject*> GetGameObjectsWithTag(const std::string& tag) const;
 
 	private:
 		uint32_t m_Id;
@@ -142,6 +152,9 @@ namespace dae
 
 		const auto it = std::find_if(m_pComponents.begin(), m_pComponents.end(), [](const auto& c)
 			{
+				if (c == nullptr)
+					return false;
+
 				return dynamic_cast<T*>(c.get()) != nullptr;
 			});
 
@@ -150,8 +163,52 @@ namespace dae
 			return dynamic_cast<T*>(it->get());
 		}
 
-		Logger::LogError({"This game object has no component of this type"});
+		//Logger::LogError({"This game object has no component of this type"});
 		return nullptr;
+	}
+
+	template <typename T>
+		requires std::is_base_of_v<Component, T>
+	T* GameObject::GetComponentInChildren()
+	{
+		if (m_pChildren.empty() && m_pChildrenToAdd.empty())
+			return nullptr;
+
+		std::ranges::for_each(m_pChildren, [](const std::unique_ptr<GameObject>& go)
+			{
+				if (const auto component = go->GetComponent<T>();
+					component == nullptr)
+					return component;
+			});
+
+		return nullptr;
+	}
+
+	template <typename T>
+		requires std::is_base_of_v<Component, T>
+	std::vector<T*> GameObject::GetComponentsInChildren()
+	{
+		std::vector<T*> v;
+
+		if (m_pChildren.empty() == false)
+		{
+			for (const auto & go : m_pChildren)
+			{
+				if (go->IsMarkedForDestroy())
+					continue;
+
+				auto component = go->GetComponent<T>();
+				if (component != nullptr)
+				{
+					v.push_back(component);
+				}
+
+				auto sub = go->GetComponentsInChildren<T>();
+				v.insert(v.end(), sub.begin(), sub.end());
+			}
+		}
+
+		return v;
 	}
 
 	template <typename T>
