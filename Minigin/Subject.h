@@ -25,6 +25,7 @@ namespace dae
 		void RemoveObserver(Observer<Args...>* pObserver);
 
 		void Notify(Args... args);
+		void Destroy();
 
 		std::vector<Observer<Args ...>*> GetObservers() const { return m_pObservers; }
 
@@ -35,15 +36,7 @@ namespace dae
 	template<typename ...Args>
 	inline Subject<Args...>::~Subject()
 	{
-		for (auto& observer : m_pObservers)
-		{
-			Observer<Args ...>* observerPtr = reinterpret_cast<Observer<Args ...>*>(observer);
-
-			if (observerPtr == nullptr)
-				continue;
-
-			observerPtr->OnSubjectDestroy();
-		}
+		Destroy();
 	}
 
 	template<typename ...Args>
@@ -92,6 +85,18 @@ namespace dae
 				std::erase(m_pObservers, pObserver);
 
 			pObserver->HandleEvent(args...);
+		}
+	}
+
+	template <typename ... Args>
+	void Subject<Args...>::Destroy()
+	{
+		for (auto& observer : m_pObservers)
+		{
+			if (observer == nullptr)
+				continue;
+
+			observer->OnSubjectDestroy();
 		}
 	}
 }
