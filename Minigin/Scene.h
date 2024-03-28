@@ -36,6 +36,8 @@ namespace dae
 		GameObject* GetGameObject(uint32_t id) const;
 		std::unique_ptr<GameObject> GetUniqueGameObject(GameObject* pGo);
 
+		std::vector<GameObject*> FindGameObjectsWithTag(std::string tag) const;
+
 		void Remove(GameObject* pGo);
 		void RemoveAll();
 		void Destroy();

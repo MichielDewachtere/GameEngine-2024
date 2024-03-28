@@ -64,6 +64,29 @@ std::unique_ptr<GameObject> Scene::GetUniqueGameObject(GameObject* pGo)
 	return nullptr;
 }
 
+std::vector<GameObject*> Scene::FindGameObjectsWithTag(std::string tag) const
+{
+	std::vector<GameObject*> v;
+
+	if (m_GameObjects.empty() == false)
+	{
+		for (const auto& go : m_GameObjects)
+		{
+			if (go->IsMarkedForDestroy())
+				continue;
+
+			if (go->GetTag() == tag)
+				v.push_back(go.get());
+
+			auto sub = go->GetGameObjectsWithTag(tag);
+			v.insert(v.end(), sub.begin(), sub.end());
+		}
+	}
+
+	return v;
+
+}
+
 void Scene::Remove(GameObject* pGo)
 {
 	pGo->Destroy();
