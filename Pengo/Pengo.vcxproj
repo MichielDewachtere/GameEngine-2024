@@ -185,7 +185,7 @@
     <ClCompile Include="Pushable.cpp" />
     <ClCompile Include="Rotator.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
-    <ClCompile Include="StarBlock.cpp" />
+    <ClCompile Include="StarBlockManager.cpp" />
     <ClCompile Include="StarBlockPrefab.cpp" />
     <ClCompile Include="TestSecondScene.cpp" />
     <ClCompile Include="TrashTheCache.cpp" />
@@ -225,7 +225,7 @@
     <ClInclude Include="Pushable.h" />
     <ClInclude Include="Rotator.h" />
     <ClInclude Include="ScoreDisplay.h" />
-    <ClInclude Include="StarBlock.h" />
+    <ClInclude Include="StarBlockManager.h" />
     <ClInclude Include="StarBlockPrefab.h" />
     <ClInclude Include="TestSecondScene.h" />
     <ClInclude Include="TrashTheCache.h" />
