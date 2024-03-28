@@ -7,6 +7,7 @@ dae::InputMap::InputMap(std::string name)
 {
 }
 
+// TODO: Remove by passing game object?
 void dae::InputMap::RemoveKeyboardAction(uint8_t id)
 {
 	m_KeyboardActionsToRemove.push_back(id);
