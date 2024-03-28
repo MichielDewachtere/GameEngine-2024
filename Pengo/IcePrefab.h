@@ -8,8 +8,8 @@
 class IcePrefab final : public dae::Prefab
 {
 public:
-	explicit IcePrefab(dae::GameObject* pOwner, const glm::ivec2& pos);
-	explicit IcePrefab(dae::Scene* pScene, const glm::ivec2& pos);
+	explicit IcePrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
+	explicit IcePrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
 	virtual ~IcePrefab() override = default;
 
 	IcePrefab(const IcePrefab& other) = delete;
@@ -18,7 +18,7 @@ public:
 	IcePrefab& operator=(IcePrefab&& rhs) = delete;
 
 protected:
-	void Init(const glm::ivec2& pos);
+	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
 };
 
 #endif // ICEPREFAB_H
