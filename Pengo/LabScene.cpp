@@ -15,7 +15,7 @@
 #include "Player.h"
 #include "LivesDisplay.h"
 #include "LoadSceneCommand.h"
-#include "MoveCommand.h"
+#include "LabMoveCommand.h"
 #include "ChangeScoreCommand.h"
 #include "DamageCommand.h"
 #include "ScoreDisplay.h"
@@ -141,16 +141,16 @@ void LabScene::Load()
 	const auto map = input.AddInputMap("test");
 
 	input.SetInputMapActive("test");
-	map->AddKeyboardAction<MoveCommand>(0, KeyState::keyPressed, SDL_SCANCODE_W, &pengo, glm::ivec2{ 0,-1 }, 25);
-	map->AddKeyboardAction<MoveCommand>(1, KeyState::keyPressed, SDL_SCANCODE_A, &pengo, glm::ivec2{ -1,0 }, 25);
-	map->AddKeyboardAction<MoveCommand>(2, KeyState::keyPressed, SDL_SCANCODE_S, &pengo, glm::ivec2{ 0,1 }, 25);
-	map->AddKeyboardAction<MoveCommand>(3, KeyState::keyPressed, SDL_SCANCODE_D, &pengo, glm::ivec2{ 1,0 }, 25);
+	map->AddKeyboardAction<LabMoveCommand>(0, KeyState::keyPressed, SDL_SCANCODE_W, &pengo, glm::ivec2{ 0,-1 }, 25);
+	map->AddKeyboardAction<LabMoveCommand>(1, KeyState::keyPressed, SDL_SCANCODE_A, &pengo, glm::ivec2{ -1,0 }, 25);
+	map->AddKeyboardAction<LabMoveCommand>(2, KeyState::keyPressed, SDL_SCANCODE_S, &pengo, glm::ivec2{ 0,1 }, 25);
+	map->AddKeyboardAction<LabMoveCommand>(3, KeyState::keyPressed, SDL_SCANCODE_D, &pengo, glm::ivec2{ 1,0 }, 25);
 	map->AddKeyboardAction<LoadSceneCommand>(4, KeyState::keyDown, SDL_SCANCODE_RETURN, "secondScene");
 	map->AddKeyboardAction<ChangeScoreCommand>(5, KeyState::keyDown, SDL_SCANCODE_1, &pengo, 100);
 
-	map->AddGamePadAction<MoveCommand>(id, 1, KeyState::keyPressed, GamePad::Button::dPadUp, &snoBee, glm::ivec2{ 0,-1 }, 50);
-	map->AddGamePadAction<MoveCommand>(id, 2, KeyState::keyPressed, GamePad::Button::dPadLeft, &snoBee, glm::ivec2{ -1,0 }, 50);
-	map->AddGamePadAction<MoveCommand>(id, 3, KeyState::keyPressed, GamePad::Button::dPadDown, &snoBee, glm::ivec2{ 0,1 }, 50);
-	map->AddGamePadAction<MoveCommand>(id, 4, KeyState::keyPressed, GamePad::Button::dPadRight, &snoBee, glm::ivec2{ 1,0 }, 50);
+	map->AddGamePadAction<LabMoveCommand>(id, 1, KeyState::keyPressed, GamePad::Button::dPadUp, &snoBee, glm::ivec2{ 0,-1 }, 50);
+	map->AddGamePadAction<LabMoveCommand>(id, 2, KeyState::keyPressed, GamePad::Button::dPadLeft, &snoBee, glm::ivec2{ -1,0 }, 50);
+	map->AddGamePadAction<LabMoveCommand>(id, 3, KeyState::keyPressed, GamePad::Button::dPadDown, &snoBee, glm::ivec2{ 0,1 }, 50);
+	map->AddGamePadAction<LabMoveCommand>(id, 4, KeyState::keyPressed, GamePad::Button::dPadRight, &snoBee, glm::ivec2{ 1,0 }, 50);
 	map->AddGamePadAction<DamageCommand>(id, 5, KeyState::keyUp, GamePad::Button::buttonUp, &snoBee);
 }
