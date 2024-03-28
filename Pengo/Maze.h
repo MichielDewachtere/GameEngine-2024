@@ -53,6 +53,8 @@ public:
 
 	bool IsOccupied(const glm::ivec2& pos) const;
 
+	void PrintMaze() const;
+
 	static glm::ivec2 MazeToLocal(const glm::ivec2& pos);
 	static glm::ivec2 LocalToMaze(const glm::ivec2& pos);
 

@@ -149,6 +149,52 @@ bool Maze::IsOccupied(const glm::ivec2& pos) const
     return !(type == air || type == player || type == enemy);
 }
 
+void Maze::PrintMaze() const
+{
+    std::cout << "+-=-=-=-=-=-=-+\n";
+    std::cout << "| MAZE LAYOUT |\n";
+    std::cout << "+-=-=-=-=-=-=-+\n";
+	for (int y{ 0 }; y < MAZE_HEIGHT; ++y)
+    {
+        std::cout << '|';
+
+		for (int x{0}; x < MAZE_WIDTH; ++x)
+        {
+            switch (m_Maze.at(x).at(y).first)
+            {
+            case BlockType::air:
+                std::cout << '_';
+                break;
+            case BlockType::ice:
+                std::cout << 'X';
+                break;
+            case BlockType::star:
+                std::cout << '*';
+                break;
+            case BlockType::egg:
+                std::cout << '!';
+                break;
+            case BlockType::wall:
+                std::cout << '.';
+                break;
+            case BlockType::player:
+                std::cout << 'u';
+                break;
+            case BlockType::enemy:
+                std::cout << 'O';
+                break;
+            case BlockType::none:
+                std::cout << '_';
+                break;
+            default:;
+            }
+        }
+
+        std::cout << "|\n";
+    }
+    std::cout << "+-=-=-=-=-=-=-+\n\n";
+}
+
 glm::ivec2 Maze::MazeToLocal(const glm::ivec2& pos)
 {
     return {
