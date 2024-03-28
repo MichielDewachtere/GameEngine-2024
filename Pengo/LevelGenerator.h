@@ -5,8 +5,6 @@
 #include <random>
 #include <Singleton.h>
 
-#include "Maze.h"
-
 namespace dae
 {
 	class Scene;
@@ -15,19 +13,23 @@ namespace dae
 class LevelGenerator final : public dae::Singleton<LevelGenerator>
 {
 public:
-	void GenerateLevel(dae::Scene* pScene, dae::WindowSettings settings, uint8_t difficulty);
+	void GenerateLevel();
 
 private:
 	friend class Singleton<LevelGenerator>;
 	LevelGenerator() = default;
 
-	const uint8_t m_Width{ 13 }, m_Height{ 15 };
+	std::vector<std::vector<char>> m_Maze;
 	std::mt19937 m_Rand;
 
-	void GenerateMaze(Maze& maze, int x, int y);
-	void GenerateSpecialBlocks(Maze& maze, uint8_t difficulty);
+	static constexpr char air{ '_' }, wall{ 'X' }, star{ '*' }, egg{ '!' };
+
+	void GenerateMaze(int x, int y);
+	void GenerateSpecialBlocks(uint8_t difficulty);
 	void ResetMaze();
-	bool IsValid(Maze& maze, int x, int y) const;
+	bool IsValid(int x, int y) const;
+
+	void OutputMaze(std::string fileName) const;
 };
 
 #endif // LEVELGENERATOR_H

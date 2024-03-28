@@ -2,13 +2,11 @@
 
 #include <Minigin.h>
 
-#include "HiddenEggPrefab.h"
-#include "IcePrefab.h"
+#include "EnemyHandler.h"
 #include "Macros.h"
-#include "StarBlockPrefab.h"
-#include "WallPrefab.h"
+#include "Maze.h"
 
-void LevelParser::ParseLevel(dae::Scene* pScene, dae::WindowSettings settings, std::string levelPath)
+void LevelParser::ParseLevel(dae::Scene* pScene, const std::string& levelPath, int difficulty)
 {
 	std::ifstream file(levelPath);
 	if (!file.is_open())
@@ -17,72 +15,55 @@ void LevelParser::ParseLevel(dae::Scene* pScene, dae::WindowSettings settings, s
 		return;
 	}
 
-	// Add walls
-	auto wall = std::make_unique<WallPrefab>(pScene, glm::vec2{ 8 * PIXEL_SCALE,16 * PIXEL_SCALE }, true);
-	wall = std::make_unique<WallPrefab>(pScene, glm::vec2{ 8 * PIXEL_SCALE, settings.height - 8 * PIXEL_SCALE}, true);
-	wall = std::make_unique<WallPrefab>(pScene, glm::vec2{ 0,16 * PIXEL_SCALE }, false);
-	wall = std::make_unique<WallPrefab>(pScene, glm::vec2{ settings.width - 8 * PIXEL_SCALE, 16 * PIXEL_SCALE }, false);
-
+	// Create Level Object
+	auto& level = pScene->CreateGameObject();
+	level.GetTransform()->SetLocalPosition({ 0, 16 * PIXEL_SCALE });
+	const auto mazeComponent = level.AddComponent<Maze>(glm::ivec2{ MAZE_WIDTH, MAZE_HEIGHT});
+	level.AddComponent<EnemyHandler>(difficulty);
 
 	int counter = 0;
 
 	// Add Blocks
 	std::string line;
-	glm::vec2 pos{ 0, 8 };
+	glm::vec2 pos{ 0, 0 };
 	while (std::getline(file, line))
 	{
-		if (line[0] == '/' 
+		if (line[0] == '/'
 			&& line[1] == '/'
 			|| line.empty())
 			continue;
 
-		pos.y += 16;
-		pos.x = -8;
+		pos.x = 0;
 
-		for (char c : line)
+		for (const char c : line)
 		{
-
-			pos.x += 16;
-
-			auto scaledPos = glm::vec2(pos.x * PIXEL_SCALE, pos.y * PIXEL_SCALE);
-
-			switch (c)
+			// ReSharper disable once CppDefaultCaseNotHandledInSwitchStatement
+			switch (c)  // NOLINT(hicpp-multiway-paths-covered)
 			{
 			case 'X':
 			{
-				++counter;
-				auto ice = std::make_unique<IcePrefab>(pScene, scaledPos);
-				std::cout << "X";
+				mazeComponent->SetBlock(pos, Maze::BlockType::ice);
 				break;
 			}
 			case '*':
 			{
-				auto starBlock = std::make_unique<StarBlockPrefab>(pScene, scaledPos);
-				std::cout << "*";
+				mazeComponent->SetBlock(pos, Maze::BlockType::star);
 				break;
 			}
 			case '!':
 			{
-				auto hiddenEgg = std::make_unique<HiddenEggPrefab>(pScene, scaledPos);
-				std::cout << "!";
+				mazeComponent->SetBlock(pos, Maze::BlockType::egg);
 				break;
 			}
-			case 'O':
-			{
-				std::cout << "O";
-				break;
 			}
-			case 'u':
-			{
-				std::cout << "u";
-				break;
-			}
-			default: 
-				std::cout << '_';
-			}
+
+			pos.x += 1;
 		}
-		std::cout << '\n';
+
+		pos.y += 1;
 	}
 
 	std::cout << counter << '\n';
+
+	mazeComponent->Init();
 }

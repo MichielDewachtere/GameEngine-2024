@@ -21,7 +21,7 @@ public:
 	LevelParser(LevelParser&& other) = delete;
 	LevelParser& operator=(LevelParser&& rhs) = delete;
 
-	static void ParseLevel(dae::Scene* pScene, dae::WindowSettings, std::string levelPath);
+	static void ParseLevel(dae::Scene* pScene, const std::string& levelPath, int difficulty);
 
 private:
 	
