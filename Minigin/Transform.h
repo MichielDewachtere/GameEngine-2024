@@ -29,6 +29,7 @@ namespace dae
 		Transform& operator=(Transform&& rhs) = delete;
 
 		virtual void Start() override;
+		virtual void Update() override;
 
 		const glm::vec2& GetLocalPosition();
 		void SetLocalPosition(const glm::vec2& localPos);
@@ -63,6 +64,11 @@ namespace dae
 		bool m_LocalNeedsUpdate{ true }, m_WorldNeedsUpdate{ true };
 		glm::vec2 m_LocalPosition{ 0,0 }, m_WorldPosition{ 0,0 }, m_Scale{ 1,1 };
 		//float m_Rotation{ 0.f };
+
+		void UpdateWorldPosition();
+		void UpdateLocalPosition();
+		void SetWorldPositionDirty();
+		void SetLocalPositionDirty();
 	};
 }
 
