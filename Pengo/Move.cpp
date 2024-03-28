@@ -56,9 +56,18 @@ void Move::Update()
 		m_Move = false;
 
 		const auto pos = Maze::LocalToMaze(m_NewPosition);
+
 		m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air, nullptr);
 		m_MazePosition = pos;
-		m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
+
+		if (m_MoveUntilStopped)
+		{
+			if (m_Type == Maze::BlockType::ice)
+			m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
+
+		}
+		else
+			m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
 
 		transform->SetLocalPosition(m_NewPosition);
 
