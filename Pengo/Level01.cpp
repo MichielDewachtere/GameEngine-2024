@@ -1,18 +1,27 @@
 ﻿#include "Level01.h"
 
-#include "IcePrefab.h"
-#include "LevelGenerator.h"
+#include "InputManager.h"
 #include "LevelParser.h"
-#include "Macros.h"
+#include "PlayerManager.h"
 
-Level01::Level01(const dae::WindowSettings& settings)
+Level01::Level01()
 	: Scene("level01", "gameplay")
-	, m_Settings(settings)
 {
 }
 
 void Level01::Load()
 {
-	LevelGenerator::GetInstance().GenerateLevel(this, m_Settings, 1);
-	//LevelParser::ParseLevel(this, m_Settings, "../data/levels/level1-test.txt");
+	auto& input = dae::InputManager::GetInstance();
+	input.AddInputMap("test");
+	input.EnableGamePadInput(true);
+	input.SetInputMapActive("test");
+
+
+	PlayerManager::GetInstance().RegisterPlayer({ nullptr, true, 255 });
+
+	const auto idx = input.RegisterGamePad();
+	if (idx != UCHAR_MAX)
+		PlayerManager::GetInstance().RegisterPlayer({ nullptr, false, idx });
+
+	LevelParser::ParseLevel(this, "../data/levels/level1.lvl", 1);
 }
