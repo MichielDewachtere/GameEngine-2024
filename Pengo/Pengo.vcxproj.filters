@@ -28,6 +28,15 @@
     <Filter Include="Prefabs">
       <UniqueIdentifier>{ba3f8161-5b85-40fd-9de2-e710290523cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{9c750189-214e-4220-ab00-d8c6a099a37b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Player">
+      <UniqueIdentifier>{898b019a-7ae5-4973-9ff4-efd88390d59f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Enemy">
+      <UniqueIdentifier>{f4d24849-0887-41f9-ada3-e1c831ad0096}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -40,7 +49,7 @@
     <ClCompile Include="LoadSceneCommand.cpp">
       <Filter>Commands\Lab</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
+    <ClCompile Include="LabMoveCommand.cpp">
       <Filter>Commands\Lab</Filter>
     </ClCompile>
     <ClCompile Include="LabScene.cpp">
@@ -97,6 +106,45 @@
     <ClCompile Include="Maze.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="IceBlock.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="HiddenEgg.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Pushable.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyHandler.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Interact.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="StarBlock.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeScoreCommand.h">
@@ -108,7 +156,7 @@
     <ClInclude Include="LoadSceneCommand.h">
       <Filter>Commands\Lab</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCommand.h">
+    <ClInclude Include="LabMoveCommand.h">
       <Filter>Commands\Lab</Filter>
     </ClInclude>
     <ClInclude Include="LabScene.h">
@@ -169,6 +217,48 @@
       <Filter>Prefabs</Filter>
     </ClInclude>
     <ClInclude Include="Maze.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUtil.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="IceBlock.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HiddenEgg.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Pushable.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyHandler.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Interact.h">
+      <Filter>Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="StarBlock.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
