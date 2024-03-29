@@ -43,6 +43,12 @@
     <Filter Include="Components\Util">
       <UniqueIdentifier>{a063c170-37a8-4a03-973c-693c3d2d3ddd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Menu">
+      <UniqueIdentifier>{83a72dd9-8a3e-496d-afb7-8a991b27178d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Enemy\State">
+      <UniqueIdentifier>{9b998abb-a795-4d80-9f28-94e3319b6d97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -85,7 +91,7 @@
     <ClCompile Include="TrashTheCache.cpp">
       <Filter>Components\Lab</Filter>
     </ClCompile>
-    <ClCompile Include="Level01.cpp">
+    <ClCompile Include="Level.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="LevelParser.cpp">
@@ -157,6 +163,27 @@
     <ClCompile Include="PrintMazeCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="BonusTimeMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="BonusTime.cpp">
+      <Filter>Components\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="StunState.cpp">
+      <Filter>Components\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>Components\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PushedState.cpp">
+      <Filter>Components\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="DiedState.cpp">
+      <Filter>Components\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnState.cpp">
+      <Filter>Components\Enemy\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeScoreCommand.h">
@@ -201,7 +228,7 @@
     <ClInclude Include="Macros.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Level01.h">
+    <ClInclude Include="Level.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="LevelParser.h">
@@ -278,6 +305,30 @@
     </ClInclude>
     <ClInclude Include="PrintMazeCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="BonusTimeMenu.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="BonusTime.h">
+      <Filter>Components\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="StunState.h">
+      <Filter>Components\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="IEnemyState.h">
+      <Filter>Components\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+      <Filter>Components\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PushedState.h">
+      <Filter>Components\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="DiedState.h">
+      <Filter>Components\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnState.h">
+      <Filter>Components\Enemy\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
