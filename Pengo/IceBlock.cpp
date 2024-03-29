@@ -15,14 +15,16 @@ IceBlock::IceBlock(dae::GameObject* pOwner, bool hidesEgg)
 
 IceBlock::~IceBlock()
 {
-	GetOwner()->GetParent()->GetComponent<Game>()->gameStarted.RemoveObserver(this);
+	if (const auto game = GetOwner()->GetParent()->GetComponent<Game>();
+		game != nullptr)
+		game->gameEvent.RemoveObserver(this);
 }
 
 void IceBlock::Start()
 {
 	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
 
-	GetOwner()->GetParent()->GetComponent<Game>()->gameStarted.AddObserver(this);
+	GetOwner()->GetParent()->GetComponent<Game>()->gameEvent.AddObserver(this);
 }
 
 void IceBlock::Update()
@@ -54,7 +56,7 @@ void IceBlock::Update()
 
 void IceBlock::HandleEvent(GameEvents event)
 {
-	if (event == GameEvents::start && m_HidesEgg)
+	if (event == GameEvents::started && m_HidesEgg)
 	{
 		m_pSpriteComponent->PlayAnimation(0, 1, 3, 0.5f);
 		m_StartAnimation = true;
