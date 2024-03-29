@@ -23,6 +23,8 @@ namespace dae
 		virtual void LateUpdate() {}
 		virtual void OnGui() {}
 
+		virtual void Kill() {}
+
 		GameObject* GetOwner() const { return m_pOwner; }
 
 		void Disable() { m_IsActive = false; }
