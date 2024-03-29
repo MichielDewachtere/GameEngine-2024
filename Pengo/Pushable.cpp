@@ -22,7 +22,8 @@ void Pushable::Update()
 {
 	if (m_Pushed)
 	{
-		if (m_pMazeComponent->GetBlock(m_pMoveComponent->GetMazePos()) != Maze::BlockType::enemy)
+		if (m_pMazeComponent->GetBlock(m_pMoveComponent->GetMazePos()) != Maze::BlockType::enemy 
+			&& m_pMazeComponent->GetBlock(m_pMoveComponent->GetMazePos()) != Maze::BlockType::air)
 		{
 			const auto mazePos = m_pMoveComponent->GetMazePos();
 			const auto posToCheck = mazePos + DirectionToVector(m_Direction);
@@ -30,12 +31,49 @@ void Pushable::Update()
 
 			if (type == Maze::BlockType::enemy)
 			{
-				go->GetComponent<Enemy>()->Push(m_Direction);
+				bool encounteredEnemy = false;
+				for (const auto & e : m_EnemiesPushed)
+				{
+					if (e->GetId() == go->GetId())
+					{
+						encounteredEnemy = true;
+						break;
+					}
+				}
+
+				if (encounteredEnemy == false)
+				{
+					go->GetComponent<Enemy>()->Push(m_Direction);
+					m_EnemiesPushed.push_back(go);
+				}
 			}
 		}
 
 		if (m_pMoveComponent->IsMoving() == false)
 			m_Pushed = false;
+	}
+	else if (m_EnemiesPushed.empty() == false)
+	{
+		// TODO: Add points
+		switch (m_EnemiesPushed.size())
+		{
+		case 1:
+			std::cout << "+400\n";
+			break;
+		case 2:
+			std::cout << "+1600\n";
+			break;
+		case 3:
+			std::cout << "+3200\n";
+			break;
+		case 4:
+			std::cout << "+6400\n";
+			break;
+		}
+
+		enemiesCrushed.Notify(static_cast<int>(m_EnemiesPushed.size()));
+
+		m_EnemiesPushed.clear();
 	}
 }
 

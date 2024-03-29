@@ -2,6 +2,9 @@
 #define PUSHABLE_H
 
 #include <Component.h>
+#include <vector>
+
+#include "Subject.h"
 
 class Maze;
 class Move;
@@ -24,8 +27,11 @@ public:
 	void Push(Direction direction);
 	bool IsBeingPushed() const;
 
+	dae::Subject<int> enemiesCrushed;
+
 private:
 	bool m_Pushed{ false };
+	std::vector<dae::GameObject*> m_EnemiesPushed{};
 	Direction m_Direction{};
 	Move* m_pMoveComponent{ nullptr };
 	Maze* m_pMazeComponent{ nullptr };
