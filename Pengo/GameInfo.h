@@ -12,12 +12,13 @@ struct Tags
 
 struct Scenes
 {
-	
+	inline static const std::string bonus_menu = "BonusMenu";
 };
 
 struct InputMaps
 {
-	
+	inline static const std::string gameplay = "gameplay";
+	inline static const std::string menu = "menu";
 };
 
 struct InputCommands
