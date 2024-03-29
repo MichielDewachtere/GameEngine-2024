@@ -12,4 +12,7 @@
 #define PLAYER_SPEED 100.f
 #define PUSH_SPEED 300.f
 
+#define UI_SIZE_TOP 72
+#define UI_SIZE_BOTTOM 24
+
 #endif // MACROS_H
