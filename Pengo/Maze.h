@@ -7,6 +7,16 @@
 
 #include <Component.h>
 
+
+enum class WallOrientation : char
+{
+	north = 0,
+	east = 1,
+	south = 2,
+	west = 3,
+	none = 4
+};
+
 class Maze final : public dae::Component
 {
 public:
@@ -20,15 +30,6 @@ public:
 		player = 5,
 		enemy = 6,
 		none = 7
-	};
-
-	enum class WallOrientation : char
-	{
-		north = 0,
-		east = 1,
-		south = 2,
-		west = 3,
-		none = 4
 	};
 
 	explicit Maze(dae::GameObject* pOwner, const glm::ivec2& size);
@@ -53,8 +54,10 @@ public:
 
 	dae::GameObject* GetWall(WallOrientation orientation) const { return m_pWalls.at(orientation); }
 
-	bool IsOccupied(const glm::ivec2& pos) const;
+	glm::ivec2 GetNearestFreePos(const glm::ivec2& pos) const;
 
+	bool IsOccupied(const glm::ivec2& pos) const;
+	static bool IsInBounds(const glm::ivec2& pos);
 	void PrintMaze() const;
 
 	static glm::ivec2 MazeToLocal(const glm::ivec2& pos);
