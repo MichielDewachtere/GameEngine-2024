@@ -72,7 +72,6 @@ namespace dae
 				m_pObservers.end()
 			);
 		}
-
 	}
 
 	template<typename ...Args>
