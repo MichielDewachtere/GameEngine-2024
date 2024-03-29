@@ -3,33 +3,26 @@
 
 #include <Subject.h>
 #include <Component.h>
+#include <glm/vec2.hpp>
 
+#include "IEnemyState.h"
 
 namespace dae
 {
 	enum class GameObjectEvent : char;
-	class SpriteComponent;
 }
 
-class Pushable;
-enum class Direction : char;
-enum class GameEvents : bool;
 class Move;
+enum class WallOrientation : char;
+enum class Direction : char;
+enum class GameEvents : char;
 
 class Enemy final
 	: public dae::Component
 	, public dae::Observer<dae::GameObjectEvent>
+	, public dae::Observer<GameEvents>
+	, public dae::Observer<WallOrientation>
 {
-public:
-	enum class EnemyState
-	{
-		spawned = 0,
-		moving = 1,
-		pushed = 2,
-		stunned = 3,
-		died = 4
-	};
-
 public:
 	explicit Enemy(dae::GameObject* pOwner);
 	virtual ~Enemy() override;
@@ -41,8 +34,11 @@ public:
 
 	virtual void Start() override;
 	virtual void Update() override;
+	virtual void Kill() override;
 
 	virtual void HandleEvent(dae::GameObjectEvent) override;
+	virtual void HandleEvent(GameEvents) override;
+	virtual void HandleEvent(WallOrientation) override;
 	virtual void OnSubjectDestroy() override {}
 
 	void Push(Direction direction);
@@ -50,13 +46,28 @@ public:
 	dae::Subject<> enemyDied;
 
 private:
-	EnemyState m_CurrentState{ EnemyState::spawned };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
-	Move* m_pMoveComponent{ nullptr };
-	Pushable* m_PushableComponent{ nullptr };
+	IEnemyState* m_CurrentState{};
+	glm::ivec2 m_SpawnPos{};
 
-	Direction m_PushDirection{};
-	static std::map<Direction, std::pair<int, int>> m_DirectionToSquashAnim;
+	Move* m_pMoveComponent{ nullptr };
+
+	template <typename T>
+		requires std::is_base_of_v<IEnemyState, T>
+	T* SwitchState();
+
+	void WallObservers(bool remove);
+
+	static std::map<WallOrientation, glm::ivec2> m_OrientationToPos;
 };
+
+template <typename T>
+	requires std::is_base_of_v<IEnemyState, T>
+T* Enemy::SwitchState()
+{
+	m_CurrentState->Exit();
+	auto newState = new T(GetOwner());
+	newState->Enter();
+	return newState;
+}
 
 #endif // ENEMY_H
