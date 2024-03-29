@@ -3,14 +3,34 @@
 #include <SDL_ttf.h>
 #include <stdexcept>
 
+#include "Renderer.h"
+
 TTF_Font* dae::Font::GetFont() const {
-	return m_font;
+	return m_pFont;
 }
 
-dae::Font::Font(const std::string& fullPath, unsigned int size) : m_font(nullptr)
+std::unique_ptr<dae::Texture2D> dae::Font::CreateTexture(const std::string& text, glm::u8vec4 color) const
 {
-	m_font = TTF_OpenFont(fullPath.c_str(), size);
-	if (m_font == nullptr) 
+	const SDL_Color sdlColor{ color.r, color.g, color.b, color.a };
+	const auto surf = TTF_RenderText_Blended(m_pFont, text.c_str(), sdlColor);
+	if (surf == nullptr)
+	{
+		throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
+	}
+	auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+	if (texture == nullptr)
+	{
+		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+	}
+	SDL_FreeSurface(surf);
+
+	return std::make_unique<Texture2D>(texture);
+}
+
+dae::Font::Font(const std::string& fullPath, unsigned int size) : m_pFont(nullptr)
+{
+	m_pFont = TTF_OpenFont(fullPath.c_str(), size);
+	if (m_pFont == nullptr) 
 	{
 		throw std::runtime_error(std::string("Failed to load font: ") + SDL_GetError());
 	}
@@ -18,5 +38,5 @@ dae::Font::Font(const std::string& fullPath, unsigned int size) : m_font(nullptr
 
 dae::Font::~Font()
 {
-	TTF_CloseFont(m_font);
+	TTF_CloseFont(m_pFont);
 }
