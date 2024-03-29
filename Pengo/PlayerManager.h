@@ -5,10 +5,13 @@
 #include <vector>
 
 #include <Singleton.h>
+#include <glm/vec2.hpp>
 
+#include "BonusTimeMenu.h"
+#include "BonusTimeMenu.h"
 #include "Observer.h"
 
-enum class GameEvents : bool;
+enum class GameEvents : char;
 
 namespace dae
 {
@@ -18,6 +21,7 @@ namespace dae
 struct PlayerInfo
 {
 	dae::GameObject* object;
+	glm::ivec2 spawnPos;
 	bool useKeyboard;
 	uint8_t controllerId;
 };
@@ -43,7 +47,7 @@ public:
 	void RegisterPlayer(PlayerInfo info);
 
 	bool RequestPlayer() const;
-	void AddPlayer(dae::GameObject* pPlayer);
+	void AddPlayer(dae::GameObject* pPlayer, const glm::ivec2&);
 
 private:
 	friend class Singleton<PlayerManager>;

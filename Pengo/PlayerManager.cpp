@@ -17,18 +17,42 @@ void PlayerManager::Reset()
 			p.object = nullptr;
 		});
 
-	auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
-	v.front()->GetComponent<Game>()->gameStarted.AddObserver(this);
+	const auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
+	v.front()->GetComponent<Game>()->gameEvent.AddObserver(this);
 }
 
 void PlayerManager::HandleEvent(GameEvents event)
 {
-	if (event == GameEvents::start)
+	switch (event)
+	{
+	case GameEvents::started:
+	case GameEvents::resumed:
 	{
 		std::ranges::for_each(m_pPlayers, [](const PlayerInfo& p)
 			{
 				p.object->GetComponent<Move>()->Enable();
 			});
+		break;
+	}
+	case GameEvents::finished:
+	case GameEvents::paused:
+	{
+		std::ranges::for_each(m_pPlayers, [](const PlayerInfo& p)
+			{
+				p.object->GetComponent<Move>()->Disable();
+			});
+		break;
+	}
+	case GameEvents::reset:
+	{
+		std::ranges::for_each(m_pPlayers, [this](PlayerInfo& p)
+			{
+				const auto move = p.object->GetComponent<Move>();
+				const auto pos = p.object->GetParent()->GetComponent<Maze>()->GetNearestFreePos(p.spawnPos);
+				move->SetMazePos(pos);
+			});
+		break;
+	}
 	}
 }
 
@@ -36,7 +60,9 @@ void PlayerManager::OnSubjectDestroy()
 {
 	auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
 	if (v.empty() == false)
-		v.front()->GetComponent<Game>()->gameStarted.RemoveObserver(this);
+	{
+		v.front()->GetComponent<Game>()->gameEvent.RemoveObserver(this);
+	}
 }
 
 void PlayerManager::RegisterPlayer(const PlayerInfo info)
@@ -56,14 +82,16 @@ bool PlayerManager::RequestPlayer() const
 	return counter < m_AmountOfPlayers;
 }
 
-void PlayerManager::AddPlayer(dae::GameObject* pPlayer)
+void PlayerManager::AddPlayer(dae::GameObject* pPlayer, const glm::ivec2& playerSpawn)
 {
 	const auto map = dae::InputManager::GetInstance().GetActiveInputMap();
-	for (auto& [object, useKeyboard, controllerId] : m_pPlayers)
+	for (auto& [object, spawnPos, useKeyboard, controllerId] : m_pPlayers)
 	{
 		if (object == nullptr)
 		{
 			object = pPlayer;
+			spawnPos = playerSpawn;
+
 			if (useKeyboard)
 			{
 				map->AddKeyboardAction<MoveCommand>(InputCommands::move_up, dae::KeyState::keyPressed, SDL_SCANCODE_UP, pPlayer, Direction::up);
