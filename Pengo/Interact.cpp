@@ -67,16 +67,16 @@ void Interact::AttemptInteraction()
 		switch (direction)
 		{
 		case Direction::up:
-			m_pMaze->GetWall(Maze::WallOrientation::north)->GetComponent<Wall>()->Shake();
+			m_pMaze->GetWall(WallOrientation::north)->GetComponent<Wall>()->Shake();
 			break;
 		case Direction::right:
-			m_pMaze->GetWall(Maze::WallOrientation::east)->GetComponent<Wall>()->Shake();
+			m_pMaze->GetWall(WallOrientation::east)->GetComponent<Wall>()->Shake();
 			break;
 		case Direction::left:
-			m_pMaze->GetWall(Maze::WallOrientation::west)->GetComponent<Wall>()->Shake();
+			m_pMaze->GetWall(WallOrientation::west)->GetComponent<Wall>()->Shake();
 			break;
 		case Direction::down:
-			m_pMaze->GetWall(Maze::WallOrientation::south)->GetComponent<Wall>()->Shake();
+			m_pMaze->GetWall(WallOrientation::south)->GetComponent<Wall>()->Shake();
 			break;
 		}
 
