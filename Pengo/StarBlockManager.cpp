@@ -4,6 +4,7 @@
 #include <ranges>
 #include <SpriteComponent.h>
 
+#include "Game.h"
 #include "Macros.h"
 #include "Move.h"
 
@@ -41,6 +42,11 @@ void StarBlockManager::Update()
 			//GetOwner()->RemoveComponent<StarBlockManager>();
 		}
 	}
+}
+
+void StarBlockManager::Kill()
+{
+	RemoveObserver();
 }
 
 void StarBlockManager::HandleEvent(MoveEvents event, const glm::ivec2&)
@@ -155,6 +161,9 @@ void StarBlockManager::RemoveObserver()
 {
 	for (const auto& block : m_pStarBlocks | std::views::keys)
 	{
-		block->GetComponent<Move>()->moved.RemoveObserver(this);
+		if (const auto move = block->GetComponent<Move>())
+		{
+			move->moved.RemoveObserver(this);
+		}
 	}
 }

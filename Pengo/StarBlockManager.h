@@ -6,10 +6,6 @@
 #include <Observer.h>
 #include <glm/vec2.hpp>
 
-#include "ColliderComponent.h"
-#include "ColliderComponent.h"
-
-
 namespace dae
 {
 	class SpriteComponent;
@@ -33,6 +29,7 @@ public:
 
 	virtual void Start() override;
 	virtual void Update() override;
+	virtual void Kill() override;
 
 	virtual void HandleEvent(MoveEvents, const glm::ivec2&) override;
 	virtual void OnSubjectDestroy() override {}
