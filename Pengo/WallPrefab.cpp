@@ -11,19 +11,19 @@
 #include "Macros.h"
 #include "Wall.h"
 
-WallPrefab::WallPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, bool horizontal)
+WallPrefab::WallPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
 	: Prefab(pOwner)
 {
-	Init(pos, horizontal);
+	Init(pos, horizontal, orientation);
 }
 
-WallPrefab::WallPrefab(dae::Scene* pScene, const glm::ivec2& pos, bool horizontal)
+WallPrefab::WallPrefab(dae::Scene* pScene, const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
 	: Prefab(pScene)
 {
-	Init(pos, horizontal);
+	Init(pos, horizontal, orientation);
 }
 
-void WallPrefab::Init(const glm::ivec2& pos, bool horizontal)
+void WallPrefab::Init(const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
 {
 	std::unique_ptr<dae::Texture2D> texture;
 	if (horizontal)
@@ -55,5 +55,5 @@ void WallPrefab::Init(const glm::ivec2& pos, bool horizontal)
 	colliderComponent->EnableDrawDebug(true);
 	colliderComponent->SetDebugColor(dae::Colors::purple);
 
-	go->AddComponent<Wall>();
+	go->AddComponent<Wall>(orientation);
 }

@@ -3,13 +3,17 @@
 #include <GameObject.h>
 #include <SpriteComponent.h>
 
-Wall::Wall(dae::GameObject* pOwner)
+#include "Maze.h"
+
+Wall::Wall(dae::GameObject* pOwner, WallOrientation orientation)
 	: Component(pOwner)
+	, m_Orientation(orientation)
 {
 }
 
 void Wall::Start()
 {
+	m_pMazeComponent = GetOwner()->GetParent()->GetComponent<Maze>();
 	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
 }
 
@@ -28,6 +32,6 @@ void Wall::Update()
 void Wall::Shake()
 {
 	m_IsDirty = true;
-	wallShaked.Notify(m_StunTime);
+	wallShaked.Notify(m_Orientation);
 	m_pSpriteComponent->PlayAnimation(1, 2, 2);
 }

@@ -4,15 +4,19 @@
 #include <Component.h>
 #include <Subject.h>
 
+class Maze;
+
 namespace dae
 {
 	class SpriteComponent;
 }
 
+enum class WallOrientation : char;
+
 class Wall final : public dae::Component
 {
 public:
-	explicit Wall(dae::GameObject* pOwner);
+	explicit Wall(dae::GameObject* pOwner, WallOrientation orientation);
 	virtual ~Wall() override = default;
 
 	Wall(const Wall& other) = delete;
@@ -25,11 +29,13 @@ public:
 
 	void Shake();
 
-	dae::Subject<float> wallShaked;
+	dae::Subject<WallOrientation> wallShaked;
 
 private:
 	bool m_IsDirty{ false };
-	float m_StunTime{ 5 };
+	WallOrientation m_Orientation;
+
+	Maze* m_pMazeComponent{ nullptr };
 	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
 };
 
