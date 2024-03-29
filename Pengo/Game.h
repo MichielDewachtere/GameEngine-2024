@@ -4,10 +4,13 @@
 #include <Subject.h>
 #include <DrawableComponent.h>
 
-enum class GameEvents : bool
+enum class GameEvents : char
 {
-	start,
-	stop
+	started,
+	paused,
+	reset,
+	resumed,
+	finished,
 };
 
 class Game final : public dae::DrawableComponent
@@ -24,15 +27,32 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	void EndGame();
+	void EndGame(bool won);
 
-	dae::Subject<GameEvents> gameStarted;
+	dae::Subject<GameEvents> gameEvent;
+
+	static float GetGameTime() { return m_GameTime; }
+	static int GetCurrentLevel() { return m_CurrentLevel; }
 
 private:
-	bool m_GameFinished{ false }, m_GameStarted{ false };
-	float m_StartTime{ 5.f }, m_AccuTime{ 0.f }, m_GameTime{ 0.f }, m_CurtainTime{ 4.5f };
+	enum class GameState : char
+	{
+		start,
+		running,
+		paused,
+		resume,
+		finished
+	};
 
-	void DrawCurtain() const;
+	GameState m_CurrentState{ GameState::start };
+	float m_StartTime{ 3.f }, m_AccuTime{ 0.f }, m_PauseTime{ 1.f };
+	float m_CurtainTime{ 2.5f }, m_PauseCurtainTime{ 1.f };
+	dae::GameObject* m_pPauseText{ nullptr };
+
+	void DrawCurtain(bool open, float curtainTime) const;
+
+	static inline float m_GameTime{ 0.f };
+	static inline int m_CurrentLevel{ 0 };
 };
 
 #endif // GAME_H
