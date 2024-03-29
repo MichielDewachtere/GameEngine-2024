@@ -10,7 +10,7 @@ namespace dae
 	class SpriteComponent;
 }
 
-enum class GameEvents : bool;
+enum class GameEvents : char;
 enum class Direction : char;
 class Move;
 
