@@ -13,7 +13,11 @@ dae::GameObjectCommand::GameObjectCommand(int id, int controllerId, GameObject* 
 
 dae::GameObjectCommand::~GameObjectCommand()
 {
-	GetGameObject()->gameObjectDestroyed.RemoveObserver(this);
+	if (GetGameObject()->IsMarkedForDestroy() == false && m_ObserverRemoved == false)
+	{
+		m_ObserverRemoved = true;
+		GetGameObject()->gameObjectDestroyed.RemoveObserver(this);
+	}
 }
 
 void dae::GameObjectCommand::HandleEvent(GameObjectEvent)
@@ -26,7 +30,11 @@ void dae::GameObjectCommand::HandleEvent(GameObjectEvent)
 
 void dae::GameObjectCommand::OnSubjectDestroy()
 {
-	GetGameObject()->gameObjectDestroyed.RemoveObserver(this);
+	if (m_ObserverRemoved == false)
+	{
+		m_ObserverRemoved = true;
+		GetGameObject()->gameObjectDestroyed.RemoveObserver(this);
+	}
 }
 
 void dae::TestCommand::Execute()

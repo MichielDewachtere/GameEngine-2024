@@ -51,6 +51,7 @@ namespace dae
 		GameObject* GetGameObject() const { return m_pGameObject; }
 	private:
 		GameObject* m_pGameObject;
+		bool m_ObserverRemoved{ false };
 	};
 
 	class TestCommand final : public Command
