@@ -3,10 +3,12 @@
 #include <random>
 
 #include <GameObject.h>
+#include <GameTime.h>
 
 #include "Enemy.h"
 #include "EnemyPrefab.h"
 #include "Game.h"
+#include "GameInfo.h"
 #include "HiddenEgg.h"
 #include "Move.h"
 
@@ -22,27 +24,47 @@ EnemyHandler::EnemyHandler(dae::GameObject* pOwner, int difficulty)
 
 EnemyHandler::~EnemyHandler()
 {
-    GetOwner()->GetComponent<Game>()->gameStarted.RemoveObserver(this);
+    m_pGameComponent->gameEvent.RemoveObserver(this);
 }
 
 void EnemyHandler::Start()
 {
-    GetOwner()->GetComponent<Game>()->gameStarted.AddObserver(this);
+    m_pGameComponent = GetOwner()->GetComponent<Game>();
+    m_pGameComponent->gameEvent.AddObserver(this);
+}
+
+void EnemyHandler::Kill()
+{
+    auto v = GetOwner()->GetGameObjectsWithTag(Tags::sno_bee);
+    if (v.empty() == false)
+    {
+        std::ranges::for_each(v, [this](dae::GameObject* go)
+            {
+                go->GetComponent<Enemy>()->enemyDied.RemoveObserver(this);
+            });
+    }
 }
 
 void EnemyHandler::HandleEvent()
 {
-    if (m_EnemySpawns.empty())
-        return;
+	--m_TotalEnemies;
 
-    m_EnemySpawns.back()->PopEgg();
+	if (m_EnemySpawns.empty())
+    {
+        if (m_TotalEnemies == 0)
+            m_pGameComponent->EndGame(true);
+
+        return;
+    }
+
+	m_EnemySpawns.back()->PopEgg();
     SpawnSnoBee();
     m_EnemySpawns.pop_back();
 }
 
 void EnemyHandler::HandleEvent(GameEvents event)
 {
-    if (event == GameEvents::start)
+    if (event == GameEvents::started)
     {
         for (int i{ 0 }; i < m_AmountOfEnemiesAtOnce; ++i)
         {
@@ -60,12 +82,18 @@ void EnemyHandler::AddEnemySpawn(dae::GameObject* go)
     std::random_device rd;
     std::mt19937 g(rd());
     std::ranges::shuffle(m_EnemySpawns, g);
+
+    ++m_TotalEnemies;
 }
 
 void EnemyHandler::RemoveEnemySpawn(dae::GameObject* go)
 {
 	const auto spawn = go->GetComponent<HiddenEgg>();
     std::erase(m_EnemySpawns, spawn);
+
+    std::cout << "+500\n";
+
+	--m_TotalEnemies;
 }
 
 void EnemyHandler::SpawnSnoBee()

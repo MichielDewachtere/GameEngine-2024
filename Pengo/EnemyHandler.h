@@ -5,8 +5,19 @@
 #include <vector>
 #include <Observer.h>
 
-enum class GameEvents : bool;
+class Game;
+enum class GameEvents : char;
 class HiddenEgg;
+
+enum class EnemyKillEvent
+{
+	singleKill,
+	doubleKill,
+	tripleKill,
+	quadKill,
+	eggKill,
+	stunKill
+};
 
 class EnemyHandler final
 	: public dae::Component
@@ -23,6 +34,7 @@ public:
 	EnemyHandler& operator=(EnemyHandler&& rhs) = delete;
 
 	virtual void Start() override;
+	virtual void Kill() override;
 
 	virtual void HandleEvent() override;
 	virtual void HandleEvent(GameEvents) override;
@@ -32,8 +44,9 @@ public:
 	void RemoveEnemySpawn(dae::GameObject* go);
 
 private:
-	int m_AmountOfEnemiesAtOnce{};
+	int m_AmountOfEnemiesAtOnce{}, m_TotalEnemies{};
 	std::vector<HiddenEgg*> m_EnemySpawns;
+	Game* m_pGameComponent{ nullptr };
 
 	void SpawnSnoBee();
 };
