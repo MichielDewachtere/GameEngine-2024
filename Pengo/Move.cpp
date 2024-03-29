@@ -62,9 +62,9 @@ void Move::Update()
 
 		if (m_MoveUntilStopped)
 		{
-			if (m_Type == Maze::BlockType::ice)
+			if (m_Type == Maze::BlockType::ice 
+				|| m_Type == Maze::BlockType::star)
 			m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
-
 		}
 		else
 			m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
@@ -118,6 +118,14 @@ bool Move::MoveInDirection(Direction dir, bool untilStopped)
 void Move::BindAnimationToDirection(Direction dir, const std::pair<int, int> indices)
 {
 	m_DirectionToAnimation[dir] = indices;
+}
+
+void Move::SetMazePos(const glm::ivec2& newPos)
+{
+	m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air);
+	m_MazePosition = newPos;
+	GetOwner()->GetTransform()->SetLocalPosition(m_pMaze->MazeToLocal(m_MazePosition));
+	m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
 }
 
 bool Move::HasReachedPosition() const

@@ -47,6 +47,7 @@ public:
 	void BindAnimationToDirection(Direction dir, std::pair<int, int> indices);
 
 	void SetMovementSpeed(float speed) { m_MovementSpeed = speed; }
+	void SetMazePos(const glm::ivec2& newPos);
 
 	Direction GetDirection() const { return m_Direction; }
 	const glm::ivec2& GetMazePos() const { return m_MazePosition; }
