@@ -16,6 +16,19 @@ namespace dae
 	class TextComponent final : public Component
 	{
 	public:
+		enum class HorizontalAlignment : char
+		{
+			left,
+			right,
+			center, 
+		};
+		enum class VerticalAlignment : char
+		{
+			up,
+			down,
+			center, 
+		};
+
 		explicit TextComponent(GameObject* pOwner, std::string text = "", std::unique_ptr<Font> pFont = nullptr,
 		                       const glm::u8vec4& color = {255, 255, 255, 255});
 		//explicit TextComponent(GameObject* pOwner, std::string text = "", std::string fontPath = "", int fontSize = 16,
@@ -37,14 +50,22 @@ namespace dae
 		void SetFont(std::unique_ptr<Font> pFont);
 		void SetFont(const std::string& fontPath, int size);
 		void SetColor(const glm::u8vec4& color);
+		void SetHorizontalAlignment(HorizontalAlignment alignment);
+		void SetVerticalAlignment(VerticalAlignment alignment);
 
 	private:
 		bool m_IsDirty{ true };
 		std::string m_Text;
 		glm::u8vec4 m_Color;
+		glm::vec2 m_RenderOffset{};
+		HorizontalAlignment m_HorizontalAlignment{ HorizontalAlignment::right };
+		VerticalAlignment m_VerticalAlignment{ VerticalAlignment::down };
 
 		std::unique_ptr<Font> m_pFont;
 		TextureComponent* m_pTextureComponent;
+
+		float HandleHorizontalAlignment() const;
+		float HandleVerticalAlignment() const;
 	};
 }
 

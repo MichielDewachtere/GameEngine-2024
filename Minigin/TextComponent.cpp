@@ -1,7 +1,6 @@
 #include "TextComponent.h"
 
-#include <SDL_ttf.h>
-
+#include <memory>
 #include <stdexcept>
 
 #include "Renderer.h"
@@ -9,6 +8,7 @@
 #include "Logger.h"
 #include "ResourceManager.h"
 #include "TextureComponent.h"
+#include "Texture2D.h"
 
 dae::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::unique_ptr<Font> pFont,
                                   const glm::u8vec4& color)
@@ -49,19 +49,15 @@ void dae::TextComponent::LateUpdate()
 		if (m_Text.empty())
 			Logger::LogWarning({ "No text in text component" });
 
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), { m_Color.r, m_Color.g, m_Color.b, m_Color.a });
-		if (surf == nullptr) 
-		{
-			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
-		}
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
-		if (texture == nullptr) 
-		{
-			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-		}
-		SDL_FreeSurface(surf);
+		auto i = m_pFont->CreateTexture(m_Text, m_Color);
+		m_pTextureComponent->SetTexture(std::move(i));
 
-		m_pTextureComponent->SetTexture(std::make_unique<Texture2D>(texture));
+		glm::vec2 renderOffset;
+		renderOffset.x = HandleHorizontalAlignment();
+		renderOffset.y = HandleVerticalAlignment();
+
+		m_pTextureComponent->SetRenderOffset(renderOffset);
+
 		m_IsDirty = false;
 	}
 }
@@ -88,4 +84,70 @@ void dae::TextComponent::SetColor(const glm::u8vec4& color)
 {
 	m_Color = color;
 	m_IsDirty = true;
+}
+
+void dae::TextComponent::SetHorizontalAlignment(HorizontalAlignment alignment)
+{
+	m_HorizontalAlignment = alignment;
+	m_IsDirty = true;
+}
+
+void dae::TextComponent::SetVerticalAlignment(VerticalAlignment alignment)
+{
+	m_VerticalAlignment = alignment;
+	m_IsDirty = true;
+}
+
+float dae::TextComponent::HandleHorizontalAlignment() const
+{
+	const auto textureSize = m_pTextureComponent->GetTexture()->GetSize();
+	float x = 0;
+
+	switch (m_HorizontalAlignment)
+	{
+	case HorizontalAlignment::left:
+	{
+		x = static_cast<float>(textureSize.x);
+		break;
+	}
+	case HorizontalAlignment::center:
+	{
+		x = static_cast<float>(textureSize.x) / 2.f;
+		break;
+	}
+	case HorizontalAlignment::right:
+	{
+		x = 0;
+		break;
+	}
+	}
+
+	return x;
+}
+
+float dae::TextComponent::HandleVerticalAlignment() const
+{
+	const auto textureSize = m_pTextureComponent->GetTexture()->GetSize();
+	float y = 0;
+
+	switch (m_VerticalAlignment)
+	{
+	case VerticalAlignment::up:
+	{
+		y = static_cast<float>(textureSize.y);
+		break;
+	}
+	case VerticalAlignment::center:
+	{
+		y = static_cast<float>(textureSize.y) / 2.f;
+		break;
+	}
+	case VerticalAlignment::down:
+	{
+		y = 0;
+		break;
+	}
+	}
+
+	return y;
 }
