@@ -27,7 +27,7 @@ const std::map<uint8_t, std::unique_ptr<dae::KeyboardAction>>& dae::InputMap::Ge
 			m_pKeyboardActions.erase(id);
 		}
 
-		m_pKeyboardActions.clear();
+		m_KeyboardActionsToRemove.clear();
 	}
 
 	return m_pKeyboardActions;
