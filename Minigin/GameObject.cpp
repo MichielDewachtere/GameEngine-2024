@@ -108,8 +108,10 @@ void dae::GameObject::LateUpdate()
 {
 	if (m_IsMarkedForDestroy)
 	{
-		if (GetId() == 29)
-			std::cout << "test\n";
+		for (const auto& c : m_pComponents)
+		{
+			c->Kill();
+		}
 
 		m_pComponents.clear();
 
@@ -157,20 +159,20 @@ void dae::GameObject::Render() const
 	if (m_pChildren.empty() == false)
 	{
 		std::ranges::for_each(m_pChildren, [](const auto& go)
-		   {
-			   go->Render();
-		   });
+			{
+				go->Render();
+			});
 	}
 
 	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
+		{
+			if (const auto drawable = dynamic_cast<DrawableComponent*>(c.get());
+				drawable != nullptr)
 			{
-				if (const auto drawable = dynamic_cast<DrawableComponent*>(c.get());
-					drawable != nullptr)
-				{
-					if (drawable->IsActive())
-						drawable->Render();
-				}
-			});
+				if (drawable->IsActive())
+					drawable->Render();
+			}
+		});
 }
 
 void dae::GameObject::DebugRender() const
@@ -358,8 +360,8 @@ std::vector<dae::GameObject*> dae::GameObject::GetGameObjectsWithTag(const std::
 	{
 		for (const auto& go : m_pChildren)
 		{
-			if (go->IsMarkedForDestroy())
-				continue;
+			//if (go->IsMarkedForDestroy())
+			//	continue;
 
 			if (go->GetTag() == tag)
 				v.push_back(go.get());
