@@ -49,6 +49,8 @@ namespace dae
 		bool m_KeyboardState0Active{ true };
 		p_byte m_pCurrentKeyboardState{ nullptr }, m_pOldKeyboardState{ nullptr };
 
+		std::vector<uint8_t>RegisterGamePadsHelper(bool one);
+
 		void ProcessKeyboardInput() const;
 		void ProcessGamePadInput() const;
 

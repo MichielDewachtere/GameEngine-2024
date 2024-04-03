@@ -108,52 +108,19 @@ dae::InputMap* dae::InputManager::GetActiveInputMap() const
 
 uint8_t dae::InputManager::RegisterGamePad()
 {
-	uint8_t controllerIdx = UCHAR_MAX;
-
-	for (uint8_t i{ 0 }; i < m_MaxAmountOfControllers; ++i)
+	if (const auto controllers = RegisterGamePadsHelper(true); 
+		controllers.empty() == false)
 	{
-		if (HasGamePad(i))
-			continue;
-
-		XINPUT_STATE state;
-		const DWORD result = XInputGetState(i, &state);
-		if (result == ERROR_SUCCESS)
-		{
-			controllerIdx = i;
-			break;
-		}
-
-		if (result == ERROR_DEVICE_NOT_CONNECTED)
-		{
-			Logger::LogDebug({ "No game pad found with index {}" }, i);
-		}
+		return controllers.front();
 	}
 
-	if (controllerIdx != UCHAR_MAX)
-		m_pGamePads.push_back(std::make_unique<GamePad>(controllerIdx));
-	else
-		Logger::LogWarning({ "All game pad slots are already assigned" });
+	Logger::LogWarning({ "No available game pad slot found" });
+	return UCHAR_MAX;
 
-	return controllerIdx;
 }
 std::vector<uint8_t> dae::InputManager::RegisterGamePads()
 {
-	std::vector<uint8_t> controllers{};
-
-	for (uint8_t i{ 1 }; i < 5; ++i)
-	{
-		if (HasGamePad(i))
-			continue;
-
-		XINPUT_STATE state;
-		const DWORD result = XInputGetState(i, &state);
-		if (result == ERROR_SUCCESS)
-		{
-			m_pGamePads.push_back(std::make_unique<GamePad>(i));
-			controllers.push_back(i);
-		}
-	}
-
+	std::vector<uint8_t> controllers = RegisterGamePadsHelper(false);
 	return controllers;
 }
 dae::GamePad* dae::InputManager::GetGamePad(unsigned idx) const
@@ -197,6 +164,38 @@ bool dae::InputManager::IsKeyboardKeyDown(int key, bool previousFrame) const
 
 	return m_pCurrentKeyboardState[key];
 }
+
+std::vector<uint8_t> dae::InputManager::RegisterGamePadsHelper(bool one)
+{
+	std::vector<uint8_t> controllers;
+
+	for (uint8_t i{ 0 }; i < m_MaxAmountOfControllers; ++i)
+	{
+		if (HasGamePad(i))
+			continue;
+
+		XINPUT_STATE state;
+		const DWORD result = XInputGetState(i, &state);
+		if (result == ERROR_SUCCESS)
+		{
+			m_pGamePads.push_back(std::make_unique<GamePad>(i));
+			controllers.push_back(i);
+
+			if (one)
+			{
+				return controllers;
+			}
+		}
+
+		if (result == ERROR_DEVICE_NOT_CONNECTED)
+		{
+			Logger::LogDebug({ "No game pad found with index {}" }, i);
+		}
+	}
+
+	return controllers;
+}
+
 void dae::InputManager::ProcessKeyboardInput() const
 {
 	UpdateKeyboardStates();
