@@ -3,7 +3,6 @@
 #include <random>
 
 #include <GameObject.h>
-#include <GameTime.h>
 
 #include "Enemy.h"
 #include "EnemyPrefab.h"
@@ -11,6 +10,7 @@
 #include "GameInfo.h"
 #include "HiddenEgg.h"
 #include "Move.h"
+#include "Pushable.h"
 
 EnemyHandler::EnemyHandler(dae::GameObject* pOwner, int difficulty)
     : Component(pOwner)
@@ -33,6 +33,18 @@ void EnemyHandler::Start()
     m_pGameComponent->gameEvent.AddObserver(this);
 }
 
+void EnemyHandler::Update()
+{
+    if (m_PushedEgg && m_PushedEgg->IsBeingPushed() == false)
+    {
+        m_EnemySpawns.back()->PopEgg();
+        SpawnSnoBee();
+        m_EnemySpawns.pop_back();
+
+        m_PushedEgg = nullptr;
+    }
+}
+
 void EnemyHandler::Kill()
 {
     auto v = GetOwner()->GetGameObjectsWithTag(Tags::sno_bee);
@@ -47,9 +59,9 @@ void EnemyHandler::Kill()
 
 void EnemyHandler::HandleEvent()
 {
-	--m_TotalEnemies;
+    --m_TotalEnemies;
 
-	if (m_EnemySpawns.empty())
+    if (m_EnemySpawns.empty())
     {
         if (m_TotalEnemies == 0)
             m_pGameComponent->EndGame(true);
@@ -57,7 +69,14 @@ void EnemyHandler::HandleEvent()
         return;
     }
 
-	m_EnemySpawns.back()->PopEgg();
+    const auto iceBlock = m_EnemySpawns.back()->GetOwner()->GetParent()->GetComponent<Pushable>();
+    if (iceBlock->IsBeingPushed())
+    {
+        m_PushedEgg = iceBlock;
+        return;
+    }
+
+    m_EnemySpawns.back()->PopEgg();
     SpawnSnoBee();
     m_EnemySpawns.pop_back();
 }
