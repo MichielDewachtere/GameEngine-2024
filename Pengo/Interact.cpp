@@ -7,10 +7,12 @@
 #include <SpriteComponent.h>
 
 #include "GameUtil.h"
+#include "HUD.h"
 #include "IceBlock.h"
 #include "Maze.h"
 #include "Move.h"
 #include "Pushable.h"
+#include "ScoreDisplay.h"
 #include "Wall.h"
 
 Interact::Interact(dae::GameObject* pOwner)
@@ -54,6 +56,7 @@ void Interact::AttemptInteraction()
 		if (m_pMaze->IsOccupied(icePath) && targetedBlock.first != Maze::BlockType::star)
 		{
 			targetedBlock.second->GetComponent<IceBlock>()->Break();
+			HUD::GetInstance().AddScore(ScoreEvents::breakIce);
 		}
 		else
 		{
