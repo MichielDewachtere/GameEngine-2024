@@ -25,11 +25,12 @@ GameObject& Scene::CreateGameObject(std::string tag)
 
 void Scene::AddGameObject(GameObject* pGo)
 {
-	m_GameObjects.emplace_back(std::unique_ptr<GameObject>(pGo));
+	AddGameObject(std::unique_ptr<GameObject>(pGo));
 }
 
 void Scene::AddGameObject(std::unique_ptr<GameObject> pGo)
 {
+	pGo->SetScene(this);
 	m_GameObjects.emplace_back(std::move(pGo));
 }
 
@@ -50,9 +51,14 @@ GameObject* Scene::GetGameObject(uint32_t id) const
 
 std::unique_ptr<GameObject> Scene::GetUniqueGameObject(GameObject* pGo)
 {
+	return GetUniqueGameObject(pGo->GetId());
+}
+
+std::unique_ptr<GameObject> Scene::GetUniqueGameObject(uint32_t id)
+{
 	for (auto it = m_GameObjects.begin(); it < m_GameObjects.end(); ++it)
 	{
-		if (it->get() != pGo)
+		if ((*it)->GetId() != id)
 			continue;
 
 		auto pUnique{ std::move(*it) };

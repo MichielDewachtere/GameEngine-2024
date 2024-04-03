@@ -35,6 +35,7 @@ namespace dae
 		void AddGameObject(std::unique_ptr<GameObject> pGo);
 		GameObject* GetGameObject(uint32_t id) const;
 		std::unique_ptr<GameObject> GetUniqueGameObject(GameObject* pGo);
+		std::unique_ptr<GameObject> GetUniqueGameObject(uint32_t id);
 
 		std::vector<GameObject*> FindGameObjectsWithTag(std::string tag) const;
 
