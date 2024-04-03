@@ -229,6 +229,9 @@ void dae::InputManager::ProcessGamePadInput() const
 {
 	auto executeCommand = [this](const std::unique_ptr<GamePad>& gp)
 		{
+			if (m_pActiveInputMap->GetGamePadActions().find(gp->GetIndex()) == m_pActiveInputMap->GetGamePadActions().end())
+				return;
+
 			for (const auto& action : m_pActiveInputMap->GetGamePadActions().at(gp->GetIndex()) | std::views::values)
 			{
 				switch (action->inputType)
