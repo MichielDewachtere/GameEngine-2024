@@ -12,6 +12,7 @@
 
 #include "BonusTimeMenu.h"
 #include "GameInfo.h"
+#include "HUD.h"
 #include "LabScene.h"
 #include "Level.h"
 #include "LevelGenerator.h"
@@ -27,28 +28,38 @@ void load()
 
 	LevelGenerator::GetInstance().GenerateLevel();
 
-	auto& input = dae::InputManager::GetInstance();
-	input.AddInputMap(InputMaps::gameplay);
+	auto& input = InputManager::GetInstance();
 	input.EnableGamePadInput(true);
+	input.AddInputMap(InputMaps::gameplay);
 	input.SetInputMapActive(InputMaps::gameplay);
+
 
 	const auto idcs = input.RegisterGamePads();
 	if (idcs.empty())
 	{
-		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, 255 });
+		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX });
+	}
+	else if (idcs.size() == 1)
+	{
+		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX });
+		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, idcs.front() });
 	}
 	else
 	{
-		for (const auto idx : idcs)
+		constexpr int maxAmountOfPlayers = 2;
+		for (int i = 0; i < maxAmountOfPlayers; ++i)
 		{
-			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, idx });
+			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, idcs[i] });
 		}
 	}
+
+	// Create the HUD
+	HUD::GetInstance().Init();
 
 	// TODO: Add Menu's
 	SceneManager::GetInstance().CreateScene(new BonusTimeMenu(Scenes::bonus_menu, "none", g_windowSettings));
 
-	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay));
+	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay, true));
 	SceneManager::GetInstance().CreateScene(new Level("level2", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level3", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level4", InputMaps::gameplay));
@@ -65,9 +76,6 @@ void load()
 	SceneManager::GetInstance().CreateScene(new Level("level15", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level16", InputMaps::gameplay));
 
-	SceneManager::GetInstance().CreateScene(new LabScene("labScene", "test"));
-	SceneManager::GetInstance().CreateScene(new TestSecondScene("secondScene", "secondScene"));
-
 	SceneManager::GetInstance().SetSceneActive("level1");
 }
 
@@ -76,18 +84,21 @@ int main(int, char* [])
 	g_windowSettings.windowTitle = "Prog 4 Engine";
 	g_windowSettings.dataPath = "../Data/";
 	g_windowSettings.fps = 60;
-	g_windowSettings.width = 224 * PIXEL_SCALE;
-	g_windowSettings.height = 280 * PIXEL_SCALE;
+	g_windowSettings.width = BLOCK_SIZE * (MAZE_WIDTH + 1 /*2 walls*/) * PIXEL_SCALE;
+	g_windowSettings.height = BLOCK_SIZE * PIXEL_SCALE * (MAZE_HEIGHT + 1 /* 2 walls */) + HUD_SIZE_BOTTOM + HUD_SIZE_TOP;
 
-	try
-	{
-		dae::Minigin engine(g_windowSettings);
-		engine.Run(load);
-	}
-	catch (std::exception& e)
-	{
-		std::cout << e.what();
-	}
+	dae::Minigin engine(g_windowSettings);
+	engine.Run(load);
+
+	//try
+	//{
+	//	dae::Minigin engine(g_windowSettings);
+	//	engine.Run(load);
+	//}
+	//catch (std::exception& e)
+	//{
+	//	std::cout << e.what();
+	//}
 
 	return 0;
 }
