@@ -33,7 +33,7 @@ void HiddenEggPrefab::Init()
 
 	dae::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = std::move(texture);
-	spriteSheet.rows = 1;
+	spriteSheet.rows = 2;
 	spriteSheet.columns = 3;
 	spriteSheet.timePerAnimation = 0.02f;
 	const auto spriteComponent = go->AddComponent<dae::SpriteComponent>(std::move(spriteSheet));
