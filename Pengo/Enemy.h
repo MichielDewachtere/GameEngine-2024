@@ -46,7 +46,7 @@ public:
 	dae::Subject<> enemyDied;
 
 private:
-	IEnemyState* m_CurrentState{};
+	std::unique_ptr<IEnemyState> m_CurrentState{};
 	glm::ivec2 m_SpawnPos{};
 
 	Move* m_pMoveComponent{ nullptr };

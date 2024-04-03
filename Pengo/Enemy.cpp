@@ -40,7 +40,7 @@ void Enemy::Start()
 
 	m_SpawnPos = m_pMoveComponent->GetMazePos();
 
-	m_CurrentState = new SpawnState(GetOwner());
+	m_CurrentState = std::make_unique<SpawnState>(GetOwner());
 	m_CurrentState->Enter();
 
 	WallObservers(false);
@@ -52,14 +52,13 @@ void Enemy::Update()
 {
 	if (const auto newState = m_CurrentState->Update())
 	{
-		m_CurrentState = newState;
+		m_CurrentState.reset(newState);
 	}
 }
 
 void Enemy::Kill()
 {
 	m_CurrentState->Exit();
-	delete m_CurrentState;
 
 	if (const auto game = GetOwner()->GetParent()->GetComponent<Game>())
 		game->gameEvent.RemoveObserver(this);
@@ -91,7 +90,7 @@ void Enemy::HandleEvent(GameEvents event)
 	}
 	case GameEvents::resumed:
 	{
-		m_CurrentState = SwitchState<MoveState>();
+		m_CurrentState.reset(SwitchState<MoveState>());
 		Enable();
 		break;
 	}
@@ -100,7 +99,7 @@ void Enemy::HandleEvent(GameEvents event)
 
 void Enemy::HandleEvent(WallOrientation orientation)
 {
-	if (dynamic_cast<StunState*>(m_CurrentState) != nullptr)
+	if (dynamic_cast<StunState*>(m_CurrentState.get()) != nullptr)
 		return;
 
 	const auto mazePos = m_pMoveComponent->GetMazePos();
@@ -108,17 +107,17 @@ void Enemy::HandleEvent(WallOrientation orientation)
 	if (m_OrientationToPos[orientation].x == mazePos.x
 		|| m_OrientationToPos[orientation].y == mazePos.y)
 	{
-		m_CurrentState = SwitchState<StunState>();
+		m_CurrentState.reset(SwitchState<StunState>());
 	}
 }
 
 void Enemy::Push(Direction direction)
 {
 	m_CurrentState->Exit();
-	auto newState = new PushedState(GetOwner());
+	const auto newState = new PushedState(GetOwner());
 	newState->SetDirection(direction);
 	newState->Enter();
-	m_CurrentState = newState;
+	m_CurrentState.reset(newState);
 
 	m_pMoveComponent->SetMovementSpeed(PUSH_SPEED);
 }
