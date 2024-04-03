@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "GameInfo.h"
 #include "Move.h"
+#include "Player.h"
 
 MoveState::MoveState(dae::GameObject* pOwner)
 	: IEnemyState(pOwner)
@@ -29,7 +30,10 @@ IEnemyState* MoveState::Update()
 	for (auto it = m_Players.begin(); it != m_Players.end();)
 	{
 		if ((*it)->GetMazePos() == mazePos)
+		{
+			(*it)->GetOwner()->GetComponent<Player>()->Die();
 			it = m_Players.erase(it);
+		}
 		else
 			++it;
 	}

@@ -29,7 +29,7 @@ public:
 private:
 	Move* m_pMoveComponent{ nullptr };
 	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
-	std::vector<Move*> m_Players{};
+	static inline std::vector<Move*> m_Players{};
 
 	void RegisterPlayers();
 
