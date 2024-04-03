@@ -90,10 +90,9 @@ void dae::SceneManager::LoadScene()
 {
 	if (m_pActiveScene != nullptr)
 	{
-		m_pActiveScene->Destroy();
-
 		exitScene.Notify(SceneEvents::exit, m_pActiveScene);
 
+		m_pActiveScene->Destroy();
 		// One last update to actually remove the objects
 		m_pActiveScene->Update();
 	}
