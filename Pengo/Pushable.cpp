@@ -4,8 +4,10 @@
 
 #include "Enemy.h"
 #include "GameUtil.h"
+#include "HUD.h"
 #include "Move.h"
 #include "Maze.h"
+#include "ScoreDisplay.h"
 
 Pushable::Pushable(dae::GameObject* pOwner)
 	: Component(pOwner)
@@ -58,15 +60,19 @@ void Pushable::Update()
 		switch (m_EnemiesPushed.size())
 		{
 		case 1:
+			HUD::GetInstance().AddScore(ScoreEvents::kill);
 			std::cout << "+400\n";
 			break;
 		case 2:
+			HUD::GetInstance().AddScore(ScoreEvents::doubleKill);
 			std::cout << "+1600\n";
 			break;
 		case 3:
+			HUD::GetInstance().AddScore(ScoreEvents::tripleKill);
 			std::cout << "+3200\n";
 			break;
 		case 4:
+			HUD::GetInstance().AddScore(ScoreEvents::quadKill);
 			std::cout << "+6400\n";
 			break;
 		}
