@@ -4,6 +4,7 @@
 #include <SpriteComponent.h>
 
 #include "Enemy.h"
+#include "EnemyHandler.h"
 #include "IceBlock.h"
 
 HiddenEgg::HiddenEgg(dae::GameObject* pOwner)
@@ -20,9 +21,44 @@ void HiddenEgg::Start()
 
 void HiddenEgg::Update()
 {
-	if (m_EggPopped && m_pSpriteComponent->IsAnimationPlaying() == false)
+	if (m_EggPopped)
 	{
-		GetOwner()->GetParent()->Destroy();
+		switch (m_CurrentState)
+		{
+		case EggBreakSequence::iceBreakAnim:
+		{
+			if (m_IceBlockSpriteComponent->IsAnimationPlaying() == false)
+			{
+				m_pSpriteComponent->Enable();
+				m_pSpriteComponent->PlayAnimation(0, 2, 3);
+				m_CurrentState = EggBreakSequence::eggFlashAnim;
+			}
+			break;
+		}
+		case EggBreakSequence::eggFlashAnim:
+		{
+			if (m_pSpriteComponent->IsAnimationPlaying() == false)
+			{
+				m_pSpriteComponent->PlayAnimation(1, 5, 0, 0.25f);
+				m_CurrentState = EggBreakSequence::eggBreakAnim;
+			}
+			break;
+		}
+		case EggBreakSequence::eggBreakAnim:
+		{
+			if (m_pSpriteComponent->IsAnimationPlaying() == false)
+			{
+				m_CurrentState = EggBreakSequence::destroyEgg;
+				GetOwner()->GetParent()->GetParent()->GetComponent<EnemyHandler>()->RemoveEnemySpawn(GetOwner());
+			}
+			break;
+		}
+		case EggBreakSequence::destroyEgg:
+		{
+			GetOwner()->GetParent()->Destroy();
+			break;
+		}
+		}
 	}
 }
 
@@ -32,9 +68,29 @@ void HiddenEgg::PopEgg()
 
 	GetOwner()->GetParent()->GetComponent<IceBlock>()->Break();
 
+	//if (m_pSpriteComponent == nullptr)
+	//	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+
+	{
+		//m_pSpriteComponent->Enable();
+		//m_pSpriteComponent->PlayAnimation(0, 2, 3);
+		m_CurrentState = EggBreakSequence::destroyEgg;
+	}
+	//else
+	//{
+	//	m_IceBlockSpriteComponent = GetOwner()->GetParent()->GetComponent<dae::SpriteComponent>();
+	//}
+}
+
+void HiddenEgg::BreakEgg()
+{
+	m_EggPopped = true;
+
+	GetOwner()->GetParent()->GetComponent<IceBlock>()->Break();
+
 	if (m_pSpriteComponent == nullptr)
 		m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
 
-	m_pSpriteComponent->Enable();
-	m_pSpriteComponent->PlayAnimation(0, 2, 3);
+	m_CurrentState = EggBreakSequence::iceBreakAnim;
+	m_IceBlockSpriteComponent = GetOwner()->GetParent()->GetComponent<dae::SpriteComponent>();
 }

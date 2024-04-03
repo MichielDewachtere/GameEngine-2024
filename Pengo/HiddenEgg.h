@@ -2,6 +2,7 @@
 #define HIDDENEGG_H
 
 #include <Component.h>
+#include <type_traits>
 
 namespace dae
 {
@@ -23,10 +24,19 @@ public:
 	virtual void Update() override;
 
 	void PopEgg();
+	void BreakEgg();
 
 private:
+	enum class EggBreakSequence : char
+	{
+		iceBreakAnim = 0,
+		eggFlashAnim = 1,
+		eggBreakAnim = 2,
+		destroyEgg = 3
+	};
 	bool m_EggPopped{ false };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
+	EggBreakSequence m_CurrentState{ EggBreakSequence::iceBreakAnim };
+	dae::SpriteComponent* m_pSpriteComponent{ nullptr }, * m_IceBlockSpriteComponent{ nullptr };
 };
 
 #endif // HIDDENEGG_H
