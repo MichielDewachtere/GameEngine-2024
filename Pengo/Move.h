@@ -43,6 +43,8 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
+	void Reset();
+
 	bool MoveInDirection(Direction dir, bool untilStopped = false);
 	void BindAnimationToDirection(Direction dir, std::pair<int, int> indices);
 

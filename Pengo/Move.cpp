@@ -80,6 +80,13 @@ void Move::Update()
 	}
 }
 
+void Move::Reset()
+{
+	m_Direction = Direction::amountOfDirs;
+	m_Move = false;
+	m_MoveUntilStopped = false;
+}
+
 bool Move::MoveInDirection(Direction dir, bool untilStopped)
 {
 	// TODO: maybe already record second move?
