@@ -5,6 +5,7 @@
 
 #include "EnemyHandler.h"
 #include "Game.h"
+#include "HiddenEgg.h"
 #include "Move.h"
 
 IceBlock::IceBlock(dae::GameObject* pOwner, bool hidesEgg)
@@ -35,10 +36,13 @@ void IceBlock::Update()
 		{
 			if (m_HidesEgg)
 			{
-				GetOwner()->GetParent()->GetComponent<EnemyHandler>()->RemoveEnemySpawn(GetOwner()->GetChildAt(0));
+				//GetOwner()->GetParent()->GetComponent<EnemyHandler>()->RemoveEnemySpawn(GetOwner()->GetChildAt(0));
+				GetOwner()->GetChildAt(0)->GetComponent<HiddenEgg>()->BreakEgg();
 			}
+			else
+				GetOwner()->Destroy();
 
-			GetOwner()->Destroy();
+			m_Break = false;
 		}
 
 		return;
@@ -56,7 +60,7 @@ void IceBlock::Update()
 
 void IceBlock::HandleEvent(GameEvents event)
 {
-	if (event == GameEvents::started && m_HidesEgg)
+	if ((event == GameEvents::started || event == GameEvents::resumed) && m_HidesEgg)
 	{
 		m_pSpriteComponent->PlayAnimation(0, 1, 3, 0.5f);
 		m_StartAnimation = true;
