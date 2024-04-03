@@ -10,15 +10,6 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{60d9346a-fd6d-4041-b92f-f3869ae10c7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Commands\Lab">
-      <UniqueIdentifier>{83e16257-f3a8-44f1-be1b-73422afc6927}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Lab">
-      <UniqueIdentifier>{3caf9522-0a8e-4473-af9c-401a9e892e1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes\Lab">
-      <UniqueIdentifier>{ecc38ecf-9f28-424d-b111-c0de529f1f35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{dc1961b0-5af5-4b95-87fa-4754f99e6dc2}</UniqueIdentifier>
     </Filter>
@@ -49,48 +40,15 @@
     <Filter Include="Components\Enemy\State">
       <UniqueIdentifier>{9b998abb-a795-4d80-9f28-94e3319b6d97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HUD">
+      <UniqueIdentifier>{fbcefef6-90a8-439e-a382-e4a1a2b84fef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HUD\Components">
+      <UniqueIdentifier>{eba9a8a2-1f06-4c4c-9a69-aeec5f17fe19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ChangeScoreCommand.cpp">
-      <Filter>Commands\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageCommand.cpp">
-      <Filter>Commands\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadSceneCommand.cpp">
-      <Filter>Commands\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="LabMoveCommand.cpp">
-      <Filter>Commands\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="LabScene.cpp">
-      <Filter>Scenes\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="TestSecondScene.cpp">
-      <Filter>Scenes\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="ColliderTest.cpp">
-      <Filter>Components\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSCounter.cpp">
-      <Filter>Components\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="LivesDisplay.cpp">
-      <Filter>Components\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Components\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="Rotator.cpp">
-      <Filter>Components\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreDisplay.cpp">
-      <Filter>Components\Lab</Filter>
-    </ClCompile>
-    <ClCompile Include="TrashTheCache.cpp">
-      <Filter>Components\Lab</Filter>
-    </ClCompile>
     <ClCompile Include="Level.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -184,47 +142,17 @@
     <ClCompile Include="SpawnState.cpp">
       <Filter>Components\Enemy\State</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
+      <Filter>HUD\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChangeScoreCommand.h">
-      <Filter>Commands\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="DamageCommand.h">
-      <Filter>Commands\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadSceneCommand.h">
-      <Filter>Commands\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="LabMoveCommand.h">
-      <Filter>Commands\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="LabScene.h">
-      <Filter>Scenes\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="TestSecondScene.h">
-      <Filter>Scenes\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="ColliderTest.h">
-      <Filter>Components\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSCounter.h">
-      <Filter>Components\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="LivesDisplay.h">
-      <Filter>Components\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Components\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="Rotator.h">
-      <Filter>Components\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplay.h">
-      <Filter>Components\Lab</Filter>
-    </ClInclude>
-    <ClInclude Include="TrashTheCache.h">
-      <Filter>Components\Lab</Filter>
-    </ClInclude>
     <ClInclude Include="Macros.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -329,6 +257,15 @@
     </ClInclude>
     <ClInclude Include="SpawnState.h">
       <Filter>Components\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
+      <Filter>HUD\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Components\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
