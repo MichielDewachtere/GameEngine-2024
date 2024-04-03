@@ -21,7 +21,7 @@ void LevelParser::ParseLevel(dae::Scene* pScene, const std::string& levelPath, i
 
 	// Create Level Object
 	auto& level = pScene->CreateGameObject(Tags::game);
-	level.GetTransform()->SetLocalPosition({ 0, BLOCK_SIZE * PIXEL_SCALE });
+	level.GetTransform()->SetLocalPosition({ 0, HUD_SIZE_TOP });
 	level.AddComponent<EnemyHandler>(difficulty);
 	const auto mazeComponent = level.AddComponent<Maze>(glm::ivec2{ MAZE_WIDTH, MAZE_HEIGHT});
 	level.AddComponent<StarBlockManager>();
