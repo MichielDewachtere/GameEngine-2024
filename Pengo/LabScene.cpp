@@ -106,7 +106,7 @@ void LabScene::Load()
 		{
 			auto fontSmall = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
 			auto& livesDisplay = gamePadControls.CreateGameObject();
-			livesDisplay.AddComponent<ScoreDisplay>()->SetLinkedPlayer(snoBee.GetComponent<Player>());
+			//livesDisplay.AddComponent<ScoreDisplay>()->SetLinkedPlayer(snoBee.GetComponent<Player>());
 			livesDisplay.AddComponent<TextComponent>("test", std::move(fontSmall), glm::u8vec4{ 255,255,255,255 });
 			livesDisplay.GetTransform()->SetLocalPosition(0, 50);
 		}
@@ -129,7 +129,7 @@ void LabScene::Load()
 		{
 			auto fontSmall = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
 			auto& livesDisplay = keyboardControls.CreateGameObject();
-			livesDisplay.AddComponent<ScoreDisplay>()->SetLinkedPlayer(pengo.GetComponent<Player>());
+			//livesDisplay.AddComponent<ScoreDisplay>()->SetLinkedPlayer(pengo.GetComponent<Player>());
 			livesDisplay.AddComponent<TextComponent>("test", std::move(fontSmall), glm::u8vec4{ 255,255,255,255 });
 			livesDisplay.GetTransform()->SetLocalPosition(0, 50);
 		}
