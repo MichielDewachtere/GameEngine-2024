@@ -46,6 +46,8 @@ namespace dae
 		void SetIsActive(bool isEnabled, bool applyToChildren);
 		bool IsActive() const { return m_IsActive && m_IsMarkedForDestroy == false; }
 
+		void SetScene(Scene* pScene) { m_pScene = pScene; }
+
 		void SetTag(std::string tag) { m_Tag = std::move(tag); }
 		std::string GetTag() const { return m_Tag; }
 
