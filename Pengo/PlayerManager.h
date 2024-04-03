@@ -8,7 +8,6 @@
 #include <glm/vec2.hpp>
 
 #include "BonusTimeMenu.h"
-#include "BonusTimeMenu.h"
 #include "Observer.h"
 
 enum class GameEvents : char;

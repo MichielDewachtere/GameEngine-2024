@@ -1,9 +1,9 @@
 ﻿#include "Player.h"
 
-#include <cmath>
-
-#include <ColliderComponent.h>
 #include <GameObject.h>
+#include <SpriteComponent.h>
+
+#include "Move.h"
 
 Player::Player(dae::GameObject* pOwner)
 	: Component(pOwner)
@@ -12,67 +12,27 @@ Player::Player(dae::GameObject* pOwner)
 
 void Player::Start()
 {
-	m_Self = GetOwner()->GetComponent<dae::ColliderComponent>();
-	healthChanged.Notify(m_Health);
-	scoreChanged.Notify(m_Score);
+	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
 }
 
-// DISCLAIMER: Ugly test code
 void Player::Update()
 {
-	if (m_MovePlayer)
+	if (m_IsDirty && m_pSpriteComponent->IsAnimationPlaying() == false)
 	{
-		GetOwner()->GetTransform()->Translate(-50, 0);
-		m_MovePlayer = false;
-	}
-
-	if (m_Self->IsOverlapping(*m_pEnemy))
-	{
-		if (GetOwner()->GetTag() == "Pengo")
-		{
-			if (m_Health == 0)
-				GetOwner()->Destroy();
-			else
-			{
-				--m_Health;
-				// Test code
-				m_MovePlayer = true;
-				healthChanged.Notify(m_Health);
-			}
-		}
-		else if (GetOwner()->GetTag() == "Sno-Bee")
-		{
-			m_Score += 250;
-			scoreChanged.Notify(m_Score);
-		}
+		m_IsDirty = false;
+		GetOwner()->SetIsActive(false, true);
 	}
 }
 
-void Player::AddScore(int score)
+void Player::Die()
 {
-	if (GetOwner()->GetTag() != "Pengo")
-		return;
-
-	if (score < 0 && std::abs(score) > static_cast<int>(m_Score))
-		m_Score = 0;
-	else
-		m_Score += score;
-
-	// Pass event instead of score
-	// score system takes care of score(?)
-	scoreChanged.Notify(m_Score);
+	m_pSpriteComponent->PlayAnimation(16, 17, 0);
+	m_IsDirty = true;
 }
 
-void Player::Damage()
+void Player::ReSpawn() const
 {
-	if (GetOwner()->GetTag() != "Sno-Bee")
-		return;
-
-	if (m_Health == 0)
-		GetOwner()->Destroy();
-	else
-	{
-		--m_Health;
-		healthChanged.Notify(m_Health);
-	}
+	GetOwner()->SetIsActive(true, true);
+	m_pSpriteComponent->SelectSprite(0);
+	GetOwner()->GetComponent<Move>()->Reset();
 }

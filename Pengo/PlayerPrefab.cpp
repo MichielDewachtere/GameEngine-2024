@@ -9,6 +9,7 @@
 #include "Macros.h"
 #include "Move.h"
 #include "Interact.h"
+#include "Player.h"
 
 PlayerPrefab::PlayerPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos)
 	: Prefab(pOwner)
@@ -52,4 +53,5 @@ void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
 	moveComponent->Disable();
 
 	go->AddComponent<Interact>();
+	go->AddComponent<Player>();
 }

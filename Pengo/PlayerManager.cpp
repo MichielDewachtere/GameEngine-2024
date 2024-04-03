@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "InteractCommand.h"
 #include "MoveCommand.h"
+#include "Player.h"
 #include "SceneManager.h"
 
 void PlayerManager::Reset()
@@ -47,6 +48,8 @@ void PlayerManager::HandleEvent(GameEvents event)
 	{
 		std::ranges::for_each(m_pPlayers, [this](PlayerInfo& p)
 			{
+				p.object->GetComponent<Player>()->ReSpawn();
+
 				const auto move = p.object->GetComponent<Move>();
 				const auto pos = p.object->GetParent()->GetComponent<Maze>()->GetNearestFreePos(p.spawnPos);
 				move->SetMazePos(pos);
