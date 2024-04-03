@@ -1,10 +1,8 @@
 ﻿#ifndef SCOREDISPLAY_H
 #define SCOREDISPLAY_H
 
-#include <stdint.h>
-
 #include <Component.h>
-#include <Observer.h>
+#include <map>
 
 class Player;
 
@@ -13,27 +11,65 @@ namespace dae
 	class TextComponent;
 }
 
-class ScoreDisplay final
-	: public dae::Component
-	, public dae::Observer<uint32_t>
+enum class ScoreEvents : char
+{
+	bonusTimeUnder20,
+	bonusTimeUnder30,
+	bonusTimeUnder40,
+	bonusTimeUnder50,
+	bonusTimeUnder60,
+
+	starBlock,
+	starBlockWall,
+
+	kill,
+	doubleKill,
+	tripleKill,
+	quadKill,
+
+	stunKill,
+
+	breakIce,
+	breakEgg
+};
+
+class ScoreDisplay final : public dae::Component
 {
 public:
 	explicit ScoreDisplay(dae::GameObject* pOwner);
-	~ScoreDisplay() override;
+	virtual ~ScoreDisplay() override = default;
 
 	ScoreDisplay(const ScoreDisplay& other) = delete;
 	ScoreDisplay& operator=(const ScoreDisplay& rhs) = delete;
 	ScoreDisplay(ScoreDisplay&& other) = delete;
 	ScoreDisplay& operator=(ScoreDisplay&& rhs) = delete;
 
-	void HandleEvent(uint32_t) override;
-	void OnSubjectDestroy() override;
+	virtual void Start() override;
+	void AddScore(ScoreEvents event);
 
-	void SetLinkedPlayer(Player* pPlayer);
+	uint32_t GetScore() const { return m_Score; }
 
 private:
-	Player* m_pLinkedPlayer{ nullptr };
+	uint32_t m_Score{ 0 };
 	dae::TextComponent* m_pTextComponent{ nullptr };
+
+	const static inline std::map<ScoreEvents, int> event_to_points
+	{
+		{ScoreEvents::bonusTimeUnder20,	5'000	},
+		{ScoreEvents::bonusTimeUnder30,	2'000	},
+		{ScoreEvents::bonusTimeUnder40,	1'000	},
+		{ScoreEvents::bonusTimeUnder50,	500		},
+		{ScoreEvents::bonusTimeUnder60,	10		},
+		{ScoreEvents::starBlock,		10'000	},
+		{ScoreEvents::starBlockWall,	5'000	},
+		{ScoreEvents::kill,				400		},
+		{ScoreEvents::doubleKill,		1'600	},
+		{ScoreEvents::tripleKill,		3'200	},
+		{ScoreEvents::quadKill,			6'400	},
+		{ScoreEvents::stunKill,			100		},
+		{ScoreEvents::breakIce,			30		},
+		{ScoreEvents::breakEgg,			500		},
+	};
 };
 
 #endif // SCOREDISPLAY_H

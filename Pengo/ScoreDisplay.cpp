@@ -3,35 +3,18 @@
 #include <GameObject.h>
 #include <TextComponent.h>
 
-#include "Player.h"
-
 ScoreDisplay::ScoreDisplay(dae::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
 
-ScoreDisplay::~ScoreDisplay()
+void ScoreDisplay::Start()
 {
-	m_pLinkedPlayer->scoreChanged.RemoveObserver(this);
+	m_pTextComponent = GetOwner()->GetComponent<dae::TextComponent>();
 }
 
-void ScoreDisplay::HandleEvent(uint32_t score)
+void ScoreDisplay::AddScore(ScoreEvents event)
 {
-	if (m_pTextComponent == nullptr)
-		m_pTextComponent = GetOwner()->GetComponent<dae::TextComponent>();
-
-	std::string text = "Score: ";
-	text += std::to_string(score);
-	m_pTextComponent->SetText(text);
-}
-
-void ScoreDisplay::OnSubjectDestroy()
-{
-	m_pLinkedPlayer->scoreChanged.RemoveObserver(this);
-}
-
-void ScoreDisplay::SetLinkedPlayer(Player* pPlayer)
-{
-	m_pLinkedPlayer = pPlayer;
-	m_pLinkedPlayer->scoreChanged.AddObserver(this);
+	m_Score += event_to_points.at(event);
+	m_pTextComponent->SetText(std::to_string(m_Score));
 }
