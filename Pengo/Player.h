@@ -3,15 +3,22 @@
 
 #include <Component.h>
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
 
-class Player final : public dae::Component
+enum class PlayerNumber : char
+{
+	playerOne = 0,
+	playerTwo = 1,
+	none = 2,
+};
+
+class Player final : public real::Component
 {
 public:
-	explicit Player(dae::GameObject* pOwner);
+	explicit Player(real::GameObject* pOwner, PlayerNumber number);
 	virtual ~Player() override = default;
 
 	Player(const Player& other) = delete;
@@ -24,10 +31,12 @@ public:
 
 	void Die();
 	void ReSpawn() const;
+	PlayerNumber GetPlayerNumber() const { return m_PlayerNumber; }
 
 private:
+	PlayerNumber m_PlayerNumber;
 	bool m_IsDirty{ false };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 };
 
 #endif // PLAYER_H

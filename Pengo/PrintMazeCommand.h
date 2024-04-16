@@ -5,10 +5,10 @@
 
 class Maze;
 
-class PrintMazeCommand final : public dae::GameObjectCommand
+class PrintMazeCommand final : public real::GameObjectCommand
 {
 public:
-	explicit PrintMazeCommand(int id, int controllerId, dae::GameObject* pGameObject);
+	explicit PrintMazeCommand(int id, int controllerId, real::GameObject* pGameObject);
 	virtual ~PrintMazeCommand() override = default;
 
 	PrintMazeCommand(const PrintMazeCommand& other) = delete;

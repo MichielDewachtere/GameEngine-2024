@@ -6,7 +6,7 @@
 #include <Observer.h>
 #include <glm/vec2.hpp>
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
@@ -15,11 +15,11 @@ class Move;
 enum class MoveEvents : bool;
 
 class StarBlockManager final
-	: public dae::Component
-	, public dae::Observer<MoveEvents, const glm::ivec2&>
+	: public real::Component
+	, public real::Observer<MoveEvents, const glm::ivec2&>
 {
 public:
-	explicit StarBlockManager(dae::GameObject* pOwner);
+	explicit StarBlockManager(real::GameObject* pOwner);
 	virtual ~StarBlockManager() override;
 
 	StarBlockManager(const StarBlockManager& other) = delete;
@@ -34,7 +34,7 @@ public:
 	virtual void HandleEvent(MoveEvents, const glm::ivec2&) override;
 	virtual void OnSubjectDestroy() override {}
 
-	void AddStarBlock(dae::GameObject* go, const glm::ivec2&);
+	void AddStarBlock(real::GameObject* go, const glm::ivec2&);
 
 private:
 	enum class Orientation : char
@@ -47,7 +47,7 @@ private:
 	Orientation m_Orientation{ Orientation::none };
 	bool m_BonusAdded{ false }, m_IsTouchingWall{ false };
 	int m_AdjacentBlocks{ 0 };
-	std::array<std::pair<dae::GameObject*, glm::ivec2>, 3> m_pStarBlocks{};
+	std::array<std::pair<real::GameObject*, glm::ivec2>, 3> m_pStarBlocks{};
 
 	void GatherPositions();
 	void CheckAdjacentBlocks();

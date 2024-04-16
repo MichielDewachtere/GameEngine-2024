@@ -17,7 +17,7 @@ enum class WallOrientation : char
 	none = 4
 };
 
-class Maze final : public dae::Component
+class Maze final : public real::Component
 {
 public:
 	enum class BlockType : char
@@ -32,7 +32,7 @@ public:
 		none = 7
 	};
 
-	explicit Maze(dae::GameObject* pOwner, const glm::ivec2& size);
+	explicit Maze(real::GameObject* pOwner, const glm::ivec2& size);
 	virtual ~Maze() override = default;
 
 	Maze(const Maze& other) = delete;
@@ -46,13 +46,13 @@ public:
 
 	virtual void Start() override;
 
-	void SetBlock(const glm::ivec2& pos, BlockType type, dae::GameObject* go = nullptr);
+	void SetBlock(const glm::ivec2& pos, BlockType type, real::GameObject* go = nullptr);
 
 	BlockType GetBlock(const glm::ivec2& pos) const;
-	dae::GameObject* GetGameObject(const glm::ivec2& pos) const;
-	std::pair<BlockType, dae::GameObject*> GetBlockAndObject(const glm::ivec2& pos);
+	real::GameObject* GetGameObject(const glm::ivec2& pos) const;
+	std::pair<BlockType, real::GameObject*> GetBlockAndObject(const glm::ivec2& pos);
 
-	dae::GameObject* GetWall(WallOrientation orientation) const { return m_pWalls.at(orientation); }
+	real::GameObject* GetWall(WallOrientation orientation) const { return m_pWalls.at(orientation); }
 
 	glm::ivec2 GetNearestFreePos(const glm::ivec2& pos) const;
 
@@ -64,8 +64,8 @@ public:
 	static glm::ivec2 LocalToMaze(const glm::ivec2& pos);
 
 private:
-	std::vector<std::vector<std::pair<BlockType, dae::GameObject*>>> m_Maze{};
-	std::map<WallOrientation, dae::GameObject*> m_pWalls{};
+	std::vector<std::vector<std::pair<BlockType, real::GameObject*>>> m_Maze{};
+	std::map<WallOrientation, real::GameObject*> m_pWalls{};
 
 	static std::pair<bool, WallOrientation> IsWall(const glm::ivec2& pos);
 };

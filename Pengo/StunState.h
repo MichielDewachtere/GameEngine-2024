@@ -11,7 +11,7 @@ class Move;
 class StunState final : public IEnemyState
 {
 public:
-	explicit StunState(dae::GameObject* pOwner);
+	explicit StunState(real::GameObject* pOwner);
 	virtual ~StunState() override = default;
 
 	StunState(const StunState& other) = delete;

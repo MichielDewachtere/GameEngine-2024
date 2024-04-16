@@ -7,15 +7,17 @@
 #include <TextComponent.h>
 
 #include "Game.h"
+#include "HUD.h"
+#include "Player.h"
 
-BonusTime::BonusTime(dae::GameObject* pOwner)
+BonusTime::BonusTime(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
 
 void BonusTime::Update()
 {
-	const auto dt = dae::GameTime::GetInstance().GetElapsed();
+	const auto dt = real::GameTime::GetInstance().GetElapsed();
 	m_AccuTime += dt;
 
 	constexpr float timeToShowTime{ 0.5f }, timeToShowBonus{ 1.f }, lifeTime{ 3.f };
@@ -23,7 +25,7 @@ void BonusTime::Update()
 	if (m_AccuTime > lifeTime)
 	{
 		const int nextLevel = Game::GetCurrentLevel() + 1;
-		dae::SceneManager::GetInstance().SetSceneActive("level" + std::to_string(nextLevel));
+		real::SceneManager::GetInstance().SetSceneActive("level" + std::to_string(nextLevel));
 		return;
 	}
 	if (m_BonusShown == false 
@@ -36,9 +38,9 @@ void BonusTime::Update()
 		{
 			if (gameTime >= time.first && gameTime <= time.second)
 			{
-				GetOwner()->GetChildAt(bonusIdx)->GetComponent<dae::TextComponent>()->SetColor(dae::Colors::yellow);
-				// TODO: Add Score
-				std::cout << '+' << bonus << '\n';
+				GetOwner()->GetChildAt(bonusIdx)->GetComponent<real::TextComponent>()->SetColor(real::Colors::yellow);
+				HUD::GetInstance().AddScore(bonus, PlayerNumber::playerOne);
+				HUD::GetInstance().AddScore(bonus, PlayerNumber::playerTwo);
 				break;
 			}
 		}
@@ -55,7 +57,7 @@ void BonusTime::Update()
 		const auto seconds = static_cast<int>(gameTime) % 60;
 		const auto minutes = static_cast<int>(gameTime / 60.f);
 
-		const auto textComponent = GetOwner()->GetComponent<dae::TextComponent>();
+		const auto textComponent = GetOwner()->GetComponent<real::TextComponent>();
 		const auto text = "           " + std::to_string(minutes) + "     " + std::to_string(seconds) + "     ";
 		textComponent->SetText(text);
 	}

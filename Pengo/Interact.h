@@ -3,9 +3,10 @@
 
 #include <Component.h>
 
+class Player;
 enum class Direction : char;
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
@@ -13,10 +14,10 @@ namespace dae
 class Move;
 class Maze;
 
-class Interact final : public dae::Component
+class Interact final : public real::Component
 {
 public:
-	explicit Interact(dae::GameObject* pOwner);
+	explicit Interact(real::GameObject* pOwner);
 	virtual ~Interact() override = default;
 
 	Interact(const Interact& other) = delete;
@@ -32,8 +33,8 @@ public:
 private:
 	Maze* m_pMaze{ nullptr };
 	Move* m_pMove{ nullptr };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
-
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
+	Player* m_pPlayer{ nullptr };
 	bool m_IsAnimating{ false };
 
 	void Animate(Direction dir);

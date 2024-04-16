@@ -13,15 +13,16 @@
 #include "StarBlockPrefab.h"
 
 #include "Macros.h"
+#include "Player.h"
 #include "PlayerManager.h"
 #include "PrintMazeCommand.h"
 #include "StarBlockManager.h"
 #include "WallPrefab.h"
 
-Maze::Maze(dae::GameObject* pOwner, const glm::ivec2& size)
+Maze::Maze(real::GameObject* pOwner, const glm::ivec2& size)
 	: Component(pOwner)
 {
-    m_Maze = std::vector(size.x, std::vector<std::pair<BlockType, dae::GameObject*>>(size.y, std::make_pair(BlockType::air, nullptr)));
+    m_Maze = std::vector(size.x, std::vector<std::pair<BlockType, real::GameObject*>>(size.y, std::make_pair(BlockType::air, nullptr)));
 }
 
 void Maze::Init()
@@ -59,13 +60,18 @@ void Maze::Init()
             //                                   Position              |     Wall Offset
             auto scaledPos = glm::vec2(x * BLOCK_SIZE * PIXEL_SCALE + WALL_WIDTH * PIXEL_SCALE, y * BLOCK_SIZE * PIXEL_SCALE + WALL_WIDTH * PIXEL_SCALE);
 
-            // TODO: Second player spawn: [6][10]
-            const bool needsPlayer = PlayerManager::GetInstance().RequestPlayer();
-            if (needsPlayer
-                && (x == 6 && y == 6 || x == 6 && y == 10))
+            if (PlayerManager::GetInstance().RequestPlayer())
             {
-                const auto player = std::make_unique<PlayerPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y });
-                PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                if (x == 6 && y == 6)
+                {
+                    const auto player = std::make_unique<PlayerPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerOne);
+                    PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                }
+                if (x == 6 && y == 10)
+                {
+                    const auto player = std::make_unique<PlayerPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerTwo);
+                    PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                }
             }
 
             switch (m_Maze[x][y].first)
@@ -99,12 +105,12 @@ void Maze::Init()
 void Maze::Start()
 {
 #ifdef _DEBUG
-    const auto map = dae::InputManager::GetInstance().GetActiveInputMap();
-    map->AddKeyboardAction<PrintMazeCommand>(InputCommands::print_maze, dae::KeyState::keyDown, SDL_SCANCODE_F5, GetOwner());
+    const auto map = real::InputManager::GetInstance().GetActiveInputMap();
+    map->AddKeyboardAction<PrintMazeCommand>(InputCommands::print_maze, real::KeyState::keyDown, SDL_SCANCODE_F5, GetOwner());
 #endif
 }
 
-void Maze::SetBlock(const glm::ivec2& pos, BlockType type, dae::GameObject* go)
+void Maze::SetBlock(const glm::ivec2& pos, BlockType type, real::GameObject* go)
 {
     if (const auto [isWall, orientation] = IsWall(pos); isWall)
     {
@@ -124,7 +130,7 @@ Maze::BlockType Maze::GetBlock(const glm::ivec2& pos) const
 	return m_Maze[pos.x][pos.y].first;
 }
 
-dae::GameObject* Maze::GetGameObject(const glm::ivec2& pos) const
+real::GameObject* Maze::GetGameObject(const glm::ivec2& pos) const
 {
     if (const auto [isWall, orientation] = IsWall(pos); isWall)
     {
@@ -134,7 +140,7 @@ dae::GameObject* Maze::GetGameObject(const glm::ivec2& pos) const
 	return m_Maze[pos.x][pos.y].second;
 }
 
-std::pair<Maze::BlockType, dae::GameObject*> Maze::GetBlockAndObject(const glm::ivec2& pos)
+std::pair<Maze::BlockType, real::GameObject*> Maze::GetBlockAndObject(const glm::ivec2& pos)
 {
     if (const auto [isWall, orientation] = IsWall(pos); isWall)
     {

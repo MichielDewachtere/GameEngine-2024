@@ -9,7 +9,7 @@
 #include "Maze.h"
 #include "ScoreDisplay.h"
 
-Pushable::Pushable(dae::GameObject* pOwner)
+Pushable::Pushable(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
@@ -56,24 +56,19 @@ void Pushable::Update()
 	}
 	else if (m_EnemiesPushed.empty() == false)
 	{
-		// TODO: Add points
 		switch (m_EnemiesPushed.size())
 		{
 		case 1:
-			HUD::GetInstance().AddScore(ScoreEvents::kill);
-			std::cout << "+400\n";
+			HUD::GetInstance().AddScore(ScoreEvents::kill, m_PushedBy);
 			break;
 		case 2:
-			HUD::GetInstance().AddScore(ScoreEvents::doubleKill);
-			std::cout << "+1600\n";
+			HUD::GetInstance().AddScore(ScoreEvents::doubleKill, m_PushedBy);
 			break;
 		case 3:
-			HUD::GetInstance().AddScore(ScoreEvents::tripleKill);
-			std::cout << "+3200\n";
+			HUD::GetInstance().AddScore(ScoreEvents::tripleKill, m_PushedBy);
 			break;
 		case 4:
-			HUD::GetInstance().AddScore(ScoreEvents::quadKill);
-			std::cout << "+6400\n";
+			HUD::GetInstance().AddScore(ScoreEvents::quadKill, m_PushedBy);
 			break;
 		}
 
@@ -83,11 +78,12 @@ void Pushable::Update()
 	}
 }
 
-void Pushable::Push(Direction direction)
+void Pushable::Push(Direction direction, PlayerNumber pushedBy)
 {
 	m_pMoveComponent->MoveInDirection(direction, true);
 	m_Pushed = true;
 	m_Direction = direction;
+	m_PushedBy = pushedBy;
 }
 
 bool Pushable::IsBeingPushed() const

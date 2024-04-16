@@ -1,16 +1,16 @@
 ﻿#ifndef LEVELGENERATOR_H
 #define LEVELGENERATOR_H
 
-#include <Minigin.h>
+#include <RealEngine.h>
 #include <random>
 #include <Singleton.h>
 
-namespace dae
+namespace real
 {
 	class Scene;
 }
 
-class LevelGenerator final : public dae::Singleton<LevelGenerator>
+class LevelGenerator final : public real::Singleton<LevelGenerator>
 {
 public:
 	void GenerateLevel();

@@ -5,10 +5,10 @@
 
 #include "Move.h"
 
-class MoveCommand final : public dae::GameObjectCommand
+class MoveCommand final : public real::GameObjectCommand
 {
 public:
-	explicit MoveCommand(int id, int controllerId, dae::GameObject* pGameObject, Direction direction);
+	explicit MoveCommand(int id, int controllerId, real::GameObject* pGameObject, Direction direction);
 	virtual ~MoveCommand() override = default;
 
 	MoveCommand(const MoveCommand& other) = delete;

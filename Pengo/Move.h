@@ -9,7 +9,7 @@
 
 #include "Maze.h"
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
@@ -29,10 +29,10 @@ enum class MoveEvents : bool
 	moved = 1
 };
 
-class Move final : public dae::Component
+class Move final : public real::Component
 {
 public:
-	explicit Move(dae::GameObject* pOwner, const glm::ivec2& pos, Maze::BlockType type, float movementSpeed, bool animate);
+	explicit Move(real::GameObject* pOwner, const glm::ivec2& pos, Maze::BlockType type, float movementSpeed, bool animate);
 	virtual ~Move() override = default;
 
 	Move(const Move& other) = delete;
@@ -57,8 +57,8 @@ public:
 	bool IsMoving() const { return m_Move; }
 	void Animate(bool animate) { m_Animate = animate; }
 
-	dae::Subject<MoveEvents> startedMoving;
-	dae::Subject<MoveEvents, const glm::ivec2&> moved;
+	real::Subject<MoveEvents> startedMoving;
+	real::Subject<MoveEvents, const glm::ivec2&> moved;
 
 private:
 	glm::ivec2 m_MazePosition, m_NewPosition{}, m_DirectionVec{};
@@ -68,7 +68,7 @@ private:
 	bool m_Move{ false }, m_MoveUntilStopped{ false }, m_Animate;
 
 	Maze* m_pMaze{ nullptr };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 	std::map<Direction, std::pair<int, int>> m_DirectionToAnimation;
 
 	bool HasReachedPosition() const;

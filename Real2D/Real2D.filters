@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{f8fa0339-94be-4dcf-a078-48923946e8c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{1564b944-283b-4c9a-8a23-5c2d936dde6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{2e21ecfd-2fc3-4e6a-8940-b859d0cb01b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{3011a92c-a752-4c7e-a69c-36cb6cf3dcc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{4d83096f-1869-4cc6-92af-83312aa45bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Engine">
+      <UniqueIdentifier>{98cda564-b408-4eaa-afad-395dcbae525c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{57ec0102-7dd2-49b9-b22e-25bbe26ade3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\Backend">
+      <UniqueIdentifier>{88d6c403-a671-48a7-975d-bd0943027082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\ImPlot">
+      <UniqueIdentifier>{732b0a70-da8b-47a4-bf97-308dd3ac2e31}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Renderer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Components\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdlrenderer2.h">
+      <Filter>ImGui\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Components\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Components\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Components\Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Minigin.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Components\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdlrenderer2.cpp">
+      <Filter>ImGui\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Components\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Components\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Components\Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

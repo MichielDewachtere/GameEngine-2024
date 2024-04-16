@@ -5,11 +5,11 @@
 
 #include <Prefab.h>
 
-class IcePrefab final : public dae::Prefab
+class IcePrefab final : public real::Prefab
 {
 public:
-	explicit IcePrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
-	explicit IcePrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
+	explicit IcePrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
+	explicit IcePrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
 	virtual ~IcePrefab() override = default;
 
 	IcePrefab(const IcePrefab& other) = delete;

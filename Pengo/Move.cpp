@@ -10,7 +10,7 @@
 #include "Macros.h"
 #include "Maze.h"
 
-Move::Move(dae::GameObject* pOwner, const glm::ivec2& pos, Maze::BlockType type, float movementSpeed, bool animate)
+Move::Move(real::GameObject* pOwner, const glm::ivec2& pos, Maze::BlockType type, float movementSpeed, bool animate)
 	: Component(pOwner)
 	, m_MazePosition(pos)
 	, m_Type(type)
@@ -24,7 +24,7 @@ Move::Move(dae::GameObject* pOwner, const glm::ivec2& pos, Maze::BlockType type,
 void Move::Start()
 {
 	if (m_Animate)
-		m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+		m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 }
 
 void Move::Update()
@@ -42,7 +42,7 @@ void Move::Update()
 		m_pSpriteComponent->PlayAnimation(m_DirectionToAnimation[m_Direction].first, m_DirectionToAnimation[m_Direction].second);
 	}
 
-	const auto dt = dae::GameTime::GetInstance().GetElapsed();
+	const auto dt = real::GameTime::GetInstance().GetElapsed();
 	const glm::vec2 t{
 		static_cast<float>(m_DirectionVec.x) * m_MovementSpeed * dt,
 		static_cast<float>(m_DirectionVec.y) * m_MovementSpeed * dt

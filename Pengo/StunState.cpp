@@ -7,17 +7,20 @@
 
 #include "DiedState.h"
 #include "GameInfo.h"
+#include "HUD.h"
 #include "Move.h"
 #include "MoveState.h"
+#include "Player.h"
+#include "ScoreDisplay.h"
 
-StunState::StunState(dae::GameObject* pOwner)
+StunState::StunState(real::GameObject* pOwner)
 	: IEnemyState(pOwner)
 {
 }
 
 void StunState::Enter()
 {
-	GetOwner()->GetComponent<dae::SpriteComponent>()->PlayAnimation(6, 7, 10, .5f);
+	GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 7, 10, .5f);
 
 	m_MazePos = GetOwner()->GetComponent<Move>()->GetMazePos();
 
@@ -26,7 +29,7 @@ void StunState::Enter()
 
 IEnemyState* StunState::Update()
 {
-	m_AccuTime += dae::GameTime::GetInstance().GetElapsed();
+	m_AccuTime += real::GameTime::GetInstance().GetElapsed();
 
 	if (m_AccuTime > m_StunTime)
 	{
@@ -40,8 +43,7 @@ IEnemyState* StunState::Update()
 	{
 		if (player->GetMazePos() == m_MazePos)
 		{
-			// TODO: Add Points
-			std::cout << "+100\n";
+			HUD::GetInstance().AddScore(ScoreEvents::stunKill, player->GetOwner()->GetComponent<Player>()->GetPlayerNumber());
 			return new DiedState(GetOwner());
 		}
 	}
@@ -51,15 +53,15 @@ IEnemyState* StunState::Update()
 
 void StunState::Exit()
 {
-	GetOwner()->GetComponent<dae::SpriteComponent>()->SelectSprite(8);
+	GetOwner()->GetComponent<real::SpriteComponent>()->SelectSprite(8);
 }
 
 void StunState::RegisterPlayers()
 {
-	const auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::pengo);
+	const auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::pengo);
 	if (v.empty() == false)
 	{
-		std::ranges::for_each(v, [this](dae::GameObject* go)
+		std::ranges::for_each(v, [this](real::GameObject* go)
 			{
 				m_Players.push_back(go->GetComponent<Move>());
 			});

@@ -8,7 +8,7 @@
 
 enum class Direction : char;
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
@@ -18,7 +18,7 @@ class Pushable;
 class PushedState final : public IEnemyState
 {
 public:
-	explicit PushedState(dae::GameObject* pOwner);
+	explicit PushedState(real::GameObject* pOwner);
 	virtual ~PushedState() override = default;
 
 	PushedState(const PushedState& other) = delete;
@@ -35,7 +35,7 @@ public:
 private:
 	Direction m_PushDirection{};
 	Pushable* m_pPushableComponent{ nullptr };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 
 	static std::map<Direction, std::pair<int, int>> m_DirectionToSquashAnim;
 };

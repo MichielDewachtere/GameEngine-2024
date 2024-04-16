@@ -5,14 +5,15 @@
 
 #include "Move.h"
 
-Player::Player(dae::GameObject* pOwner)
+Player::Player(real::GameObject* pOwner, PlayerNumber number)
 	: Component(pOwner)
+	, m_PlayerNumber(number)
 {
 }
 
 void Player::Start()
 {
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 }
 
 void Player::Update()

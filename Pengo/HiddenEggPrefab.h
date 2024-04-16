@@ -5,11 +5,11 @@
 
 #include <Prefab.h>
 
-class HiddenEggPrefab final : public dae::Prefab
+class HiddenEggPrefab final : public real::Prefab
 {
 public:
-	explicit HiddenEggPrefab(dae::GameObject* pOwner);
-	explicit HiddenEggPrefab(dae::Scene* pScenes);
+	explicit HiddenEggPrefab(real::GameObject* pOwner);
+	explicit HiddenEggPrefab(real::Scene* pScenes);
 	virtual ~HiddenEggPrefab() override = default;
 
 	HiddenEggPrefab(const HiddenEggPrefab& other) = delete;

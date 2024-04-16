@@ -6,17 +6,17 @@
 
 class Maze;
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
 
 enum class WallOrientation : char;
 
-class Wall final : public dae::Component
+class Wall final : public real::Component
 {
 public:
-	explicit Wall(dae::GameObject* pOwner, WallOrientation orientation);
+	explicit Wall(real::GameObject* pOwner, WallOrientation orientation);
 	virtual ~Wall() override = default;
 
 	Wall(const Wall& other) = delete;
@@ -29,14 +29,14 @@ public:
 
 	void Shake();
 
-	dae::Subject<WallOrientation> wallShaked;
+	real::Subject<WallOrientation> wallShaked;
 
 private:
 	bool m_IsDirty{ false };
 	WallOrientation m_Orientation;
 
 	Maze* m_pMazeComponent{ nullptr };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 };
 
 #endif // WALL_H

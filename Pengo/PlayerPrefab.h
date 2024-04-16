@@ -5,11 +5,13 @@
 
 #include <Prefab.h>
 
-class PlayerPrefab final : public dae::Prefab
+enum class PlayerNumber : char;
+
+class PlayerPrefab final : public real::Prefab
 {
 public:
-	explicit PlayerPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos);
-	explicit PlayerPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos);
+	explicit PlayerPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player);
+	explicit PlayerPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player);
 	virtual ~PlayerPrefab() override = default;
 
 	PlayerPrefab(const PlayerPrefab& other) = delete;
@@ -17,7 +19,7 @@ public:
 	PlayerPrefab(PlayerPrefab&& other) = delete;
 	PlayerPrefab& operator=(PlayerPrefab&& rhs) = delete;
 
-	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos);
+	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player);
 
 private:
 

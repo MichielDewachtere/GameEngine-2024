@@ -11,12 +11,12 @@ enum class GameEvents : char;
 class HiddenEgg;
 
 class EnemyHandler final
-	: public dae::Component
-	, public dae::Observer<>
-	, public dae::Observer<GameEvents>
+	: public real::Component
+	, public real::Observer<>
+	, public real::Observer<GameEvents>
 {
 public:
-	explicit EnemyHandler(dae::GameObject* pOwner, int difficulty);
+	explicit EnemyHandler(real::GameObject* pOwner, int difficulty);
 	virtual ~EnemyHandler() override;
 
 	EnemyHandler(const EnemyHandler& other) = delete;
@@ -32,8 +32,8 @@ public:
 	virtual void HandleEvent(GameEvents) override;
 	virtual void OnSubjectDestroy() override {}
 
-	void AddEnemySpawn(dae::GameObject* go);
-	void RemoveEnemySpawn(dae::GameObject* go);
+	void AddEnemySpawn(real::GameObject* go);
+	void RemoveEnemySpawn(real::GameObject* go);
 
 private:
 	int m_AmountOfEnemiesAtOnce{}, m_TotalEnemies{};

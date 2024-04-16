@@ -4,7 +4,7 @@
 
 #include "Interact.h"
 
-InteractCommand::InteractCommand(int id, int controllerId, dae::GameObject* pGameObject)
+InteractCommand::InteractCommand(int id, int controllerId, real::GameObject* pGameObject)
 	: GameObjectCommand(id, controllerId, pGameObject)
 {
 	m_pInteractComponent = GetGameObject()->GetComponent<Interact>();

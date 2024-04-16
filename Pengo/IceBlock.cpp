@@ -6,9 +6,11 @@
 #include "EnemyHandler.h"
 #include "Game.h"
 #include "HiddenEgg.h"
+#include "HUD.h"
 #include "Move.h"
+#include "ScoreDisplay.h"
 
-IceBlock::IceBlock(dae::GameObject* pOwner, bool hidesEgg)
+IceBlock::IceBlock(real::GameObject* pOwner, bool hidesEgg)
 	: Component(pOwner)
 	, m_HidesEgg(hidesEgg)
 {
@@ -23,7 +25,7 @@ IceBlock::~IceBlock()
 
 void IceBlock::Start()
 {
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 
 	GetOwner()->GetParent()->GetComponent<Game>()->gameEvent.AddObserver(this);
 }
@@ -36,11 +38,14 @@ void IceBlock::Update()
 		{
 			if (m_HidesEgg)
 			{
-				//GetOwner()->GetParent()->GetComponent<EnemyHandler>()->RemoveEnemySpawn(GetOwner()->GetChildAt(0));
 				GetOwner()->GetChildAt(0)->GetComponent<HiddenEgg>()->BreakEgg();
+				HUD::GetInstance().AddScore(ScoreEvents::breakEgg, m_BreakedBy);
 			}
 			else
+			{
+				HUD::GetInstance().AddScore(ScoreEvents::breakIce, m_BreakedBy);
 				GetOwner()->Destroy();
+			}
 
 			m_Break = false;
 		}
@@ -67,7 +72,7 @@ void IceBlock::HandleEvent(GameEvents event)
 	}
 }
 
-void IceBlock::Break()
+void IceBlock::Break(PlayerNumber breakedBy)
 {
 	if (m_Break)
 		return;
@@ -78,9 +83,11 @@ void IceBlock::Break()
 	move->Disable();
 
 	if (m_pSpriteComponent == nullptr)
-		m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+		m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 
 	m_pSpriteComponent->PlayAnimation(27, 36, 0);
+
+	m_BreakedBy = breakedBy;
 
 	m_Break = true;
 }

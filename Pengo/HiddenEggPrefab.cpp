@@ -12,13 +12,13 @@
 #include "IcePrefab.h"
 #include "Macros.h"
 
-HiddenEggPrefab::HiddenEggPrefab(dae::GameObject* pOwner)
+HiddenEggPrefab::HiddenEggPrefab(real::GameObject* pOwner)
 	: Prefab(pOwner)
 {
 	Init();
 }
 
-HiddenEggPrefab::HiddenEggPrefab(dae::Scene* pScene)
+HiddenEggPrefab::HiddenEggPrefab(real::Scene* pScene)
 	: Prefab(pScene)
 {
 	Init();
@@ -26,22 +26,22 @@ HiddenEggPrefab::HiddenEggPrefab(dae::Scene* pScene)
 
 void HiddenEggPrefab::Init()
 {
-	auto texture = dae::ResourceManager::GetInstance().LoadTexture("textures/egg_sheet.png");
+	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/egg_sheet.png");
 
 	const auto go = GetGameObject();
 	go->GetTransform()->SetUniformScale(PIXEL_SCALE);
 
-	dae::SpriteSheet spriteSheet;
+	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = std::move(texture);
 	spriteSheet.rows = 2;
 	spriteSheet.columns = 3;
 	spriteSheet.timePerAnimation = 0.02f;
-	const auto spriteComponent = go->AddComponent<dae::SpriteComponent>(std::move(spriteSheet));
+	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->Disable();
 
-	const auto colliderComponent = go->AddComponent<dae::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
+	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
 	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(dae::Colors::red);
+	colliderComponent->SetDebugColor(real::Colors::red);
 
 	go->AddComponent<HiddenEgg>();
 }

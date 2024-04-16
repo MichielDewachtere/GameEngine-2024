@@ -4,7 +4,7 @@
 
 #include "Enemy.h"
 
-DiedState::DiedState(dae::GameObject* pOwner)
+DiedState::DiedState(real::GameObject* pOwner)
 	: IEnemyState(pOwner)
 {
 }

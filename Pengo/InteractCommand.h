@@ -5,10 +5,10 @@
 
 class Interact;
 
-class InteractCommand final : public dae::GameObjectCommand
+class InteractCommand final : public real::GameObjectCommand
 {
 public:
-	explicit InteractCommand(int id, int controllerId, dae::GameObject* pGameObject);
+	explicit InteractCommand(int id, int controllerId, real::GameObject* pGameObject);
 	virtual ~InteractCommand() override = default;
 
 	InteractCommand(const InteractCommand& other) = delete;

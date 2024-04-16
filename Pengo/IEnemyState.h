@@ -1,7 +1,7 @@
 ﻿#ifndef IENEMYSTATE_H
 #define IENEMYSTATE_H
 
-namespace dae
+namespace real
 {
 	class GameObject;
 }
@@ -9,7 +9,7 @@ namespace dae
 class IEnemyState
 {
 public:
-	explicit IEnemyState(dae::GameObject* pOwner) : m_pOwner(pOwner) {}
+	explicit IEnemyState(real::GameObject* pOwner) : m_pOwner(pOwner) {}
 	virtual ~IEnemyState() = default;
 
 	IEnemyState(const IEnemyState& other) = delete;
@@ -22,9 +22,9 @@ public:
 	virtual void Exit() {}
 
 protected:
-	dae::GameObject* GetOwner() const { return m_pOwner; }
+	real::GameObject* GetOwner() const { return m_pOwner; }
 private:
-	dae::GameObject* m_pOwner;
+	real::GameObject* m_pOwner;
 };
 
 #endif // IENEMYSTATE_H

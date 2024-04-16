@@ -11,11 +11,12 @@
 #include "IceBlock.h"
 #include "Maze.h"
 #include "Move.h"
+#include "Player.h"
 #include "Pushable.h"
 #include "ScoreDisplay.h"
 #include "Wall.h"
 
-Interact::Interact(dae::GameObject* pOwner)
+Interact::Interact(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
@@ -24,7 +25,8 @@ void Interact::Start()
 {
 	m_pMaze = GetOwner()->GetParent()->GetComponent<Maze>();
 	m_pMove = GetOwner()->GetComponent<Move>();
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
+	m_pPlayer = GetOwner()->GetComponent<Player>();
 }
 
 void Interact::Update()
@@ -55,12 +57,11 @@ void Interact::AttemptInteraction()
 
 		if (m_pMaze->IsOccupied(icePath) && targetedBlock.first != Maze::BlockType::star)
 		{
-			targetedBlock.second->GetComponent<IceBlock>()->Break();
-			HUD::GetInstance().AddScore(ScoreEvents::breakIce);
+			targetedBlock.second->GetComponent<IceBlock>()->Break(m_pPlayer->GetPlayerNumber());
 		}
 		else
 		{
-			targetedBlock.second->GetComponent<Pushable>()->Push(direction);
+			targetedBlock.second->GetComponent<Pushable>()->Push(direction, m_pPlayer->GetPlayerNumber());
 		}
 
 		Animate(direction);

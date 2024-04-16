@@ -167,5 +167,5 @@ void LevelGenerator::OutputMaze(std::string fileName) const
     // Close the file
     outputFile.close();
 
-    dae::Logger::LogInfo({ "Data has been written to {}" }, path);
+    real::Logger::LogInfo({ "Data has been written to {}" }, path);
 }

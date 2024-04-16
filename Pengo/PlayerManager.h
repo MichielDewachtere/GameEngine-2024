@@ -12,22 +12,22 @@
 
 enum class GameEvents : char;
 
-namespace dae
+namespace real
 {
 	class GameObject;
 }
 
 struct PlayerInfo
 {
-	dae::GameObject* object;
+	real::GameObject* object;
 	glm::ivec2 spawnPos;
 	bool useKeyboard;
 	uint8_t controllerId;
 };
 
 class PlayerManager final
-	: public dae::Singleton<PlayerManager>
-	, public dae::Observer<GameEvents>
+	: public real::Singleton<PlayerManager>
+	, public real::Observer<GameEvents>
 {
 public:
 	~PlayerManager() override = default;
@@ -46,7 +46,8 @@ public:
 	void RegisterPlayer(PlayerInfo info);
 
 	bool RequestPlayer() const;
-	void AddPlayer(dae::GameObject* pPlayer, const glm::ivec2&);
+	void AddPlayer(real::GameObject* pPlayer, const glm::ivec2&);
+	uint8_t GetAmountOfPlayers() const { return m_AmountOfPlayers; }
 
 private:
 	friend class Singleton<PlayerManager>;

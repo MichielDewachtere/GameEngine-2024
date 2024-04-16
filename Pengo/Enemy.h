@@ -7,7 +7,7 @@
 
 #include "IEnemyState.h"
 
-namespace dae
+namespace real
 {
 	enum class GameObjectEvent : char;
 }
@@ -18,13 +18,13 @@ enum class Direction : char;
 enum class GameEvents : char;
 
 class Enemy final
-	: public dae::Component
-	, public dae::Observer<dae::GameObjectEvent>
-	, public dae::Observer<GameEvents>
-	, public dae::Observer<WallOrientation>
+	: public real::Component
+	, public real::Observer<real::GameObjectEvent>
+	, public real::Observer<GameEvents>
+	, public real::Observer<WallOrientation>
 {
 public:
-	explicit Enemy(dae::GameObject* pOwner);
+	explicit Enemy(real::GameObject* pOwner);
 	virtual ~Enemy() override;
 
 	Enemy(const Enemy& other) = delete;
@@ -36,14 +36,14 @@ public:
 	virtual void Update() override;
 	virtual void Kill() override;
 
-	virtual void HandleEvent(dae::GameObjectEvent) override;
+	virtual void HandleEvent(real::GameObjectEvent) override;
 	virtual void HandleEvent(GameEvents) override;
 	virtual void HandleEvent(WallOrientation) override;
 	virtual void OnSubjectDestroy() override {}
 
 	void Push(Direction direction);
 
-	dae::Subject<> enemyDied;
+	real::Subject<> enemyDied;
 
 private:
 	std::unique_ptr<IEnemyState> m_CurrentState{};

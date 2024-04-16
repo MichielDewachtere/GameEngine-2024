@@ -13,13 +13,13 @@
 #include "Move.h"
 #include "Pushable.h"
 
-StarBlockPrefab::StarBlockPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos)
+StarBlockPrefab::StarBlockPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos)
 	: Prefab(pOwner)
 {
 	Init(pos, mazePos);
 }
 
-StarBlockPrefab::StarBlockPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos)
+StarBlockPrefab::StarBlockPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos)
 	: Prefab(pScene)
 {
 	Init(pos, mazePos);
@@ -27,23 +27,23 @@ StarBlockPrefab::StarBlockPrefab(dae::Scene* pScene, const glm::ivec2& pos, cons
 
 void StarBlockPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
 {
-	auto texture = dae::ResourceManager::GetInstance().LoadTexture("textures/block_sheet.png");
+	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/block_sheet.png");
 
 	const auto go = GetGameObject();
 	go->GetTransform()->SetLocalPosition(pos);
 	go->GetTransform()->SetUniformScale(PIXEL_SCALE);
 
-	dae::SpriteSheet spriteSheet;
+	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = std::move(texture);
 	spriteSheet.columns = 9;
 	spriteSheet.rows = 4;
 	spriteSheet.timePerAnimation = 0.2f;
-	const auto spriteComponent = go->AddComponent<dae::SpriteComponent>(std::move(spriteSheet));
+	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(9);
 
-	const auto colliderComponent = go->AddComponent<dae::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
+	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
 	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(dae::Colors::yellow);
+	colliderComponent->SetDebugColor(real::Colors::yellow);
 
 	go->AddComponent<Move>(mazePos, Maze::BlockType::star, 300.f, false);
 	go->AddComponent<Pushable>();

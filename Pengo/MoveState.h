@@ -1,11 +1,11 @@
 ﻿#ifndef MOVESTATE_H
 #define MOVESTATE_H
 
-#include <vector>
+#include <map>
 
 #include "IEnemyState.h"
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
@@ -15,7 +15,7 @@ class Move;
 class MoveState final : public IEnemyState
 {
 public:
-	explicit MoveState(dae::GameObject* pOwner);
+	explicit MoveState(real::GameObject* pOwner);
 	virtual ~MoveState() override = default;
 
 	MoveState(const MoveState& other) = delete;
@@ -28,10 +28,10 @@ public:
 	virtual void Exit() override;
 private:
 	Move* m_pMoveComponent{ nullptr };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
-	static inline std::vector<Move*> m_Players{};
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
+	static inline std::map<int, Move*> m_Players{};
 
-	void RegisterPlayers();
+	void RegisterPlayers() const;
 
 };
 

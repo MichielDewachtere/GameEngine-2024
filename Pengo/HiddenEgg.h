@@ -4,15 +4,15 @@
 #include <Component.h>
 #include <type_traits>
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
 
-class HiddenEgg final : public dae::Component
+class HiddenEgg final : public real::Component
 {
 public:
-	explicit HiddenEgg(dae::GameObject* pOwner);
+	explicit HiddenEgg(real::GameObject* pOwner);
 	virtual ~HiddenEgg() override;
 
 	HiddenEgg(const HiddenEgg& other) = delete;
@@ -36,7 +36,7 @@ private:
 	};
 	bool m_EggPopped{ false };
 	EggBreakSequence m_CurrentState{ EggBreakSequence::iceBreakAnim };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr }, * m_IceBlockSpriteComponent{ nullptr };
+	real::SpriteComponent* m_pSpriteComponent{ nullptr }, * m_IceBlockSpriteComponent{ nullptr };
 };
 
 #endif // HIDDENEGG_H

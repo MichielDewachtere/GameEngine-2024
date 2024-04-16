@@ -11,39 +11,39 @@
 #include "Interact.h"
 #include "Player.h"
 
-PlayerPrefab::PlayerPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos)
+PlayerPrefab::PlayerPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player)
 	: Prefab(pOwner)
 {
-	Init(pos, mazePos);
+	Init(pos, mazePos, player);
 }
 
-PlayerPrefab::PlayerPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos)
+PlayerPrefab::PlayerPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player)
 	: Prefab(pScene)
 {
-	Init(pos, mazePos);
+	Init(pos, mazePos, player);
 }
 
-void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
+void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player)
 {
-	auto texture = dae::ResourceManager::GetInstance().LoadTexture("textures/pengo/pengo_red.png");
+	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/pengo/pengo_red.png");
 
 	const auto go = GetGameObject();
 	go->SetTag("Player");
 	go->GetTransform()->SetLocalPosition(pos);
 	go->GetTransform()->SetUniformScale(PIXEL_SCALE);
 
-	dae::SpriteSheet spriteSheet;
+	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = std::move(texture);
 	spriteSheet.rows = 4;
 	spriteSheet.columns = 8;
 	spriteSheet.timePerAnimation = 0.2f;
-	const auto spriteComponent = go->AddComponent<dae::SpriteComponent>(std::move(spriteSheet));
+	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(0);
 	//spriteComponent->PlayAnimation(0, 2);
 
-	const auto colliderComponent = go->AddComponent<dae::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
+	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
 	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(dae::Colors::appelblauwzeegroen);
+	colliderComponent->SetDebugColor(real::Colors::appelblauwzeegroen);
 
 	const auto moveComponent = go->AddComponent<Move>(mazePos, Maze::BlockType::player, PLAYER_SPEED, true);
 	moveComponent->BindAnimationToDirection(Direction::down, { 0, 1 });
@@ -53,5 +53,5 @@ void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
 	moveComponent->Disable();
 
 	go->AddComponent<Interact>();
-	go->AddComponent<Player>();
+	go->AddComponent<Player>(player);
 }

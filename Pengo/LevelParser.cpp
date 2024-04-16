@@ -1,6 +1,6 @@
 ﻿#include "LevelParser.h"
 
-#include <Minigin.h>
+#include <RealEngine.h>
 
 #include "EnemyHandler.h"
 #include "Game.h"
@@ -10,7 +10,7 @@
 #include "PlayerManager.h"
 #include "StarBlockManager.h"
 
-void LevelParser::ParseLevel(dae::Scene* pScene, const std::string& levelPath, int difficulty)
+void LevelParser::ParseLevel(real::Scene* pScene, const std::string& levelPath, int difficulty)
 {
 	std::ifstream file(levelPath);
 	if (!file.is_open())

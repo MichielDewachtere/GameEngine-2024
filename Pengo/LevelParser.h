@@ -5,7 +5,7 @@
 
 #include <Scene.h>
 
-namespace dae
+namespace real
 {
 	struct WindowSettings;
 }
@@ -21,7 +21,7 @@ public:
 	LevelParser(LevelParser&& other) = delete;
 	LevelParser& operator=(LevelParser&& rhs) = delete;
 
-	static void ParseLevel(dae::Scene* pScene, const std::string& levelPath, int difficulty);
+	static void ParseLevel(real::Scene* pScene, const std::string& levelPath, int difficulty);
 
 private:
 	

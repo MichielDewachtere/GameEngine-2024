@@ -15,7 +15,7 @@ std::map<Direction, std::pair<int, int>> PushedState::m_DirectionToSquashAnim{
 };
 
 
-PushedState::PushedState(dae::GameObject* pOwner)
+PushedState::PushedState(real::GameObject* pOwner)
 	: IEnemyState(pOwner)
 {
 }
@@ -23,7 +23,7 @@ PushedState::PushedState(dae::GameObject* pOwner)
 void PushedState::Enter()
 {
 	m_pPushableComponent = GetOwner()->GetComponent<Pushable>();
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 
 	m_pPushableComponent->Push(m_PushDirection);
 }

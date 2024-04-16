@@ -5,7 +5,7 @@
 //#include <vld.h>
 #endif 
 
-#include <Minigin.h>
+#include <RealEngine.h>
 #include <SceneManager.h>
 #include <ResourceManager.h>
 #include <InputManager.h>
@@ -13,18 +13,16 @@
 #include "BonusTimeMenu.h"
 #include "GameInfo.h"
 #include "HUD.h"
-#include "LabScene.h"
 #include "Level.h"
 #include "LevelGenerator.h"
 #include "Macros.h"
 #include "PlayerManager.h"
-#include "TestSecondScene.h"
 
-dae::WindowSettings g_windowSettings;
+real::WindowSettings g_windowSettings;
 
 void load()
 {
-	using namespace dae;
+	using namespace real;
 
 	LevelGenerator::GetInstance().GenerateLevel();
 
@@ -87,12 +85,12 @@ int main(int, char* [])
 	g_windowSettings.width = BLOCK_SIZE * (MAZE_WIDTH + 1 /*2 walls*/) * PIXEL_SCALE;
 	g_windowSettings.height = BLOCK_SIZE * PIXEL_SCALE * (MAZE_HEIGHT + 1 /* 2 walls */) + HUD_SIZE_BOTTOM + HUD_SIZE_TOP;
 
-	dae::Minigin engine(g_windowSettings);
+	real::RealEngine engine(g_windowSettings);
 	engine.Run(load);
 
 	//try
 	//{
-	//	dae::Minigin engine(g_windowSettings);
+	//	real::RealEngine engine(g_windowSettings);
 	//	engine.Run(load);
 	//}
 	//catch (std::exception& e)

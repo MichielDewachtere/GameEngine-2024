@@ -6,7 +6,9 @@
 
 #include "Observer.h"
 
-namespace dae
+class HealthDisplay;
+
+namespace real
 {
 	class Scene;
 	class GameObject;
@@ -14,11 +16,12 @@ namespace dae
 }
 
 enum class ScoreEvents : char;
+enum class PlayerNumber : char;
 class ScoreDisplay;
 
 class HUD final
-	: public dae::Singleton<HUD>
-	, public dae::Observer<dae::SceneEvents, dae::Scene*>
+	: public real::Singleton<HUD>
+	, public real::Observer<real::SceneEvents, real::Scene*>
 {
 public:
 	virtual ~HUD() override;
@@ -30,24 +33,27 @@ public:
 
 	virtual void Init() override;
 
-	virtual void HandleEvent(dae::SceneEvents, dae::Scene* pScene) override;
+	virtual void HandleEvent(real::SceneEvents, real::Scene* pScene) override;
 	virtual void OnSubjectDestroy() override {}
 
-	void AddScore(ScoreEvents event) const;
+	void AddScore(ScoreEvents event, PlayerNumber p1) const;
+
+	void AddLife() const;
+	void RemoveLife() const;
 
 private:
 	friend class Singleton<HUD>;
 	explicit HUD() = default;
 
 	uint32_t m_HudId{};
-	std::unique_ptr<dae::GameObject> m_pUniqueHud{};
-	//dae::GameObject* m_pRawHud{};
-	ScoreDisplay* m_pScoreDisplayPlayerOne{ nullptr };
+	std::unique_ptr<real::GameObject> m_pUniqueHud{};
+	ScoreDisplay * m_pScoreDisplayPlayerOne{ nullptr }, * m_pScoreDisplayPlayerTwo{ nullptr };
+	HealthDisplay* m_pHealthDisplay{ nullptr };
 
 	void InitHud();
-	void InitScoreDisplay();
-	//void InitHighScoreDisplay();
-	//void InitLivesDisplay();
+	void InitScoreDisplay(PlayerNumber p);
+	void InitHighScoreDisplay() const;
+	void InitLivesDisplay();
 	//void InitEnemyDisplay();
 	//void InitLevelDisplayTop();
 	//void InitLevelDisplayBottom();

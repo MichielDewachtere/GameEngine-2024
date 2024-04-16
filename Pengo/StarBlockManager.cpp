@@ -5,10 +5,13 @@
 #include <SpriteComponent.h>
 
 #include "Game.h"
+#include "HUD.h"
 #include "Macros.h"
 #include "Move.h"
+#include "Player.h"
+#include "ScoreDisplay.h"
 
-StarBlockManager::StarBlockManager(dae::GameObject* pOwner)
+StarBlockManager::StarBlockManager(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
@@ -31,7 +34,7 @@ void StarBlockManager::Update()
 
 		for (const auto& block : m_pStarBlocks | std::views::keys)
 		{
-			const auto spriteComponent = block->GetComponent<dae::SpriteComponent>();
+			const auto spriteComponent = block->GetComponent<real::SpriteComponent>();
 			if (animationFinished = !spriteComponent->IsAnimationPlaying(); animationFinished)
 				spriteComponent->SelectSprite(9);
 		}
@@ -58,7 +61,7 @@ void StarBlockManager::HandleEvent(MoveEvents event, const glm::ivec2&)
 	}
 }
 
-void StarBlockManager::AddStarBlock(dae::GameObject* go, const glm::ivec2& pos)
+void StarBlockManager::AddStarBlock(real::GameObject* go, const glm::ivec2& pos)
 {
 	for (auto& [block, blockPos] : m_pStarBlocks)
 	{
@@ -92,20 +95,26 @@ void StarBlockManager::CheckAdjacentBlocks()
 	{
 		for (const auto& block : m_pStarBlocks | std::views::keys)
 		{
-			const auto spriteComponent = block->GetComponent<dae::SpriteComponent>();
+			const auto spriteComponent = block->GetComponent<real::SpriteComponent>();
 			spriteComponent->PlayAnimation({ 9,18 }, -1);
 		}
 	}
 	else if (m_AdjacentBlocks == 2)
 	{
 		if (m_IsTouchingWall)
-			std::cout << "+5'000 points\n";
+		{
+			HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerOne);
+			HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerTwo);
+		}
 		else
-			std::cout << "+10'000 points\n";
+		{
+			HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerOne);
+			HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerTwo);
+		}
 
 		for (const auto& block : m_pStarBlocks | std::views::keys)
 		{
-			const auto spriteComponent = block->GetComponent<dae::SpriteComponent>();
+			const auto spriteComponent = block->GetComponent<real::SpriteComponent>();
 			spriteComponent->PlayAnimation(9, 17, 2);
 		}
 
@@ -117,7 +126,7 @@ void StarBlockManager::CheckAdjacentBlocks()
 	{
 		for (const auto& block : m_pStarBlocks | std::views::keys)
 		{
-			const auto spriteComponent = block->GetComponent<dae::SpriteComponent>();
+			const auto spriteComponent = block->GetComponent<real::SpriteComponent>();
 			spriteComponent->SelectSprite(9);
 		}
 	}

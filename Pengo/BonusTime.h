@@ -5,10 +5,12 @@
 #include <Component.h>
 #include <tuple>
 
-class BonusTime final : public dae::Component
+#include "ScoreDisplay.h"
+
+class BonusTime final : public real::Component
 {
 public:
-	explicit BonusTime(dae::GameObject* pOwner);
+	explicit BonusTime(real::GameObject* pOwner);
 	virtual ~BonusTime() override = default;
 
 	BonusTime(const BonusTime& other) = delete;
@@ -22,13 +24,13 @@ private:
 	bool m_BonusShown{ false }, m_TimeShown{ false };
 	float m_AccuTime{ 0.f };
 
-	static inline std::tuple<int, std::pair<int, int>, int> m_BonusToTime[] = {
-		{1,{0,19}, 5000},
-		{2,{20,29}, 2000},
-		{3,{30,39}, 1000},
-		{4,{40,49}, 500},
-		{5,{50,59}, 10},
-		{6,{60, INT_MAX}, 0}
+	static inline std::tuple<int, std::pair<int, int>, ScoreEvents> m_BonusToTime[] = {
+		{1,{0,19}, ScoreEvents::bonusTimeUnder20},
+		{2,{20,29}, ScoreEvents::bonusTimeUnder30},
+		{3,{30,39}, ScoreEvents::bonusTimeUnder40},
+		{4,{40,49}, ScoreEvents::bonusTimeUnder50},
+		{5,{50,59}, ScoreEvents::bonusTimeUnder60},
+		//{6,{60, INT_MAX}, ScoreEvents::}
 	};
 };
 

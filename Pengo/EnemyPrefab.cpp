@@ -11,13 +11,13 @@
 #include "Macros.h"
 #include "Move.h"
 
-EnemyPrefab::EnemyPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos)
+EnemyPrefab::EnemyPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos)
 	: Prefab(pOwner)
 {
 	Init(pos, mazePos);
 }
 
-EnemyPrefab::EnemyPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos)
+EnemyPrefab::EnemyPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos)
 	: Prefab(pScene)
 {
 	Init(pos, mazePos);
@@ -25,24 +25,24 @@ EnemyPrefab::EnemyPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::i
 
 void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
 {
-	auto texture = dae::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee_green.png");
+	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee_green.png");
 
 	const auto go = GetGameObject();
 	go->SetTag("Enemy");
 	go->GetTransform()->SetLocalPosition(pos);
 	go->GetTransform()->SetUniformScale(PIXEL_SCALE);
 
-	dae::SpriteSheet spriteSheet;
+	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = std::move(texture);
 	spriteSheet.rows = 5;
 	spriteSheet.columns = 8;
 	spriteSheet.timePerAnimation = 0.2f;
-	const auto spriteComponent = go->AddComponent<dae::SpriteComponent>(std::move(spriteSheet));
+	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(2);
 
-	const auto colliderComponent = go->AddComponent<dae::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
+	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
 	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(dae::Colors::purple);
+	colliderComponent->SetDebugColor(real::Colors::purple);
 
 	const auto moveComponent = go->AddComponent<Move>(mazePos, Maze::BlockType::enemy, 75.f, true);
 	moveComponent->BindAnimationToDirection(Direction::down, { 8, 9 });

@@ -4,7 +4,7 @@
 
 #include "Move.h"
 
-MoveCommand::MoveCommand(int id, int controllerId, dae::GameObject* pGameObject, Direction direction)
+MoveCommand::MoveCommand(int id, int controllerId, real::GameObject* pGameObject, Direction direction)
 	: GameObjectCommand(id, controllerId, pGameObject)
 	, m_Direction(direction)
 {

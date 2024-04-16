@@ -10,33 +10,38 @@
 
 #include "Colors.h"
 #include "GameInfo.h"
+#include "HUD.h"
 #include "Macros.h"
 #include "Renderer.h"
 #include "SceneManager.h"
 
-Game::Game(dae::GameObject* pOwner)
+Game::Game(real::GameObject* pOwner)
 	: DrawableComponent(pOwner)
 {
 	m_GameTime = 0;
 	m_CurrentLevel %= 16;
 	++m_CurrentLevel;
 
-	auto pFont = dae::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
-	m_pPauseText = &dae::SceneManager::GetInstance().GetActiveScene().CreateGameObject();
+	auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	m_pPauseText = &real::SceneManager::GetInstance().GetActiveScene().CreateGameObject();
 
 	m_pPauseText->GetTransform()->SetLocalPosition(
 		(MAZE_WIDTH * PIXEL_SCALE * BLOCK_SIZE + WALL_WIDTH * PIXEL_SCALE * 2) / 2.f,
 		(MAZE_HEIGHT * PIXEL_SCALE * BLOCK_SIZE + WALL_WIDTH * PIXEL_SCALE * 2) / 2.f + 100.f
 	);
 
-	m_pPauseText->AddComponent<dae::TextureComponent>();
-	m_pPauseText->AddComponent<dae::TextComponent>("Ready ?", std::move(pFont))
-		->SetHorizontalAlignment(dae::TextComponent::HorizontalAlignment::center);
+	m_pPauseText->AddComponent<real::TextureComponent>();
+	m_pPauseText->AddComponent<real::TextComponent>("Ready ?", std::move(pFont))
+		->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+}
+
+void Game::Start()
+{
 }
 
 void Game::Update()
 {
-	const auto dt = dae::GameTime::GetInstance().GetElapsed();
+	const auto dt = real::GameTime::GetInstance().GetElapsed();
 
 	switch (m_CurrentState)
 	{
@@ -48,6 +53,7 @@ void Game::Update()
 
 		if (m_AccuTime > m_StartTime)
 		{
+			HUD::GetInstance().RemoveLife();
 			gameEvent.Notify(GameEvents::started);
 			m_CurrentState = GameState::running;
 		}
@@ -89,12 +95,22 @@ void Game::Update()
 		}
 		break;
 	}
-	case GameState::finished:
+	case GameState::actFinished:
 	{
 		m_AccuTime += dt;
 		if (m_AccuTime > m_CurtainTime)
 		{
-			dae::SceneManager::GetInstance().SetSceneActive(Scenes::bonus_menu);
+			real::SceneManager::GetInstance().SetSceneActive(Scenes::bonus_menu);
+		}
+		break;
+	}
+	case GameState::gameFinished:
+	{
+		m_AccuTime += dt;
+		if (m_AccuTime > m_CurtainTime)
+		{
+			// TODO: 
+			//real::SceneManager::GetInstance().SetSceneActive(Scenes::end_menu);
 		}
 		break;
 	}
@@ -124,28 +140,38 @@ void Game::Render()
 		}
 		break;
 	}
-	case GameState::finished:
+	case GameState::gameFinished:
+	case GameState::actFinished:
 	{
 		DrawCurtain(false, m_CurtainTime);
 		break;
 	}
+	case GameState::running: break;
 	}
 }
 
-void Game::EndGame(bool won)
+void Game::EndAct(bool won)
 {
 	if (won)
 	{
-		m_CurrentState = GameState::finished;
+		HUD::GetInstance().AddLife();
+		m_CurrentState = GameState::actFinished;
 		gameEvent.Notify(GameEvents::finished);
 	}
 	else
 	{
+		HUD::GetInstance().RemoveLife();
 		gameEvent.Notify(GameEvents::paused);
 		m_CurrentState = GameState::paused;
 	}
 
 	m_AccuTime = 0;
+}
+
+void Game::EndGame()
+{
+	m_CurrentState = GameState::gameFinished;
+	std::cout << "Game Ended\n";
 }
 
 void Game::DrawCurtain(bool open, float curtainTime) const
@@ -165,5 +191,5 @@ void Game::DrawCurtain(bool open, float curtainTime) const
 		(MAZE_HEIGHT * PIXEL_SCALE * BLOCK_SIZE + WALL_WIDTH * PIXEL_SCALE * 2) * percentage
 	};
 
-	dae::Renderer::GetInstance().RenderRectangle(rect, true, dae::Colors::black);
+	real::Renderer::GetInstance().RenderRectangle(rect, true, real::Colors::black);
 }

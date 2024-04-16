@@ -3,7 +3,7 @@
 
 #include "IEnemyState.h"
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
@@ -11,7 +11,7 @@ namespace dae
 class SpawnState final : public IEnemyState
 {
 public:
-	explicit SpawnState(dae::GameObject* pOwner);
+	explicit SpawnState(real::GameObject* pOwner);
 	virtual ~SpawnState() override = default;
 
 	SpawnState(const SpawnState& other) = delete;
@@ -24,7 +24,7 @@ public:
 	virtual void Exit() override;
 
 private:
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 };
 
 #endif // SPAWNSTATE_H

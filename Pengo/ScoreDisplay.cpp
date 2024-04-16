@@ -3,14 +3,14 @@
 #include <GameObject.h>
 #include <TextComponent.h>
 
-ScoreDisplay::ScoreDisplay(dae::GameObject* pOwner)
+ScoreDisplay::ScoreDisplay(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
 
 void ScoreDisplay::Start()
 {
-	m_pTextComponent = GetOwner()->GetComponent<dae::TextComponent>();
+	m_pTextComponent = GetOwner()->GetComponent<real::TextComponent>();
 }
 
 void ScoreDisplay::AddScore(ScoreEvents event)

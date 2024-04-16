@@ -7,11 +7,11 @@
 
 enum class WallOrientation : char;
 
-class WallPrefab final : public dae::Prefab
+class WallPrefab final : public real::Prefab
 {
 public:
-	explicit WallPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, bool horizontal, WallOrientation orientation);
-	explicit WallPrefab(dae::Scene* pScene, const glm::ivec2& pos, bool horizontal, WallOrientation orientation);
+	explicit WallPrefab(real::GameObject* pOwner, const glm::ivec2& pos, bool horizontal, WallOrientation orientation);
+	explicit WallPrefab(real::Scene* pScene, const glm::ivec2& pos, bool horizontal, WallOrientation orientation);
 	virtual ~WallPrefab() override = default;
 
 	WallPrefab(const WallPrefab& other) = delete;

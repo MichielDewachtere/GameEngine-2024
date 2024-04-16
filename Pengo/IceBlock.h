@@ -4,8 +4,9 @@
 #include <Component.h>
 #include <Observer.h>
 
+#include "Player.h"
 
-namespace dae
+namespace real
 {
 	class SpriteComponent;
 }
@@ -15,11 +16,11 @@ enum class Direction : char;
 class Move;
 
 class IceBlock final
-	: public dae::Component
-	, public dae::Observer<GameEvents>
+	: public real::Component
+	, public real::Observer<GameEvents>
 {
 public:
-	explicit IceBlock(dae::GameObject* pOwner, bool hidesEgg);
+	explicit IceBlock(real::GameObject* pOwner, bool hidesEgg);
 	virtual ~IceBlock() override;
 
 	IceBlock(const IceBlock& other) = delete;
@@ -33,11 +34,12 @@ public:
 	void HandleEvent(GameEvents) override;
 	void OnSubjectDestroy() override {}
 
-	void Break();
+	void Break(PlayerNumber breakedBy = PlayerNumber::none);
 
 private:
 	bool m_HidesEgg{ false }, m_Break{ false }, m_StartAnimation{ true };
-	dae::SpriteComponent* m_pSpriteComponent{ nullptr };
+	real::SpriteComponent* m_pSpriteComponent{ nullptr };
+	PlayerNumber m_BreakedBy{};
 };
 
 #endif // ICEBLOCK_H

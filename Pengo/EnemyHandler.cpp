@@ -12,7 +12,7 @@
 #include "Move.h"
 #include "Pushable.h"
 
-EnemyHandler::EnemyHandler(dae::GameObject* pOwner, int difficulty)
+EnemyHandler::EnemyHandler(real::GameObject* pOwner, int difficulty)
     : Component(pOwner)
 {
     int spawns = 3;
@@ -50,7 +50,7 @@ void EnemyHandler::Kill()
     auto v = GetOwner()->GetGameObjectsWithTag(Tags::sno_bee);
     if (v.empty() == false)
     {
-        std::ranges::for_each(v, [this](dae::GameObject* go)
+        std::ranges::for_each(v, [this](real::GameObject* go)
             {
                 go->GetComponent<Enemy>()->enemyDied.RemoveObserver(this);
             });
@@ -64,7 +64,7 @@ void EnemyHandler::HandleEvent()
     if (m_EnemySpawns.empty())
     {
         if (m_TotalEnemies == 0)
-            m_pGameComponent->EndGame(true);
+            m_pGameComponent->EndAct(true);
 
         return;
     }
@@ -94,7 +94,7 @@ void EnemyHandler::HandleEvent(GameEvents event)
     }
 }
 
-void EnemyHandler::AddEnemySpawn(dae::GameObject* go)
+void EnemyHandler::AddEnemySpawn(real::GameObject* go)
 {
 	m_EnemySpawns.push_back(go->GetComponent<HiddenEgg>());
 
@@ -105,7 +105,7 @@ void EnemyHandler::AddEnemySpawn(dae::GameObject* go)
     ++m_TotalEnemies;
 }
 
-void EnemyHandler::RemoveEnemySpawn(dae::GameObject* go)
+void EnemyHandler::RemoveEnemySpawn(real::GameObject* go)
 {
 	const auto spawn = go->GetComponent<HiddenEgg>();
     std::erase(m_EnemySpawns, spawn);

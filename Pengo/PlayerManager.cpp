@@ -18,7 +18,7 @@ void PlayerManager::Reset()
 			p.object = nullptr;
 		});
 
-	const auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
+	const auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
 	v.front()->GetComponent<Game>()->gameEvent.AddObserver(this);
 }
 
@@ -61,7 +61,7 @@ void PlayerManager::HandleEvent(GameEvents event)
 
 void PlayerManager::OnSubjectDestroy()
 {
-	auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
+	auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
 	if (v.empty() == false)
 	{
 		v.front()->GetComponent<Game>()->gameEvent.RemoveObserver(this);
@@ -85,9 +85,9 @@ bool PlayerManager::RequestPlayer() const
 	return counter < m_AmountOfPlayers;
 }
 
-void PlayerManager::AddPlayer(dae::GameObject* pPlayer, const glm::ivec2& playerSpawn)
+void PlayerManager::AddPlayer(real::GameObject* pPlayer, const glm::ivec2& playerSpawn)
 {
-	const auto map = dae::InputManager::GetInstance().GetActiveInputMap();
+	const auto map = real::InputManager::GetInstance().GetActiveInputMap();
 	for (auto& [object, spawnPos, useKeyboard, controllerId] : m_pPlayers)
 	{
 		if (object == nullptr)
@@ -97,21 +97,21 @@ void PlayerManager::AddPlayer(dae::GameObject* pPlayer, const glm::ivec2& player
 
 			if (useKeyboard)
 			{
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_up, dae::KeyState::keyPressed, SDL_SCANCODE_UP, pPlayer, Direction::up);
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_down, dae::KeyState::keyPressed, SDL_SCANCODE_DOWN, pPlayer, Direction::down);
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_left, dae::KeyState::keyPressed, SDL_SCANCODE_LEFT, pPlayer, Direction::left);
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_right, dae::KeyState::keyPressed, SDL_SCANCODE_RIGHT, pPlayer, Direction::right);
+				map->AddKeyboardAction<MoveCommand>(InputCommands::move_up, real::KeyState::keyPressed, SDL_SCANCODE_UP, pPlayer, Direction::up);
+				map->AddKeyboardAction<MoveCommand>(InputCommands::move_down, real::KeyState::keyPressed, SDL_SCANCODE_DOWN, pPlayer, Direction::down);
+				map->AddKeyboardAction<MoveCommand>(InputCommands::move_left, real::KeyState::keyPressed, SDL_SCANCODE_LEFT, pPlayer, Direction::left);
+				map->AddKeyboardAction<MoveCommand>(InputCommands::move_right, real::KeyState::keyPressed, SDL_SCANCODE_RIGHT, pPlayer, Direction::right);
 
-				map->AddKeyboardAction<InteractCommand>(InputCommands::interact, dae::KeyState::keyDown, SDL_SCANCODE_SPACE, pPlayer);
+				map->AddKeyboardAction<InteractCommand>(InputCommands::interact, real::KeyState::keyDown, SDL_SCANCODE_SPACE, pPlayer);
 			}
 			else
 			{
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_up, dae::KeyState::keyPressed, dae::GamePad::Button::dPadUp, pPlayer, Direction::up);
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_down, dae::KeyState::keyPressed, dae::GamePad::Button::dPadDown, pPlayer, Direction::down);
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_left, dae::KeyState::keyPressed, dae::GamePad::Button::dPadLeft, pPlayer, Direction::left);
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_right, dae::KeyState::keyPressed, dae::GamePad::Button::dPadRight, pPlayer, Direction::right);
+				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_up, real::KeyState::keyPressed, real::GamePad::Button::dPadUp, pPlayer, Direction::up);
+				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_down, real::KeyState::keyPressed, real::GamePad::Button::dPadDown, pPlayer, Direction::down);
+				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_left, real::KeyState::keyPressed, real::GamePad::Button::dPadLeft, pPlayer, Direction::left);
+				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_right, real::KeyState::keyPressed, real::GamePad::Button::dPadRight, pPlayer, Direction::right);
 
-				map->AddGamePadAction<InteractCommand>(controllerId, InputCommands::interact, dae::KeyState::keyDown, dae::GamePad::Button::buttonDown, pPlayer);
+				map->AddGamePadAction<InteractCommand>(controllerId, InputCommands::interact, real::KeyState::keyDown, real::GamePad::Button::buttonDown, pPlayer);
 			}
 			break;
 		}

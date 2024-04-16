@@ -7,7 +7,7 @@
 #include "EnemyHandler.h"
 #include "IceBlock.h"
 
-HiddenEgg::HiddenEgg(dae::GameObject* pOwner)
+HiddenEgg::HiddenEgg(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
@@ -16,7 +16,7 @@ HiddenEgg::~HiddenEgg() = default;
 
 void HiddenEgg::Start()
 {
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 }
 
 void HiddenEgg::Update()
@@ -69,7 +69,7 @@ void HiddenEgg::PopEgg()
 	GetOwner()->GetParent()->GetComponent<IceBlock>()->Break();
 
 	//if (m_pSpriteComponent == nullptr)
-	//	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	//	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 
 	{
 		//m_pSpriteComponent->Enable();
@@ -78,7 +78,7 @@ void HiddenEgg::PopEgg()
 	}
 	//else
 	//{
-	//	m_IceBlockSpriteComponent = GetOwner()->GetParent()->GetComponent<dae::SpriteComponent>();
+	//	m_IceBlockSpriteComponent = GetOwner()->GetParent()->GetComponent<real::SpriteComponent>();
 	//}
 }
 
@@ -89,8 +89,8 @@ void HiddenEgg::BreakEgg()
 	GetOwner()->GetParent()->GetComponent<IceBlock>()->Break();
 
 	if (m_pSpriteComponent == nullptr)
-		m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+		m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 
 	m_CurrentState = EggBreakSequence::iceBreakAnim;
-	m_IceBlockSpriteComponent = GetOwner()->GetParent()->GetComponent<dae::SpriteComponent>();
+	m_IceBlockSpriteComponent = GetOwner()->GetParent()->GetComponent<real::SpriteComponent>();
 }

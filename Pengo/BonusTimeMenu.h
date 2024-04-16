@@ -2,12 +2,12 @@
 #define BONUSTIMEMENU_H
 
 #include <Scene.h>
-#include <Minigin.h>
+#include <RealEngine.h>
 
-class BonusTimeMenu final : public dae::Scene
+class BonusTimeMenu final : public real::Scene
 {
 public:
-	explicit BonusTimeMenu(std::string name, std::string inputMap, dae::WindowSettings settings);
+	explicit BonusTimeMenu(std::string name, std::string inputMap, real::WindowSettings settings);
 	virtual ~BonusTimeMenu() override = default;
 
 	BonusTimeMenu(const BonusTimeMenu& other) = delete;
@@ -18,9 +18,9 @@ public:
 	virtual void Load() override;
 
 private:
-	dae::WindowSettings m_Settings;
+	real::WindowSettings m_Settings;
 
-	void WriteLine(dae::GameObject& go, int i, std::string text) const;
+	void WriteLine(real::GameObject& go, int i, std::string text) const;
 };
 
 #endif // BONUSTIMEMENU_H

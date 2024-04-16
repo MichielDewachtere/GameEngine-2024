@@ -22,7 +22,7 @@ std::map<WallOrientation, glm::ivec2> Enemy::m_OrientationToPos{
 	{WallOrientation::west, {0,-1}},
 };
 
-Enemy::Enemy(dae::GameObject* pOwner)
+Enemy::Enemy(real::GameObject* pOwner)
 	: Component(pOwner)
 {
 }
@@ -66,9 +66,9 @@ void Enemy::Kill()
 	WallObservers(true);
 }
 
-void Enemy::HandleEvent(dae::GameObjectEvent event)
+void Enemy::HandleEvent(real::GameObjectEvent event)
 {
-	if (event == dae::GameObjectEvent::destroyed)
+	if (event == real::GameObjectEvent::destroyed)
 		enemyDied.Destroy();
 }
 

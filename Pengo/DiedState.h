@@ -6,7 +6,7 @@
 class DiedState final : public IEnemyState
 {
 public:
-	explicit DiedState(dae::GameObject* pOwner);
+	explicit DiedState(real::GameObject* pOwner);
 	virtual ~DiedState() override = default;
 
 	DiedState(const DiedState& other) = delete;

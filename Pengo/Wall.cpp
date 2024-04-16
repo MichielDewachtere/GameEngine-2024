@@ -5,7 +5,7 @@
 
 #include "Maze.h"
 
-Wall::Wall(dae::GameObject* pOwner, WallOrientation orientation)
+Wall::Wall(real::GameObject* pOwner, WallOrientation orientation)
 	: Component(pOwner)
 	, m_Orientation(orientation)
 {
@@ -14,7 +14,7 @@ Wall::Wall(dae::GameObject* pOwner, WallOrientation orientation)
 void Wall::Start()
 {
 	m_pMazeComponent = GetOwner()->GetParent()->GetComponent<Maze>();
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 }
 
 void Wall::Update()

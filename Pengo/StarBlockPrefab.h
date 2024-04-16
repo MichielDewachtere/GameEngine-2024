@@ -5,11 +5,11 @@
 
 #include <Prefab.h>
 
-class StarBlockPrefab final : public dae::Prefab
+class StarBlockPrefab final : public real::Prefab
 {
 public:
-	explicit StarBlockPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos);
-	explicit StarBlockPrefab(dae::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos);
+	explicit StarBlockPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos);
+	explicit StarBlockPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos);
 	virtual ~StarBlockPrefab() override = default;
 
 	StarBlockPrefab(const StarBlockPrefab& other) = delete;

@@ -9,7 +9,7 @@
 #include "Move.h"
 #include "Player.h"
 
-MoveState::MoveState(dae::GameObject* pOwner)
+MoveState::MoveState(real::GameObject* pOwner)
 	: IEnemyState(pOwner)
 {
 }
@@ -17,9 +17,10 @@ MoveState::MoveState(dae::GameObject* pOwner)
 void MoveState::Enter()
 {
 	m_pMoveComponent = GetOwner()->GetComponent<Move>();
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 	m_pSpriteComponent->PlayAnimation(8, 9);
 
+	m_Players.clear();
 	RegisterPlayers();
 }
 
@@ -29,9 +30,9 @@ IEnemyState* MoveState::Update()
 
 	for (auto it = m_Players.begin(); it != m_Players.end();)
 	{
-		if ((*it)->GetMazePos() == mazePos)
+		if ((*it).second->GetMazePos() == mazePos)
 		{
-			(*it)->GetOwner()->GetComponent<Player>()->Die();
+			(*it).second->GetOwner()->GetComponent<Player>()->Die();
 			it = m_Players.erase(it);
 		}
 		else
@@ -39,7 +40,7 @@ IEnemyState* MoveState::Update()
 	}
 
 	if (m_Players.empty())
-		GetOwner()->GetParent()->GetComponent<Game>()->EndGame(false);
+		GetOwner()->GetParent()->GetComponent<Game>()->EndAct(false);
 
 	return nullptr;
 }
@@ -49,14 +50,14 @@ void MoveState::Exit()
 	m_pSpriteComponent->Pause(true);
 }
 
-void MoveState::RegisterPlayers()
+void MoveState::RegisterPlayers() const
 {
-	const auto v = dae::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::pengo);
+	const auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::pengo);
 	if (v.empty() == false)
 	{
-		std::ranges::for_each(v, [this](dae::GameObject* go)
+		std::ranges::for_each(v, [this](real::GameObject* go)
 			{
-				m_Players.push_back(go->GetComponent<Move>());
+				m_Players.try_emplace(go->GetId(), go->GetComponent<Move>());
 			});
 	}
 }

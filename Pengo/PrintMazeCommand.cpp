@@ -4,7 +4,7 @@
 
 #include "Maze.h"
 
-PrintMazeCommand::PrintMazeCommand(int id, int controllerId, dae::GameObject* pGameObject)
+PrintMazeCommand::PrintMazeCommand(int id, int controllerId, real::GameObject* pGameObject)
 	: GameObjectCommand(id, controllerId, pGameObject)
 {
 	m_pMazeComponent = GetGameObject()->GetComponent<Maze>();

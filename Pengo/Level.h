@@ -3,7 +3,7 @@
 
 #include <Scene.h>
 
-class Level final : public dae::Scene
+class Level final : public real::Scene
 {
 public:
 	explicit Level(std::string level, std::string inputMap, bool debug = false);

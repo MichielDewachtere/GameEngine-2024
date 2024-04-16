@@ -6,7 +6,7 @@
 
 class Player;
 
-namespace dae
+namespace real
 {
 	class TextComponent;
 }
@@ -33,10 +33,10 @@ enum class ScoreEvents : char
 	breakEgg
 };
 
-class ScoreDisplay final : public dae::Component
+class ScoreDisplay final : public real::Component
 {
 public:
-	explicit ScoreDisplay(dae::GameObject* pOwner);
+	explicit ScoreDisplay(real::GameObject* pOwner);
 	virtual ~ScoreDisplay() override = default;
 
 	ScoreDisplay(const ScoreDisplay& other) = delete;
@@ -51,7 +51,7 @@ public:
 
 private:
 	uint32_t m_Score{ 0 };
-	dae::TextComponent* m_pTextComponent{ nullptr };
+	real::TextComponent* m_pTextComponent{ nullptr };
 
 	const static inline std::map<ScoreEvents, int> event_to_points
 	{

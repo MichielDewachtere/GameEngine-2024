@@ -5,14 +5,14 @@
 
 #include "MoveState.h"
 
-SpawnState::SpawnState(dae::GameObject* pOwner)
+SpawnState::SpawnState(real::GameObject* pOwner)
 	: IEnemyState(pOwner)
 {
 }
 
 void SpawnState::Enter()
 {
-	m_pSpriteComponent = GetOwner()->GetComponent<dae::SpriteComponent>();
+	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
 	m_pSpriteComponent->PlayAnimation(0, 5, 0);
 }
 

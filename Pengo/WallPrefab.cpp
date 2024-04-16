@@ -11,13 +11,13 @@
 #include "Macros.h"
 #include "Wall.h"
 
-WallPrefab::WallPrefab(dae::GameObject* pOwner, const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
+WallPrefab::WallPrefab(real::GameObject* pOwner, const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
 	: Prefab(pOwner)
 {
 	Init(pos, horizontal, orientation);
 }
 
-WallPrefab::WallPrefab(dae::Scene* pScene, const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
+WallPrefab::WallPrefab(real::Scene* pScene, const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
 	: Prefab(pScene)
 {
 	Init(pos, horizontal, orientation);
@@ -25,17 +25,17 @@ WallPrefab::WallPrefab(dae::Scene* pScene, const glm::ivec2& pos, bool horizonta
 
 void WallPrefab::Init(const glm::ivec2& pos, bool horizontal, WallOrientation orientation)
 {
-	std::unique_ptr<dae::Texture2D> texture;
+	std::unique_ptr<real::Texture2D> texture;
 	if (horizontal)
-		texture = dae::ResourceManager::GetInstance().LoadTexture("textures/wall_horizontal.png");
+		texture = real::ResourceManager::GetInstance().LoadTexture("textures/wall_horizontal.png");
 	else
-		texture = dae::ResourceManager::GetInstance().LoadTexture("textures/wall_vertical.png");
+		texture = real::ResourceManager::GetInstance().LoadTexture("textures/wall_vertical.png");
 
 	const auto go = GetGameObject();
 	go->GetTransform()->SetLocalPosition(pos);
 	go->GetTransform()->SetUniformScale(PIXEL_SCALE);
 
-	dae::SpriteSheet spriteSheet;
+	real::SpriteSheet spriteSheet;
 	spriteSheet.pTexture = std::move(texture);
 	if (horizontal)
 	{
@@ -48,12 +48,12 @@ void WallPrefab::Init(const glm::ivec2& pos, bool horizontal, WallOrientation or
 		spriteSheet.columns = 3;
 	}
 	spriteSheet.timePerAnimation = 0.1f;
-	const auto spriteComponent = go->AddComponent<dae::SpriteComponent>(std::move(spriteSheet));
+	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(0);
 
-	const auto colliderComponent = go->AddComponent<dae::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
+	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
 	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(dae::Colors::purple);
+	colliderComponent->SetDebugColor(real::Colors::purple);
 
 	go->AddComponent<Wall>(orientation);
 }
