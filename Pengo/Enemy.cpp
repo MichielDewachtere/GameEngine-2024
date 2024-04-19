@@ -126,6 +126,9 @@ void Enemy::WallObservers(const bool remove)
 {
 	const auto maze = GetOwner()->GetParent()->GetComponent<Maze>();
 
+	if (maze == nullptr)
+		return;
+
 	if (remove)
 	{
 		maze->GetWall(WallOrientation::north)->GetComponent<Wall>()->wallShaked.RemoveObserver(this);
