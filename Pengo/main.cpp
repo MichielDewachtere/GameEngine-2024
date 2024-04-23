@@ -12,11 +12,13 @@
 
 #include "BonusTimeMenu.h"
 #include "GameInfo.h"
+#include "GameOverMenu.h"
 #include "HUD.h"
 #include "Level.h"
 #include "LevelGenerator.h"
 #include "Macros.h"
 #include "PlayerManager.h"
+#include "StartMenu.h"
 
 real::WindowSettings g_windowSettings;
 
@@ -28,34 +30,39 @@ void load()
 
 	auto& input = InputManager::GetInstance();
 	input.EnableGamePadInput(true);
+	input.RegisterGamePads();
+	input.AddInputMap(InputMaps::start_menu);
+	input.AddInputMap(InputMaps::bonus_time_menu);
 	input.AddInputMap(InputMaps::gameplay);
-	input.SetInputMapActive(InputMaps::gameplay);
+	input.AddInputMap(InputMaps::game_over_menu);
+	input.SetInputMapActive(InputMaps::start_menu);
 
 
-	const auto idcs = input.RegisterGamePads();
-	if (idcs.empty())
-	{
-		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX });
-	}
-	else if (idcs.size() == 1)
-	{
-		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX });
-		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, idcs.front() });
-	}
-	else
-	{
-		constexpr int maxAmountOfPlayers = 2;
-		for (int i = 0; i < maxAmountOfPlayers; ++i)
-		{
-			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, idcs[i] });
-		}
-	}
+	//const auto idcs = input.RegisterGamePads();
+	//if (idcs.empty())
+	//{
+	//	PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX });
+	//}
+	//else if (idcs.size() == 1)
+	//{
+	//	PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX });
+	//	PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, idcs.front() });
+	//}
+	//else
+	//{
+	//	constexpr int maxAmountOfPlayers = 2;
+	//	for (int i = 0; i < maxAmountOfPlayers; ++i)
+	//	{
+	//		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, idcs[i] });
+	//	}
+	//}
 
 	// Create the HUD
 	HUD::GetInstance().Init();
 
-	// TODO: Add Menu's
+	SceneManager::GetInstance().CreateScene(new StartMenu(Scenes::start_menu, "none", g_windowSettings));
 	SceneManager::GetInstance().CreateScene(new BonusTimeMenu(Scenes::bonus_menu, "none", g_windowSettings));
+	SceneManager::GetInstance().CreateScene(new GameOverMenu(Scenes::game_over_menu, "none"));
 
 	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay, true));
 	SceneManager::GetInstance().CreateScene(new Level("level2", InputMaps::gameplay));
@@ -74,7 +81,7 @@ void load()
 	SceneManager::GetInstance().CreateScene(new Level("level15", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level16", InputMaps::gameplay));
 
-	SceneManager::GetInstance().SetSceneActive("level1");
+	SceneManager::GetInstance().SetSceneActive(Scenes::start_menu);
 }
 
 int main(int, char* [])
