@@ -100,13 +100,13 @@ void real::SceneManager::LoadScene()
 	m_pActiveScene = m_pSceneToLoad;
 	m_pSceneToLoad = nullptr;
 
+	if (m_pActiveScene->GetDefaultInputMap().empty() == false)
+		InputManager::GetInstance().SetInputMapActive(m_pActiveScene->GetDefaultInputMap());
+
 	m_pActiveScene->Load();
 	m_pActiveScene->FirstFrame();
 
 	loadScene.Notify(SceneEvents::load, m_pActiveScene);
-
-	if (m_pActiveScene->GetDefaultInputMap().empty() == false)
-		InputManager::GetInstance().SetInputMapActive(m_pActiveScene->GetDefaultInputMap());
 
 	//InputManager::GetInstance().ReloadCommands();
 }
