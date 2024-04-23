@@ -1,5 +1,6 @@
 ﻿#include "InputMap.h"
 
+#include <ranges>
 #include <SDL_scancode.h>
 
 real::InputMap::InputMap(std::string name)
@@ -13,9 +14,17 @@ void real::InputMap::RemoveKeyboardAction(uint8_t id)
 	m_KeyboardActionsToRemove.push_back(id);
 }
 
-void real::InputMap::RemoveGamePadAction(uint8_t id, uint8_t controllerId)
+void real::InputMap::RemoveGamePadAction(uint8_t id, int controllerId)
 {
-	m_GamePadActionsToRemove[controllerId].push_back(id);
+	if (controllerId >= 0)
+		m_GamePadActionsToRemove[static_cast<uint8_t>(controllerId)].push_back(id);
+	else if (controllerId == -1)
+	{
+		for (const auto& currentId : m_pControllerActions | std::views::keys)
+		{
+			m_GamePadActionsToRemove[currentId].push_back(id);
+		}
+	}
 }
 
 const std::map<uint8_t, std::unique_ptr<real::KeyboardAction>>& real::InputMap::GetKeyboardActions()

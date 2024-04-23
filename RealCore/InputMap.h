@@ -30,9 +30,7 @@ namespace real
 		void AddGamePadAction(uint8_t controllerId, uint8_t id, KeyState inputType, GamePad::Button button, CommandArgs... commandArgs);
 
 		void RemoveKeyboardAction(uint8_t id);
-		void RemoveGamePadAction(uint8_t id, uint8_t controllerId);
-
-		// TODO: Remove commands??
+		void RemoveGamePadAction(uint8_t id, int controllerId);
 
 		const std::map<uint8_t, std::unique_ptr<KeyboardAction>>& GetKeyboardActions();
 		const std::map<uint8_t, std::map<uint8_t, std::unique_ptr<ControllerAction>>>& GetGamePadActions();
