@@ -23,7 +23,7 @@ namespace real
 
 	class SpriteComponent final
 		: public DrawableComponent
-		, public Observer<TransformEvent, const glm::vec2&>
+		, public Observer<TransformEvent, const glm::vec3&>
 	{
 	public:
 		explicit SpriteComponent(GameObject* pOwner, SpriteSheet spriteSheet);
@@ -37,7 +37,7 @@ namespace real
 		virtual void Update() override;
 		virtual void Render() override;
 
-		void HandleEvent(TransformEvent, const glm::vec2&) override;
+		void HandleEvent(TransformEvent, const glm::vec3&) override;
 		void OnSubjectDestroy() override;
 
 		void SelectSprite(int idx);

@@ -25,8 +25,8 @@ void real::TextureComponent::Render()
 		Logger::LogWarning({ "No texture found in texture component" });
 
 
-	const auto pos = GetOwner()->GetTransform()->GetWorldPosition() - m_TextureOffset;
-	const auto size = glm::vec2(m_pTexture->GetSize()) * GetOwner()->GetTransform()->GetScale();
+	const auto pos = glm::vec2(GetOwner()->GetTransform()->GetWorldPosition()) - m_TextureOffset;
+	const auto size = glm::vec2(m_pTexture->GetSize()) * glm::vec2(GetOwner()->GetTransform()->GetScale());
 
 	const SDL_Rect rect{
 		static_cast<int>(pos.x),

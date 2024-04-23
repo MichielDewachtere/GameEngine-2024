@@ -2,6 +2,7 @@
 #define COLLIDERCOMPONENT_H
 
 #include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
 #include "ColliderComponent.h"
@@ -14,7 +15,7 @@ namespace real
 
 	class ColliderComponent final
 		: public DrawableComponent
-		, public Observer<TransformEvent, const glm::vec2&>
+		, public Observer<TransformEvent, const glm::vec3&>
 	{
 	public:
 		explicit ColliderComponent(GameObject* pOwner, const glm::vec2& pos, const glm::vec2& size);
@@ -37,7 +38,7 @@ namespace real
 		void EnableDrawDebug(bool enable) { m_DrawDebug = enable; }
 		void SetDebugColor(const glm::u8vec4& color) { m_DebugColor = color; }
 
-		void HandleEvent(TransformEvent event, const glm::vec2& newPos) override;
+		void HandleEvent(TransformEvent event, const glm::vec3& newPos) override;
 		void OnSubjectDestroy() override;
 
 	private:

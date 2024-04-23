@@ -26,7 +26,7 @@ void real::ColliderComponent::Start()
 	transform->worldPosChanged.AddObserver(this);
 	transform->scaleChanged.AddObserver(this);
 
-	const auto worldPos= transform->GetWorldPosition();
+	const glm::vec2 worldPos= transform->GetWorldPosition();
 	m_OffsetFromParent = worldPos - m_Position;
 	m_Scale = transform->GetScale();
 }
@@ -97,17 +97,17 @@ bool real::ColliderComponent::IsEntirelyOverlapping(const ColliderComponent& oth
 
 }
 
-void real::ColliderComponent::HandleEvent(TransformEvent event, const glm::vec2& data)
+void real::ColliderComponent::HandleEvent(TransformEvent event, const glm::vec3& data)
 {
 	if (event == TransformEvent::worldPosChanged)
-		m_Position = data - m_OffsetFromParent;
+		m_Position = glm::vec2{ data } - m_OffsetFromParent;
 	else if (event == TransformEvent::scaleChanged)
 		m_Scale = data;
 }
 
 void real::ColliderComponent::OnSubjectDestroy()
 {
-	auto transform = GetOwner()->GetTransform();
+	const auto transform = GetOwner()->GetTransform();
 
 	if (transform != nullptr)
 	{

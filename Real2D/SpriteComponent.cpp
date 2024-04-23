@@ -93,7 +93,7 @@ void real::SpriteComponent::Render()
 	Renderer::GetInstance().RenderSprite(*m_SpriteSheet.pTexture, m_Rect, dstRect, 0, { 0,0 }, m_Flip);
 }
 
-void real::SpriteComponent::HandleEvent(TransformEvent, const glm::vec2& pos)
+void real::SpriteComponent::HandleEvent(TransformEvent, const glm::vec3& pos)
 {
 	m_RenderPos = pos;
 }
