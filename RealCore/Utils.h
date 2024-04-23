@@ -1,5 +1,5 @@
-﻿#ifndef UTILS_H
-#define UTILS_H
+﻿#ifndef REALUTILS_H
+#define REALUTILS_H
 
 #include <string>
 #include <glm/vec2.hpp>
@@ -20,4 +20,4 @@ static inline std::string Vec2ToString(const glm::vec2& vec)
 	return s;
 }
 
-#endif // UTILS_H
+#endif // REALUTILS_H
