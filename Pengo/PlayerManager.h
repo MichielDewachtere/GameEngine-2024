@@ -5,9 +5,9 @@
 #include <vector>
 
 #include <Singleton.h>
+#include <string>
 #include <glm/vec2.hpp>
 
-#include "BonusTimeMenu.h"
 #include "Observer.h"
 
 enum class GameEvents : char;
@@ -23,6 +23,7 @@ struct PlayerInfo
 	glm::ivec2 spawnPos;
 	bool useKeyboard;
 	uint8_t controllerId;
+	std::string name;
 };
 
 class PlayerManager final
@@ -43,11 +44,14 @@ public:
 	void HandleEvent(GameEvents) override;
 	void OnSubjectDestroy() override;
 
-	void RegisterPlayer(PlayerInfo info);
+	uint8_t RegisterPlayer(PlayerInfo info);
 
 	bool RequestPlayer() const;
 	void AddPlayer(real::GameObject* pPlayer, const glm::ivec2&);
 	uint8_t GetAmountOfPlayers() const { return m_AmountOfPlayers; }
+	const std::vector<PlayerInfo>& GetPlayers() { return m_pPlayers; }
+
+	void SetNameOfPlayer(uint8_t id, std::string name);
 
 private:
 	friend class Singleton<PlayerManager>;

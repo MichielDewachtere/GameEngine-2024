@@ -68,10 +68,12 @@ void PlayerManager::OnSubjectDestroy()
 	}
 }
 
-void PlayerManager::RegisterPlayer(const PlayerInfo info)
+uint8_t PlayerManager::RegisterPlayer(const PlayerInfo info)
 {
 	m_pPlayers.push_back(info);
 	++m_AmountOfPlayers;
+
+	return m_AmountOfPlayers - 1;
 }
 
 bool PlayerManager::RequestPlayer() const
@@ -88,7 +90,7 @@ bool PlayerManager::RequestPlayer() const
 void PlayerManager::AddPlayer(real::GameObject* pPlayer, const glm::ivec2& playerSpawn)
 {
 	const auto map = real::InputManager::GetInstance().GetActiveInputMap();
-	for (auto& [object, spawnPos, useKeyboard, controllerId] : m_pPlayers)
+	for (auto& [object, spawnPos, useKeyboard, controllerId, name] : m_pPlayers)
 	{
 		if (object == nullptr)
 		{
@@ -116,4 +118,9 @@ void PlayerManager::AddPlayer(real::GameObject* pPlayer, const glm::ivec2& playe
 			break;
 		}
 	}
+}
+
+void PlayerManager::SetNameOfPlayer(uint8_t id, std::string name)
+{
+	m_pPlayers[id].name = std::move(name);
 }
