@@ -166,9 +166,6 @@
     <ClCompile Include="StartGameCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="EnterName.cpp">
-      <Filter>HUD\Components</Filter>
-    </ClCompile>
     <ClCompile Include="HandleNameCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
@@ -186,6 +183,18 @@
     </ClCompile>
     <ClCompile Include="PlayerJoinCommand.cpp">
       <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="EggCounter.cpp">
+      <Filter>HUD\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EnterName.cpp">
+      <Filter>Components\StartScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelDisplayTop.cpp">
+      <Filter>HUD\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelDisplayBottom.cpp">
+      <Filter>HUD\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,9 +324,6 @@
     <ClInclude Include="StartGameCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="EnterName.h">
-      <Filter>HUD\Components</Filter>
-    </ClInclude>
     <ClInclude Include="HandleNameCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
@@ -335,6 +341,18 @@
     </ClInclude>
     <ClInclude Include="PlayerJoinCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="EggCounter.h">
+      <Filter>HUD\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EnterName.h">
+      <Filter>Components\StartScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelDisplayTop.h">
+      <Filter>HUD\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelDisplayBottom.h">
+      <Filter>HUD\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
