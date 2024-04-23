@@ -1,5 +1,5 @@
-﻿#ifndef GAMETIME_H
-#define GAMETIME_H
+﻿#ifndef REALGAMETIME_H
+#define REALGAMETIME_H
 
 #include "Singleton.h"
 
@@ -44,4 +44,4 @@ namespace real
 	};
 }
 
-#endif // GAMETIME_H
+#endif // REALGAMETIME_H
