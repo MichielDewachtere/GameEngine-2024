@@ -113,7 +113,7 @@ int StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
 		const auto text = "Player " + std::to_string(playerId);
 		const auto textComponent = player.AddComponent<real::TextComponent>(text, std::move(pFont));
 		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
-		textComponent->SetColor(real::Colors::grey);
+		textComponent->SetColor(real::Colors::white);
 	}
 	auto& type = player.CreateGameObject("player-type");
 	{
