@@ -27,13 +27,15 @@ void HealthDisplay::AddLife()
 void HealthDisplay::RemoveLife()
 {
 	--m_AmountOfLives;
-	GetOwner()->GetChildAt(m_AmountOfLives)->Destroy();
-
-	if (m_AmountOfLives == 0)
+	if (m_AmountOfLives < 0)
 	{
-		// TODO: Fix
 		GetOwner()->GetScene().FindGameObjectsWithTag(Tags::game).front()->GetComponent<Game>()->EndGame();
+		return;
 	}
+
+	const auto childToRemove = GetOwner()->GetChildAt(m_AmountOfLives);
+	childToRemove->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2, 0);
+	childToRemove->Destroy(0.6f);
 }
 
 void HealthDisplay::AddLifeTexture(const int index) const

@@ -20,7 +20,7 @@ public:
 	void RemoveLife();
 
 private:
-	uint8_t m_AmountOfLives{ 4 };
+	int8_t m_AmountOfLives{ 4 };
 
 	void AddLifeTexture(int index) const;
 };
