@@ -21,6 +21,7 @@ namespace real
 		Command(Command&& other) = delete;
 		Command& operator=(Command&& rhs) = delete;
 
+		//TODO: Start doesnt get called
 		virtual void Start() {}
 		virtual void Execute() = 0;
 
