@@ -355,11 +355,24 @@ std::vector<real::GameObject*> real::GameObject::GetChildren() const
 
 real::GameObject* real::GameObject::GetChildAt(uint32_t index) const
 {
-	return m_pChildren[index].get();
+	if (index < m_pChildren.size())
+		return m_pChildren[index].get();
+
+	if (index < m_pChildrenToAdd.size() + m_pChildren.size())
+		return m_pChildrenToAdd[index + m_pChildren.size()].get();
+
+	return nullptr;
 }
 
 real::GameObject* real::GameObject::GetChild(uint32_t id) const
 {
+	for (const auto& child : m_pChildrenToAdd)
+	{
+		if (child->GetId() == id)
+			return child.get();
+
+	}
+
 	for (const auto& child : m_pChildren)
 	{
 		if (child->GetId() == id)
