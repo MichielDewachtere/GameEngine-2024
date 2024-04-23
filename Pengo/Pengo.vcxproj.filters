@@ -16,9 +16,6 @@
     <Filter Include="Level">
       <UniqueIdentifier>{ddb1eee0-98c2-4050-93c9-4d39c79ccdb4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Prefabs">
-      <UniqueIdentifier>{ba3f8161-5b85-40fd-9de2-e710290523cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Managers">
       <UniqueIdentifier>{9c750189-214e-4220-ab00-d8c6a099a37b}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,12 @@
     </Filter>
     <Filter Include="HUD\Components">
       <UniqueIdentifier>{eba9a8a2-1f06-4c4c-9a69-aeec5f17fe19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{ba3f8161-5b85-40fd-9de2-e710290523cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\StartScreen">
+      <UniqueIdentifier>{20c958e2-9bc4-4dc1-aca4-e3e9a1aa0818}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +156,36 @@
     </ClCompile>
     <ClCompile Include="HealthDisplay.cpp">
       <Filter>HUD\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="StartMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="StartGameCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="EnterName.cpp">
+      <Filter>HUD\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="HandleNameCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="StartScreen.cpp">
+      <Filter>Components\StartScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectMode.cpp">
+      <Filter>Components\StartScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectModeCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="JoinInstructions.cpp">
+      <Filter>Components\StartScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJoinCommand.cpp">
+      <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +305,36 @@
     </ClInclude>
     <ClInclude Include="HealthDisplay.h">
       <Filter>HUD\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="StartMenu.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverMenu.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="StartGameCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="EnterName.h">
+      <Filter>HUD\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HandleNameCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="StartScreen.h">
+      <Filter>Components\StartScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectMode.h">
+      <Filter>Components\StartScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectModeCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="JoinInstructions.h">
+      <Filter>Components\StartScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJoinCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
