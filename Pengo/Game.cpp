@@ -56,6 +56,7 @@ void Game::Update()
 			HUD::GetInstance().RemoveLife();
 			gameEvent.Notify(GameEvents::started);
 			m_CurrentState = GameState::running;
+			m_AccuTime = 0;
 		}
 		break;
 	}
@@ -70,10 +71,9 @@ void Game::Update()
 
 		if (m_AccuTime > m_PauseTime + m_PauseCurtainTime)
 		{
-			m_AccuTime = 0;
 			m_pPauseText->SetIsActive(false, true);
 			m_CurrentState = GameState::resume;
-
+			m_AccuTime = 0;
 			break;
 		}
 		if (m_AccuTime > m_PauseCurtainTime && m_pPauseText->IsActive() == false)
@@ -101,6 +101,7 @@ void Game::Update()
 		if (m_AccuTime > m_CurtainTime)
 		{
 			real::SceneManager::GetInstance().SetSceneActive(Scenes::bonus_menu);
+			m_AccuTime = 0;
 		}
 		break;
 	}
@@ -110,7 +111,7 @@ void Game::Update()
 		if (m_AccuTime > m_CurtainTime)
 		{
 			// TODO: 
-			//real::SceneManager::GetInstance().SetSceneActive(Scenes::end_menu);
+			real::SceneManager::GetInstance().SetSceneActive(Scenes::game_over_menu);
 		}
 		break;
 	}
@@ -152,6 +153,9 @@ void Game::Render()
 
 void Game::EndAct(bool won)
 {
+	if (m_CurrentState == GameState::gameFinished)
+		return;
+
 	if (won)
 	{
 		HUD::GetInstance().AddLife();
@@ -160,9 +164,9 @@ void Game::EndAct(bool won)
 	}
 	else
 	{
-		HUD::GetInstance().RemoveLife();
 		gameEvent.Notify(GameEvents::paused);
 		m_CurrentState = GameState::paused;
+		HUD::GetInstance().RemoveLife();
 	}
 
 	m_AccuTime = 0;
