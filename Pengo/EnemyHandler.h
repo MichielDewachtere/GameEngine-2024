@@ -4,6 +4,7 @@
 #include <Component.h>
 #include <vector>
 #include <Observer.h>
+#include <Subject.h>
 
 class Pushable;
 class Game;
@@ -35,11 +36,17 @@ public:
 	void AddEnemySpawn(real::GameObject* go);
 	void RemoveEnemySpawn(real::GameObject* go);
 
+	static int GetAmountOfEnemies() { return m_TotalEnemies; }
+
+	real::Subject<> enemySpawned;
+
 private:
-	int m_AmountOfEnemiesAtOnce{}, m_TotalEnemies{};
+	int m_AmountOfEnemiesAtOnce{};
 	std::vector<HiddenEgg*> m_EnemySpawns;
 	Game* m_pGameComponent{ nullptr };
 	Pushable* m_PushedEgg{ nullptr };
+
+	static inline int m_TotalEnemies{};
 
 	void SpawnSnoBee();
 };

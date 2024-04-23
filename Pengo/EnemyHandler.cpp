@@ -110,8 +110,7 @@ void EnemyHandler::RemoveEnemySpawn(real::GameObject* go)
 	const auto spawn = go->GetComponent<HiddenEgg>();
     std::erase(m_EnemySpawns, spawn);
 
-    std::cout << "+500\n";
-
+    enemySpawned.Notify();
 	--m_TotalEnemies;
 }
 
@@ -127,4 +126,6 @@ void EnemyHandler::SpawnSnoBee()
     snoBee->GetGameObject()->GetComponent<Enemy>()->enemyDied.AddObserver(this);
 
     level->GetComponent<Maze>()->SetBlock(mazePos, Maze::BlockType::enemy, snoBee->GetGameObject());
+
+    enemySpawned.Notify();
 }
