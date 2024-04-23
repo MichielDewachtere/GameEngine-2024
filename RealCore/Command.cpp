@@ -13,11 +13,11 @@ real::GameObjectCommand::GameObjectCommand(int id, int controllerId, GameObject*
 
 real::GameObjectCommand::~GameObjectCommand()
 {
-	//if (m_ObserverRemoved == false && GetGameObject() && GetGameObject()->IsMarkedForDestroy() == false)
-	//{
-	//	m_ObserverRemoved = true;
-	//	GetGameObject()->gameObjectDestroyed.RemoveObserver(this);
-	//}
+	if (m_ObserverRemoved == false && GetGameObject())
+	{
+		m_ObserverRemoved = true;
+		GetGameObject()->gameObjectDestroyed.RemoveObserver(this);
+	}
 }
 
 void real::GameObjectCommand::HandleEvent(GameObjectEvent)
