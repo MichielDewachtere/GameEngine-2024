@@ -90,7 +90,6 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(std::string tag) const
 	}
 
 	return v;
-
 }
 
 void Scene::Remove(GameObject* pGo)
