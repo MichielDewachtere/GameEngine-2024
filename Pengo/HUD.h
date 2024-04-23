@@ -54,9 +54,9 @@ private:
 	void InitScoreDisplay(PlayerNumber p);
 	void InitHighScoreDisplay() const;
 	void InitLivesDisplay();
-	//void InitEnemyDisplay();
-	//void InitLevelDisplayTop();
-	//void InitLevelDisplayBottom();
+	void InitEnemyDisplay() const;
+	void InitLevelDisplayTop() const;
+	void InitLevelDisplayBottom() const;
 };
 
 #endif // HUD_H

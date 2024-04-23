@@ -6,7 +6,10 @@
 #include <SceneManager.h>
 #include <TextureComponent.h>
 
+#include "EggCounter.h"
 #include "HealthDisplay.h"
+#include "LevelDisplayBottom.h"
+#include "LevelDisplayTop.h"
 #include "ScoreDisplay.h"
 #include "Macros.h"
 #include "Player.h"
@@ -30,12 +33,12 @@ void HUD::Init()
 	////	Add Lives
 	InitLivesDisplay();
 	////	Amount of sno-bee eggs
-	//InitEnemyDisplay();
+	InitEnemyDisplay();
 	////	Add level (act) / 5
-	//InitLevelDisplayTop();
+	InitLevelDisplayTop();
 	// Bottom:
 	////	Add level (act) % 5
-	//InitLevelDisplayBottom();
+	InitLevelDisplayBottom();
 
 	real::SceneManager::GetInstance().loadScene.AddObserver(this);
 	real::SceneManager::GetInstance().exitScene.AddObserver(this);
@@ -139,4 +142,29 @@ void HUD::InitLivesDisplay()
 	health.GetTransform()->SetLocalPosition(0, WALL_WIDTH * PIXEL_SCALE);
 	m_pHealthDisplay = health.AddComponent<HealthDisplay>();
 
+}
+
+void HUD::InitEnemyDisplay() const
+{
+	auto& enemies = m_pUniqueHud->CreateGameObject();
+	enemies.GetTransform()->SetLocalPosition(((MAZE_WIDTH + 3) * BLOCK_SIZE / 3 * PIXEL_SCALE), WALL_WIDTH * PIXEL_SCALE * 2);
+	enemies.AddComponent<EggCounter>();
+}
+
+void HUD::InitLevelDisplayTop() const
+{
+	auto& levelDisplay = m_pUniqueHud->CreateGameObject();
+	levelDisplay.GetTransform()->SetLocalPosition((MAZE_WIDTH + 1) * BLOCK_SIZE * PIXEL_SCALE, WALL_WIDTH * PIXEL_SCALE);
+	levelDisplay.AddComponent<LevelDisplayTop>();
+}
+
+void HUD::InitLevelDisplayBottom() const
+{
+	auto font = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+
+	auto& levelDisplay = m_pUniqueHud->CreateGameObject();
+	levelDisplay.GetTransform()->SetLocalPosition(0, ((MAZE_HEIGHT + 2) * BLOCK_SIZE + WALL_WIDTH) * PIXEL_SCALE);
+	levelDisplay.AddComponent<real::TextureComponent>();
+	levelDisplay.AddComponent<real::TextComponent>("act 1", std::move(font))->SetVerticalAlignment(real::TextComponent::VerticalAlignment::down);
+	levelDisplay.AddComponent<LevelDisplayBottom>();
 }
