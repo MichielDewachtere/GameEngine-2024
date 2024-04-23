@@ -13,10 +13,12 @@
 
 #include "GameTime.h"
 #include "InputManager.h"
+#include "Locator.h"
 #include "Logger.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "SDLAudio.h"
 
 SDL_Window* g_window{};
 
@@ -56,6 +58,8 @@ real::RealEngine::RealEngine(WindowSettings settings)
 	InitWindow();
 	InitGame();
 	InitImGui();
+
+	Locator::RegisterAudioSystem(new SDLAudio());
 }
 
 real::RealEngine::~RealEngine()
@@ -112,6 +116,8 @@ void real::RealEngine::Run(const std::function<void()>& load)
 		doContinue = input.ProcessInput();
 
 		sceneManager.Update();
+		Locator::GetAudioSystem().Update();
+
 		renderer.Render();
 
 		auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::duration<float>(m_Settings.frameTime));
