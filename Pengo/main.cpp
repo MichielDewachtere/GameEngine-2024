@@ -65,14 +65,14 @@ void load()
 	SceneManager::GetInstance().CreateScene(new GameOverMenu(Scenes::game_over_menu, "none"));
 
 	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay, true));
-	SceneManager::GetInstance().CreateScene(new Level("level2", InputMaps::gameplay));
-	SceneManager::GetInstance().CreateScene(new Level("level3", InputMaps::gameplay));
-	SceneManager::GetInstance().CreateScene(new Level("level4", InputMaps::gameplay));
-	SceneManager::GetInstance().CreateScene(new Level("level5", InputMaps::gameplay));
-	SceneManager::GetInstance().CreateScene(new Level("level6", InputMaps::gameplay));
-	SceneManager::GetInstance().CreateScene(new Level("level7", InputMaps::gameplay));
-	SceneManager::GetInstance().CreateScene(new Level("level8", InputMaps::gameplay));
-	SceneManager::GetInstance().CreateScene(new Level("level9", InputMaps::gameplay));
+	SceneManager::GetInstance().CreateScene(new Level("level2", InputMaps::gameplay, true));
+	SceneManager::GetInstance().CreateScene(new Level("level3", InputMaps::gameplay, true));
+	SceneManager::GetInstance().CreateScene(new Level("level4", InputMaps::gameplay, true));
+	SceneManager::GetInstance().CreateScene(new Level("level5", InputMaps::gameplay, true));
+	SceneManager::GetInstance().CreateScene(new Level("level6", InputMaps::gameplay, true));
+	SceneManager::GetInstance().CreateScene(new Level("level7", InputMaps::gameplay, true));
+	SceneManager::GetInstance().CreateScene(new Level("level8", InputMaps::gameplay, true));
+	SceneManager::GetInstance().CreateScene(new Level("level9", InputMaps::gameplay, true));
 	SceneManager::GetInstance().CreateScene(new Level("level10", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level11", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level12", InputMaps::gameplay));
@@ -92,18 +92,18 @@ int main(int, char* [])
 	g_windowSettings.width = BLOCK_SIZE * (MAZE_WIDTH + 1 /*2 walls*/) * PIXEL_SCALE;
 	g_windowSettings.height = BLOCK_SIZE * PIXEL_SCALE * (MAZE_HEIGHT + 1 /* 2 walls */) + HUD_SIZE_BOTTOM + HUD_SIZE_TOP;
 
-	real::RealEngine engine(g_windowSettings);
-	engine.Run(load);
+	//real::RealEngine engine(g_windowSettings);
+	//engine.Run(load);
 
-	//try
-	//{
-	//	real::RealEngine engine(g_windowSettings);
-	//	engine.Run(load);
-	//}
-	//catch (std::exception& e)
-	//{
-	//	std::cout << e.what();
-	//}
+	try
+	{
+		real::RealEngine engine(g_windowSettings);
+		engine.Run(load);
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what();
+	}
 
 	return 0;
 }
