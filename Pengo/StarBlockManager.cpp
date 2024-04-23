@@ -9,6 +9,7 @@
 #include "Macros.h"
 #include "Move.h"
 #include "Player.h"
+#include "PlayerManager.h"
 #include "ScoreDisplay.h"
 
 StarBlockManager::StarBlockManager(real::GameObject* pOwner)
@@ -103,13 +104,17 @@ void StarBlockManager::CheckAdjacentBlocks()
 	{
 		if (m_IsTouchingWall)
 		{
-			HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerOne);
-			HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerTwo);
+			if (PlayerManager::GetInstance().GetAmountOfPlayers() <= 1)
+				HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerOne);
+			else if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2)
+				HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerTwo);
 		}
 		else
 		{
-			HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerOne);
-			HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerTwo);
+			if (PlayerManager::GetInstance().GetAmountOfPlayers() <= 1)
+				HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerOne);
+			else if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2)
+				HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerTwo);
 		}
 
 		for (const auto& block : m_pStarBlocks | std::views::keys)

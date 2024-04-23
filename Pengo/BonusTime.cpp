@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "HUD.h"
 #include "Player.h"
+#include "PlayerManager.h"
 
 BonusTime::BonusTime(real::GameObject* pOwner)
 	: Component(pOwner)
@@ -39,8 +40,10 @@ void BonusTime::Update()
 			if (gameTime >= time.first && gameTime <= time.second)
 			{
 				GetOwner()->GetChildAt(bonusIdx)->GetComponent<real::TextComponent>()->SetColor(real::Colors::yellow);
-				HUD::GetInstance().AddScore(bonus, PlayerNumber::playerOne);
-				HUD::GetInstance().AddScore(bonus, PlayerNumber::playerTwo);
+				if (PlayerManager::GetInstance().GetAmountOfPlayers() <= 1)
+					HUD::GetInstance().AddScore(bonus, PlayerNumber::playerOne);
+				else if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2)
+					HUD::GetInstance().AddScore(bonus, PlayerNumber::playerTwo);
 				break;
 			}
 		}
