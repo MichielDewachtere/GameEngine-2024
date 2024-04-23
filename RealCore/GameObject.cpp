@@ -1,6 +1,7 @@
 #include "GameObject.h"
 
 #include "DrawableComponent.h"
+#include "GameTime.h"
 #include "imgui.h"
 #include "Logger.h"
 #include "SceneManager.h"
@@ -17,15 +18,13 @@ real::GameObject& real::GameObject::CreateGameObject(std::string tag)
 {
 	m_pChildrenToAdd.push_back(std::make_unique<GameObject>(m_pScene, std::move(tag)));
 	m_pChildrenToAdd.back()->m_pParent = this;
+	m_pChildrenToAdd.back()->m_pScene = m_pScene;
 
 	return *m_pChildrenToAdd.back();
 }
 
 void real::GameObject::Start()
 {
-	if (IsActive() == false)
-		return;
-
 	m_pTransform->Start();
 	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
 		{
@@ -74,9 +73,6 @@ void real::GameObject::FixedUpdate()
 
 void real::GameObject::Update()
 {
-	if (IsActive() == false)
-		return;
-
 	if (m_pChildrenToAdd.empty() == false)
 	{
 		for (auto& pChild : m_pChildrenToAdd)
@@ -87,6 +83,9 @@ void real::GameObject::Update()
 
 		m_pChildrenToAdd.clear();
 	}
+
+	if (IsActive() == false)
+		return;
 
 	m_pTransform->Update();
 	std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
@@ -106,7 +105,16 @@ void real::GameObject::Update()
 
 void real::GameObject::LateUpdate()
 {
-	if (m_IsMarkedForDestroy)
+	if (m_TimeForDestruction > 0)
+	{
+		m_TimeForDestruction -= GameTime::GetInstance().GetElapsed();
+		if (m_TimeForDestruction <= 0)
+		{
+			Destroy();
+		}
+	}
+
+	if (m_IsMarkedForDestroy && m_TimeForDestruction <= 0)
 	{
 		for (const auto& c : m_pComponents)
 		{
@@ -236,6 +244,11 @@ void real::GameObject::Destroy()
 	m_IsMarkedForDestroy = true;
 }
 
+void real::GameObject::Destroy(float time)
+{
+	m_TimeForDestruction = std::max(0.f, time);
+}
+
 void real::GameObject::SetIsActive(bool isEnabled, bool applyToChildren)
 {
 	if (m_IsActive != isEnabled)
@@ -249,6 +262,23 @@ void real::GameObject::SetIsActive(bool isEnabled, bool applyToChildren)
 				   c->SetIsActive(isEnabled, applyToChildren);
 			   });
 		}
+	}
+}
+
+void real::GameObject::SetScene(Scene* pScene)
+{
+	m_pScene = pScene;
+
+	std::ranges::for_each(m_pChildren, [&](const auto& c)
+		{
+			c->SetScene(pScene);
+		});
+	if (m_pChildrenToAdd.empty() == false)
+	{
+		std::ranges::for_each(m_pChildrenToAdd, [&](const auto& c)
+		   {
+			   c->SetScene(pScene);
+		   });
 	}
 }
 

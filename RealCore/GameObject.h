@@ -42,11 +42,12 @@ namespace real
 		void OnGui();
 
 		void Destroy();
+		void Destroy(float time);
 		bool IsMarkedForDestroy() const { return m_IsMarkedForDestroy; }
 		void SetIsActive(bool isEnabled, bool applyToChildren);
 		bool IsActive() const { return m_IsActive && m_IsMarkedForDestroy == false; }
 
-		void SetScene(Scene* pScene) { m_pScene = pScene; }
+		void SetScene(Scene* pScene);
 		Scene& GetScene() const { return *m_pScene; }
 
 		void SetTag(std::string tag) { m_Tag = std::move(tag); }
@@ -112,6 +113,7 @@ namespace real
 		uint32_t m_Id;
 		std::string m_Tag;
 		bool m_IsActive{ true }, m_IsMarkedForDestroy{ false };
+		float m_TimeForDestruction{ -FLT_MAX };
 
 		Scene* m_pScene;
 
