@@ -31,6 +31,12 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{76c63104-6ac5-4022-85d6-b7b10ded5d77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Locator">
+      <UniqueIdentifier>{91e703df-8c73-43c6-b935-f99ea8e1ed4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{ef9d344c-aeff-480b-a475-652deca42d19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Command.cpp">
@@ -105,7 +111,15 @@
     <ClCompile Include="imgui_impl_sdl2.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Utils.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Locator.cpp">
+      <Filter>Locator</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLAudio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h">
@@ -189,6 +203,20 @@
     <ClInclude Include="imgui_impl_sdl2.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Utils.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLAudio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="NullAudio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
