@@ -182,8 +182,10 @@ namespace real
 		std::ranges::for_each(m_pChildren, [](const std::unique_ptr<GameObject>& go)
 			{
 				if (const auto component = go->GetComponent<T>();
-					component == nullptr)
+					component != nullptr)
 					return component;
+
+				return nullptr;
 			});
 
 		return nullptr;
