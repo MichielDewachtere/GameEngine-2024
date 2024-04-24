@@ -158,6 +158,9 @@
     <ClCompile Include="BonusTimeMenu.cpp" />
     <ClCompile Include="BonusTime.cpp" />
     <ClCompile Include="DiedState.cpp" />
+    <ClCompile Include="HighScoreDisplay.cpp" />
+    <ClCompile Include="HighScoreMenu.cpp" />
+    <ClCompile Include="TextFadeIn.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EggCounter.cpp" />
     <ClCompile Include="EnemyHandler.cpp" />
@@ -209,6 +212,9 @@
     <ClInclude Include="BonusTimeMenu.h" />
     <ClInclude Include="BonusTime.h" />
     <ClInclude Include="DiedState.h" />
+    <ClInclude Include="HighScoreDisplay.h" />
+    <ClInclude Include="HighScoreMenu.h" />
+    <ClInclude Include="TextFadeIn.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EggCounter.h" />
     <ClInclude Include="EnemyHandler.h" />
