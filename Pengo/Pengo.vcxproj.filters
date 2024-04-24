@@ -49,6 +49,9 @@
     <Filter Include="Components\StartScreen">
       <UniqueIdentifier>{20c958e2-9bc4-4dc1-aca4-e3e9a1aa0818}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\EndScreen">
+      <UniqueIdentifier>{b38b6ba0-7f3d-4904-8eeb-43b20ac2f8c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -194,6 +197,15 @@
       <Filter>HUD\Components</Filter>
     </ClCompile>
     <ClCompile Include="LevelDisplayBottom.cpp">
+      <Filter>HUD\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextFadeIn.cpp">
+      <Filter>Components\EndScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScoreMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScoreDisplay.cpp">
       <Filter>HUD\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -352,6 +364,15 @@
       <Filter>HUD\Components</Filter>
     </ClInclude>
     <ClInclude Include="LevelDisplayBottom.h">
+      <Filter>HUD\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextFadeIn.h">
+      <Filter>Components\EndScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreMenu.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreDisplay.h">
       <Filter>HUD\Components</Filter>
     </ClInclude>
   </ItemGroup>
