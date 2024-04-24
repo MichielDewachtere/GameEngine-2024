@@ -62,7 +62,7 @@ void load()
 
 	SceneManager::GetInstance().CreateScene(new StartMenu(Scenes::start_menu, "none", g_windowSettings));
 	SceneManager::GetInstance().CreateScene(new BonusTimeMenu(Scenes::bonus_menu, "none", g_windowSettings));
-	SceneManager::GetInstance().CreateScene(new GameOverMenu(Scenes::game_over_menu, "none"));
+	SceneManager::GetInstance().CreateScene(new GameOverMenu(Scenes::game_over_menu, "none", g_windowSettings));
 
 	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay, true));
 	SceneManager::GetInstance().CreateScene(new Level("level2", InputMaps::gameplay, true));
