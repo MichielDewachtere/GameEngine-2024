@@ -30,7 +30,7 @@ private:
 		{3,{30,39}, ScoreEvents::bonusTimeUnder40},
 		{4,{40,49}, ScoreEvents::bonusTimeUnder50},
 		{5,{50,59}, ScoreEvents::bonusTimeUnder60},
-		//{6,{60, INT_MAX}, ScoreEvents::}
+		{6,{60, INT_MAX}, ScoreEvents::null}
 	};
 };
 

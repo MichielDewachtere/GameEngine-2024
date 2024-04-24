@@ -30,7 +30,9 @@ enum class ScoreEvents : char
 	stunKill,
 
 	breakIce,
-	breakEgg
+	breakEgg,
+
+	null
 };
 
 class ScoreDisplay final : public real::Component
@@ -60,15 +62,16 @@ private:
 		{ScoreEvents::bonusTimeUnder40,	1'000	},
 		{ScoreEvents::bonusTimeUnder50,	500		},
 		{ScoreEvents::bonusTimeUnder60,	10		},
-		{ScoreEvents::starBlock,		10'000	},
-		{ScoreEvents::starBlockWall,	5'000	},
+		{ScoreEvents::starBlock,			10'000	},
+		{ScoreEvents::starBlockWall,		5'000	},
 		{ScoreEvents::kill,				400		},
-		{ScoreEvents::doubleKill,		1'600	},
-		{ScoreEvents::tripleKill,		3'200	},
+		{ScoreEvents::doubleKill,			1'600	},
+		{ScoreEvents::tripleKill,			3'200	},
 		{ScoreEvents::quadKill,			6'400	},
 		{ScoreEvents::stunKill,			100		},
 		{ScoreEvents::breakIce,			30		},
 		{ScoreEvents::breakEgg,			500		},
+		{ScoreEvents::null ,				0		},
 	};
 };
 
