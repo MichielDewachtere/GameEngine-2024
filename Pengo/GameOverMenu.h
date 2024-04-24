@@ -2,11 +2,12 @@
 #define GAMEOVERMENU_H
 
 #include <Scene.h>
+#include <RealEngine.h>
 
 class GameOverMenu final : public real::Scene
 {
 public:
-	explicit GameOverMenu(std::string name, std::string inputMap);
+	explicit GameOverMenu(std::string name, std::string inputMap, const real::WindowSettings& settings);
 	virtual ~GameOverMenu() override = default;
 
 	GameOverMenu(const GameOverMenu& other) = delete;
@@ -17,7 +18,7 @@ public:
 	virtual void Load() override;
 
 private:
-	
+	real::WindowSettings m_Settings;
 };
 
 #endif // GAMEOVERMENU_H
