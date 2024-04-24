@@ -6,6 +6,7 @@
 
 #include "Observer.h"
 
+class HighScoreDisplay;
 class HealthDisplay;
 
 namespace real
@@ -48,11 +49,12 @@ private:
 	uint32_t m_HudId{};
 	std::unique_ptr<real::GameObject> m_pUniqueHud{};
 	ScoreDisplay * m_pScoreDisplayPlayerOne{ nullptr }, * m_pScoreDisplayPlayerTwo{ nullptr };
+	HighScoreDisplay* m_pHighScoreDisplay{ nullptr };
 	HealthDisplay* m_pHealthDisplay{ nullptr };
 
 	void InitHud();
 	void InitScoreDisplay(PlayerNumber p);
-	void InitHighScoreDisplay() const;
+	void InitHighScoreDisplay();
 	void InitLivesDisplay();
 	void InitEnemyDisplay() const;
 	void InitLevelDisplayTop() const;

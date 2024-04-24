@@ -7,12 +7,15 @@
 #include <TextureComponent.h>
 
 #include "EggCounter.h"
+#include "GameInfo.h"
 #include "HealthDisplay.h"
+#include "HighScoreDisplay.h"
 #include "LevelDisplayBottom.h"
 #include "LevelDisplayTop.h"
 #include "ScoreDisplay.h"
 #include "Macros.h"
 #include "Player.h"
+#include "PlayerManager.h"
 
 HUD::~HUD()
 {
@@ -46,7 +49,8 @@ void HUD::Init()
 
 void HUD::HandleEvent(real::SceneEvents event, real::Scene* pScene)
 {
-	if (pScene->GetName().find("level") == std::string::npos)
+	if (pScene->GetName().find("level") == std::string::npos 
+		&& pScene->GetName() != Scenes::bonus_menu)
 		return;
 
 	switch (event)
@@ -71,7 +75,7 @@ void HUD::AddScore(ScoreEvents event, PlayerNumber p) const
 	if (p == PlayerNumber::playerTwo)
 		m_pScoreDisplayPlayerTwo->AddScore(event);
 
-	// TODO: Notify HighScore
+	m_pHighScoreDisplay->CheckForHighScore(m_pScoreDisplayPlayerOne->GetScore() + m_pScoreDisplayPlayerTwo->GetScore());
 }
 
 void HUD::AddLife() const
@@ -119,7 +123,7 @@ void HUD::InitScoreDisplay(PlayerNumber p)
 		m_pScoreDisplayPlayerTwo = scoreDisplay.AddComponent<ScoreDisplay>();
 }
 
-void HUD::InitHighScoreDisplay() const
+void HUD::InitHighScoreDisplay()
 {
 	auto font = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
 
@@ -134,6 +138,7 @@ void HUD::InitHighScoreDisplay() const
 	highScoreDisplay.GetTransform()->SetLocalPosition((MAZE_WIDTH - 1) * BLOCK_SIZE, 0);
 	highScoreDisplay.AddComponent<real::TextureComponent>();
 	highScoreDisplay.AddComponent<real::TextComponent>("0", std::move(font))->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::left);
+	m_pHighScoreDisplay = highScoreDisplay.AddComponent<HighScoreDisplay>();
 }
 
 void HUD::InitLivesDisplay()
