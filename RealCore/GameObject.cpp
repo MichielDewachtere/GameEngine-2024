@@ -73,17 +73,6 @@ void real::GameObject::FixedUpdate()
 
 void real::GameObject::Update()
 {
-	if (m_pChildrenToAdd.empty() == false)
-	{
-		for (auto& pChild : m_pChildrenToAdd)
-		{
-			m_pChildren.push_back(std::move(pChild));
-			m_pChildren.back()->Start();
-		}
-
-		m_pChildrenToAdd.clear();
-	}
-
 	if (IsActive() == false)
 		return;
 
@@ -105,6 +94,9 @@ void real::GameObject::Update()
 
 void real::GameObject::LateUpdate()
 {
+	MoveUniqueData(m_pChildrenToAdd, m_pChildren);
+	MoveUniqueData(m_pComponentsToAdd, m_pComponents);
+
 	if (m_TimeForDestruction > 0)
 	{
 		m_TimeForDestruction -= GameTime::GetInstance().GetElapsed();
@@ -399,9 +391,22 @@ std::vector<real::GameObject*> real::GameObject::GetGameObjectsWithTag(const std
 {
 	std::vector<GameObject*> v;
 
-	if (m_pChildren.empty() == false)
+	auto c = GetGameObjectsWithTagHelper(m_pChildren, tag);
+	v.insert(v.end(), c.begin(), c.end());
+	c = GetGameObjectsWithTagHelper(m_pChildrenToAdd, tag);
+	v.insert(v.end(), c.begin(), c.end());
+
+	return v;
+}
+
+std::vector<real::GameObject*> real::GameObject::GetGameObjectsWithTagHelper(
+	const std::vector<std::unique_ptr<GameObject>>& objects, const std::string& tag)
+{
+	std::vector<GameObject*> v;
+
+	if (objects.empty() == false)
 	{
-		for (const auto& go : m_pChildren)
+		for (const auto& go : objects)
 		{
 			//if (go->IsMarkedForDestroy())
 			//	continue;
