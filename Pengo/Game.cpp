@@ -14,6 +14,7 @@
 #include "Macros.h"
 #include "Renderer.h"
 #include "SceneManager.h"
+#include "HighScoreDisplay.h"
 
 Game::Game(real::GameObject* pOwner)
 	: DrawableComponent(pOwner)
@@ -22,7 +23,7 @@ Game::Game(real::GameObject* pOwner)
 	m_CurrentLevel %= 16;
 	++m_CurrentLevel;
 
-	auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 	m_pPauseText = &real::SceneManager::GetInstance().GetActiveScene().CreateGameObject();
 
 	m_pPauseText->GetTransform()->SetLocalPosition(
@@ -110,8 +111,10 @@ void Game::Update()
 		m_AccuTime += dt;
 		if (m_AccuTime > m_CurtainTime)
 		{
-			// TODO: 
-			real::SceneManager::GetInstance().SetSceneActive(Scenes::game_over_menu);
+			if (HighScoreDisplay::IsTopFive(HUD::GetInstance().GetTotalScore()))
+				real::SceneManager::GetInstance().SetSceneActive(Scenes::high_score_menu);
+			else
+				real::SceneManager::GetInstance().SetSceneActive(Scenes::game_over_menu);
 		}
 		break;
 	}

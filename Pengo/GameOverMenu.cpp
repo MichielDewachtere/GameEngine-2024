@@ -4,27 +4,20 @@
 #include <ResourceManager.h>
 #include <TextComponent.h>
 
+#include "Macros.h"
 #include "TextFadeIn.h"
 
-GameOverMenu::GameOverMenu(std::string name, std::string inputMap, const real::WindowSettings& settings)
+GameOverMenu::GameOverMenu(std::string name, std::string inputMap, real::WindowSettings settings)
 	: Scene(std::move(name), std::move(inputMap))
-	, m_Settings(settings)
+	, m_Settings(std::move(settings))
 {
 }
 
 void GameOverMenu::Load()
 {
-	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
-
-		auto& test = CreateGameObject();
-		test.AddComponent<real::TextureComponent>();
-		test.AddComponent<real::TextComponent>("End Screen", std::move(pFont));
-	}
-
 	auto& textOne = CreateGameObject();
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
 
 		textOne.GetTransform()->SetLocalPosition(m_Settings.width / 2.f, m_Settings.height / 2.f - 25.f);
 		textOne.AddComponent<real::TextureComponent>();
@@ -32,7 +25,7 @@ void GameOverMenu::Load()
 		textOne.AddComponent<TextFadeIn>("thanks for playing.");
 	}
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
 
 		auto& textTwo = textOne.CreateGameObject();
 		textTwo.SetIsActive(false, true);

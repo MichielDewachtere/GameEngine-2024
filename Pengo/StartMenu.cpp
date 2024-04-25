@@ -7,7 +7,9 @@
 #include <Locator.h>
 #include <Colors.h>
 
+#include "FlickerText.h"
 #include "GameInfo.h"
+#include "Macros.h"
 #include "SelectMode.h"
 #include "StartScreen.h"
 
@@ -23,7 +25,7 @@ void StartMenu::Load()
 
 	auto& startScreen = CreateGameObject("start-screen");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 48);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 		startScreen.GetTransform()->SetLocalPosition(m_Settings.width / 2.f, 100);
 		startScreen.AddComponent<real::TextureComponent>();
 		startScreen.AddComponent<real::TextComponent>("Pengo", std::move(pFont))->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
@@ -32,7 +34,7 @@ void StartMenu::Load()
 
 	auto& mode = startScreen.CreateGameObject("select-mode");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 32);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 		mode.GetTransform()->SetLocalPosition(0, 100);
 		mode.AddComponent<real::TextureComponent>();
 
@@ -43,14 +45,16 @@ void StartMenu::Load()
 		mode.AddComponent<SelectMode>();
 	}
 
-	auto& start = startScreen.CreateGameObject();
+	auto& start = startScreen.CreateGameObject("start-button");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 32);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 64);
 		start.GetTransform()->SetLocalPosition(0, 600);
 		start.AddComponent<real::TextureComponent>();
 
 		const auto textComponent = start.AddComponent<real::TextComponent>("- start -", std::move(pFont));
 		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
 		textComponent->SetColor(real::Colors::grey);
+
+		start.AddComponent<FlickerText>(real::Colors::yellow, 0.5f)->Disable();
 	}
 }

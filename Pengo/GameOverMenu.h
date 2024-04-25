@@ -7,7 +7,7 @@
 class GameOverMenu final : public real::Scene
 {
 public:
-	explicit GameOverMenu(std::string name, std::string inputMap, const real::WindowSettings& settings);
+	explicit GameOverMenu(std::string name, std::string inputMap, real::WindowSettings settings);
 	virtual ~GameOverMenu() override = default;
 
 	GameOverMenu(const GameOverMenu& other) = delete;

@@ -8,6 +8,7 @@
 #include <InputManager.h>
 
 #include "GameInfo.h"
+#include "Macros.h"
 #include "SelectModeCommand.h"
 #include "StartScreen.h"
 
@@ -73,7 +74,7 @@ void SelectMode::ConfirmMode() const
 
 void SelectMode::InitMode(char id)
 {
-	auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 	auto& mode = GetOwner()->CreateGameObject();
 	mode.GetTransform()->SetLocalPosition(0, static_cast<float>(50 + id * 25));

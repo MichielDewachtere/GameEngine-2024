@@ -21,7 +21,7 @@ void BonusTimeMenu::Load()
 
 	auto& bonusTime = CreateGameObject();
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 		bonusTime.GetTransform()->SetLocalPosition({ static_cast<float>(m_Settings.width) / 2.f, BLOCK_SIZE * PIXEL_SCALE + WALL_WIDTH * PIXEL_SCALE });
 		bonusTime.AddComponent<BonusTime>();
@@ -30,7 +30,7 @@ void BonusTimeMenu::Load()
 		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
 	}
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 		auto& time = bonusTime.CreateGameObject();
 		time.GetTransform()->SetLocalPosition({ 0,0 });
@@ -51,7 +51,7 @@ void BonusTimeMenu::Load()
 
 void BonusTimeMenu::WriteLine(real::GameObject& go, int i, std::string text) const
 {
-	auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 	auto& line = go.CreateGameObject();
 	line.GetTransform()->SetLocalPosition({ 0, 50 + i * 35 });
