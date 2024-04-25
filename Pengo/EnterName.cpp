@@ -8,16 +8,14 @@
 #include <ResourceManager.h>
 #include <InputManager.h>
 
+#include "FlickerText.h"
 #include "GameInfo.h"
-#include "PlayerManager.h"
-#include "StartGameCommand.h"
-#include "StartScreen.h"
+#include "Macros.h"
 
 EnterName::EnterName(real::GameObject* pOwner)
 	: Component(pOwner)
-	, m_LinkedPlayer(0)
 {
-	m_Name.fill({ 'A', nullptr });
+	m_Name.fill({ 'A', {nullptr, nullptr} });
 }
 
 void EnterName::Start()
@@ -26,7 +24,7 @@ void EnterName::Start()
 	{
 		AddTextComponent(i);
 	}
-	m_Name[m_CurrentPosition].second->SetColor(real::Colors::yellow);
+	m_Name[m_CurrentPosition].second.second->Enable();
 }
 
 void EnterName::EnterCharacter(int controllerId)
@@ -35,18 +33,21 @@ void EnterName::EnterCharacter(int controllerId)
 		return;
 
 	m_Name[m_CurrentPosition].first = m_CurrentCharacter;
-	m_Name[m_CurrentPosition].second->SetColor(real::Colors::white);
+	characterEntered.Notify(Events::characterEntered, m_CurrentCharacter);
+
+	m_Name[m_CurrentPosition].second.second->Disable();
+	m_Name[m_CurrentPosition].second.first->SetColor(real::Colors::yellow);
 	++m_CurrentPosition;
 
 	if (m_CurrentPosition >= static_cast<int>(m_Name.size()))
 	{
-		std::string s;
+		std::string name;
 		for (const auto& c : m_Name | std::views::keys)
 		{
-			s.push_back(c);
+			name.push_back(c);
 		}
 
-		PlayerManager::GetInstance().SetNameOfPlayer(m_LinkedPlayer, s);
+		nameEntered.Notify(Events::nameConfirmed, name);
 
 		const auto map = real::InputManager::GetInstance().GetActiveInputMap();
 		if (controllerId == -1)
@@ -62,12 +63,11 @@ void EnterName::EnterCharacter(int controllerId)
 			map->RemoveGamePadAction(InputCommands::name_character_up, controllerId);
 		}
 
-		GetOwner()->GetParent()->GetParent()->GetComponent<StartScreen>()->PlayerSelected();
-
 		return;
 	}
 
-	m_Name[m_CurrentPosition].second->SetColor(real::Colors::yellow);
+	m_CurrentCharacter = lowest_char;
+	m_Name[m_CurrentPosition].second.second->Enable();
 }
 
 void EnterName::ChangeCharacter(bool up)
@@ -90,7 +90,7 @@ void EnterName::ChangeCharacter(bool up)
 	}
 
 	m_CurrentCharacter = newChar;
-	m_Name[m_CurrentPosition].second->SetText({ m_CurrentCharacter });
+	m_Name[m_CurrentPosition].second.first->SetText({ m_CurrentCharacter });
 }
 
 void EnterName::AddTextComponent(const size_t id)
@@ -98,15 +98,18 @@ void EnterName::AddTextComponent(const size_t id)
 	constexpr float characterOffset = 24.f;
 	constexpr float begin = 34.f;
 
-	auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 	auto& text = GetOwner()->CreateGameObject();
-	text.GetTransform()->SetLocalPosition(static_cast<float>(id) * characterOffset - begin, 30);
+	text.GetTransform()->SetLocalPosition(static_cast<float>(id) * characterOffset - begin, 0);
 
 	text.AddComponent<real::TextureComponent>();
 	const auto textComp = text.AddComponent<real::TextComponent>();
 	textComp->SetFont(std::move(pFont));
 	textComp->SetText({ m_Name[id].first });
 
-	m_Name[id].second = textComp;
+	const auto flickerComp = text.AddComponent<FlickerText>(real::Colors::red, 0.25f);
+	flickerComp->Disable();
+
+	m_Name[id].second = { textComp, flickerComp };
 }
