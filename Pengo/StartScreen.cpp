@@ -12,11 +12,11 @@
 #include <GameObject.h>
 #include <GameTime.h>
 
-#include "JoinInstructions.h"
+#include "FlickerText.h"
 #include "SelectMode.h"
-#include "EnterName.h"
 #include "PlayerJoinCommand.h"
 #include "GameInfo.h"
+#include "Macros.h"
 #include "PlayerManager.h"
 #include "StartGameCommand.h"
 
@@ -29,43 +29,41 @@ void StartScreen::ModeSelected(Modes mode)
 {
 	m_CurrentState = State::selectPlayers;
 
-	std::vector<int> playerIdcs;
-
 	switch (mode)
 	{
 		case Modes::singlePlayer:
 		{
 			m_AmountOfPlayersToRegister = 1;
-			playerIdcs.push_back(AddPlayerText(0, false, 1));
+			AddPlayerText(0, false, 1);
 			break;
 		}
 		case Modes::coOp:
 		{
 			m_AmountOfPlayersToRegister = 2;
-			playerIdcs.push_back(AddPlayerText(-1, false, 1));
-			playerIdcs.push_back(AddPlayerText(1, false, 2));
+			AddPlayerText(-1, false, 1);
+			AddPlayerText(1, false, 2);
 			break;
 		}
 		case Modes::pvp:
 		{
 			m_AmountOfPlayersToRegister = 2;
-			playerIdcs.push_back(AddPlayerText(-1, false, 1));
-			playerIdcs.push_back(AddPlayerText(1, true, 2));
+			AddPlayerText(-1, false, 1);
+			AddPlayerText(1, true, 2);
 			break;
 		}
 	}
 
-	auto& input = real::InputManager::GetInstance();
+	const auto& input = real::InputManager::GetInstance();
 	const auto map = input.GetActiveInputMap();
 
 	for (const auto& gamePads : input.GetGamePads())
 	{
 		map->AddGamePadAction<PlayerJoinCommand>(gamePads->GetIndex(), InputCommands::player_join, real::KeyState::keyDown,
-			real::GamePad::Button::buttonDown, GetOwner(), playerIdcs);
+			real::GamePad::Button::buttonDown, GetOwner(), m_AmountOfPlayersToRegister);
 	}
 
 	map->AddKeyboardAction<PlayerJoinCommand>(InputCommands::player_join, real::KeyState::keyDown, SDL_SCANCODE_SPACE,
-		GetOwner(), playerIdcs);
+		GetOwner(), m_AmountOfPlayersToRegister);
 }
 
 void StartScreen::PlayerSelected()
@@ -83,29 +81,16 @@ void StartScreen::PlayerSelected()
 			else
 				map->AddGamePadAction<StartGameCommand>(player.controllerId, InputCommands::start, real::KeyState::keyUp, real::GamePad::Button::buttonDown);
 		}
+
+		GetOwner()->GetChildAt(1)->GetComponent<FlickerText>()->Enable();
 	}
 }
 
-void StartScreen::Update()
-{
-	if (m_CurrentState == State::start)
-	{
-		m_AccuTime += real::GameTime::GetInstance().GetElapsed();
-
-		if (m_AccuTime > m_FlickerTime)
-		{
-			m_AccuTime = 0;
-			m_IsYellow = !m_IsYellow;
-			GetOwner()->GetChildAt(1)->GetComponent<real::TextComponent>()->SetColor(m_IsYellow ? real::Colors::yellow : real::Colors::grey);
-		}
-	}
-}
-
-int StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
+void StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
 {
 	auto& player = GetOwner()->CreateGameObject("player-start-screen");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 		player.GetTransform()->SetLocalPosition(static_cast<float>(offset * 150), 300);
 		player.AddComponent<real::TextureComponent>();
@@ -117,7 +102,7 @@ int StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
 	}
 	auto& type = player.CreateGameObject("player-type");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 20);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 		type.GetTransform()->SetLocalPosition(0, 30);
 		type.AddComponent<real::TextureComponent>();
@@ -146,28 +131,14 @@ int StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
 	}
 	auto& instructions = player.CreateGameObject("player-instructions");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 16);
+		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 32);
 
 		instructions.GetTransform()->SetLocalPosition(0, 60);
 		instructions.AddComponent<real::TextureComponent>();
-		instructions.AddComponent<JoinInstructions>();
+		instructions.AddComponent<FlickerText>(real::Colors::yellow, 0.5f);
 
 		const auto textComponent = instructions.AddComponent<real::TextComponent>("press space/a to join", std::move(pFont));
 		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
 		textComponent->SetColor(real::Colors::grey);
 	}
-	auto& enterName = player.CreateGameObject();
-	enterName.SetIsActive(false, true);
-	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
-		enterName.GetTransform()->SetLocalPosition(0, 60);
-		enterName.AddComponent<EnterName>();
-		enterName.AddComponent<real::TextureComponent>();
-
-		const auto textComponent = enterName.AddComponent<real::TextComponent>("name", std::move(pFont));
-		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
-		textComponent->SetColor(real::Colors::grey);
-	}
-
-	return player.GetId();
 }

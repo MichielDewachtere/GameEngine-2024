@@ -19,8 +19,6 @@ public:
 	void ModeSelected(Modes);
 	void PlayerSelected();
 
-	virtual void Update() override;
-
 private:
 	enum class State : char
 	{
@@ -31,11 +29,8 @@ private:
 
 	State m_CurrentState{ State::selectMode };
 	int m_AmountOfPlayersToRegister{ 0 };
-	
-	float m_FlickerTime{ 0.5f }, m_AccuTime{};
-	bool m_IsYellow{ false };
 
-	int AddPlayerText(int offset, bool isEnemy, int playerId) const;
+	void AddPlayerText(int offset, bool isEnemy, int playerId) const;
 };
 
 #endif // STARTSCREEN_H
