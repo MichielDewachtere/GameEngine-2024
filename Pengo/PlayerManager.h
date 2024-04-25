@@ -23,7 +23,6 @@ struct PlayerInfo
 	glm::ivec2 spawnPos;
 	bool useKeyboard;
 	uint8_t controllerId;
-	std::string name;
 };
 
 class PlayerManager final
@@ -50,8 +49,6 @@ public:
 	void AddPlayer(real::GameObject* pPlayer, const glm::ivec2&);
 	uint8_t GetAmountOfPlayers() const { return m_AmountOfPlayers; }
 	const std::vector<PlayerInfo>& GetPlayers() { return m_pPlayers; }
-
-	void SetNameOfPlayer(uint8_t id, std::string name);
 
 private:
 	friend class Singleton<PlayerManager>;
