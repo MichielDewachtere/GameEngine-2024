@@ -160,6 +160,8 @@
     <ClCompile Include="DiedState.cpp" />
     <ClCompile Include="HighScoreDisplay.cpp" />
     <ClCompile Include="HighScoreMenu.cpp" />
+    <ClCompile Include="LeaderBoard.cpp" />
+    <ClCompile Include="RegisterHighScore.cpp" />
     <ClCompile Include="TextFadeIn.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EggCounter.cpp" />
@@ -177,7 +179,7 @@
     <ClCompile Include="IcePrefab.cpp" />
     <ClCompile Include="Interact.cpp" />
     <ClCompile Include="InteractCommand.cpp" />
-    <ClCompile Include="JoinInstructions.cpp" />
+    <ClCompile Include="FlickerText.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelDisplayBottom.cpp" />
     <ClCompile Include="LevelDisplayTop.cpp" />
@@ -214,6 +216,8 @@
     <ClInclude Include="DiedState.h" />
     <ClInclude Include="HighScoreDisplay.h" />
     <ClInclude Include="HighScoreMenu.h" />
+    <ClInclude Include="LeaderBoard.h" />
+    <ClInclude Include="RegisterHighScore.h" />
     <ClInclude Include="TextFadeIn.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EggCounter.h" />
@@ -234,7 +238,7 @@
     <ClInclude Include="IcePrefab.h" />
     <ClInclude Include="Interact.h" />
     <ClInclude Include="InteractCommand.h" />
-    <ClInclude Include="JoinInstructions.h" />
+    <ClInclude Include="FlickerText.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelDisplayBottom.h" />
     <ClInclude Include="LevelDisplayTop.h" />

@@ -52,6 +52,9 @@
     <Filter Include="Components\EndScreen">
       <UniqueIdentifier>{b38b6ba0-7f3d-4904-8eeb-43b20ac2f8c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\HighScoreScreen">
+      <UniqueIdentifier>{d83e8224-6b3d-44f8-98a4-c777237fd99e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -181,7 +184,7 @@
     <ClCompile Include="SelectModeCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="JoinInstructions.cpp">
+    <ClCompile Include="FlickerText.cpp">
       <Filter>Components\StartScreen</Filter>
     </ClCompile>
     <ClCompile Include="PlayerJoinCommand.cpp">
@@ -189,9 +192,6 @@
     </ClCompile>
     <ClCompile Include="EggCounter.cpp">
       <Filter>HUD\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="EnterName.cpp">
-      <Filter>Components\StartScreen</Filter>
     </ClCompile>
     <ClCompile Include="LevelDisplayTop.cpp">
       <Filter>HUD\Components</Filter>
@@ -207,6 +207,15 @@
     </ClCompile>
     <ClCompile Include="HighScoreDisplay.cpp">
       <Filter>HUD\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EnterName.cpp">
+      <Filter>Components\HighScoreScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterHighScore.cpp">
+      <Filter>Components\HighScoreScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="LeaderBoard.cpp">
+      <Filter>Components\HighScoreScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -348,7 +357,7 @@
     <ClInclude Include="SelectModeCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="JoinInstructions.h">
+    <ClInclude Include="FlickerText.h">
       <Filter>Components\StartScreen</Filter>
     </ClInclude>
     <ClInclude Include="PlayerJoinCommand.h">
@@ -356,9 +365,6 @@
     </ClInclude>
     <ClInclude Include="EggCounter.h">
       <Filter>HUD\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="EnterName.h">
-      <Filter>Components\StartScreen</Filter>
     </ClInclude>
     <ClInclude Include="LevelDisplayTop.h">
       <Filter>HUD\Components</Filter>
@@ -374,6 +380,15 @@
     </ClInclude>
     <ClInclude Include="HighScoreDisplay.h">
       <Filter>HUD\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EnterName.h">
+      <Filter>Components\HighScoreScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="RegisterHighScore.h">
+      <Filter>Components\HighScoreScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="LeaderBoard.h">
+      <Filter>Components\HighScoreScreen</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
