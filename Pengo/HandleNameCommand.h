@@ -20,7 +20,7 @@ public:
 	virtual void Execute() override;
 
 private:
-	bool m_Enter, m_Up, m_FirsPress{ true };
+	bool m_Enter, m_Up;
 	EnterName* m_pEnterNameComponent{ nullptr };
 };
 

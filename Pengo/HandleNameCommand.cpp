@@ -20,14 +20,8 @@ void HandleNameCommand::Start()
 
 void HandleNameCommand::Execute()
 {
-
 	if (m_Enter)
 	{
-		if (m_FirsPress)
-		{
-			m_FirsPress = false;
-			return;
-		}
 		m_pEnterNameComponent->EnterCharacter(GetControllerId());
 	}
 	else
