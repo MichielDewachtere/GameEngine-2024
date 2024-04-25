@@ -22,6 +22,7 @@ namespace real
 
 
 		inline static const glm::u8vec4 appelblauwzeegroen = { 0,237,116,255 };
+		inline static const glm::u8vec4 pink = { 204,164,203,255 };
 	};
 }
 
