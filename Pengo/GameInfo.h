@@ -15,6 +15,7 @@ struct Scenes
 {
 	inline static const std::string start_menu = "StartMenu";
 	inline static const std::string bonus_menu = "BonusMenu";
+	inline static const std::string high_score_menu = "HighScoreMenu";
 	inline static const std::string game_over_menu = "GameOverMenu";
 };
 
@@ -23,6 +24,7 @@ struct InputMaps
 	inline static const std::string gameplay = "gameplay";
 	inline static const std::string start_menu = "start_menu";
 	inline static const std::string bonus_time_menu = "bonus_time_menu";
+	inline static const std::string high_score_menu = "high_score_menu";
 	inline static const std::string game_over_menu = "game_over_menu";
 };
 
@@ -33,10 +35,12 @@ struct InputCommands
 	inline static constexpr uint8_t mode_go_down = 1;
 	inline static constexpr uint8_t mode_confirm = 2;
 	inline static constexpr uint8_t player_join = 3;
+	inline static constexpr uint8_t start = 7;
+
+	// HighScore Screen
 	inline static constexpr uint8_t name_character_confirm = 4;
 	inline static constexpr uint8_t name_character_up = 5;
 	inline static constexpr uint8_t name_character_down = 6;
-	inline static constexpr uint8_t start = 7;
 
 	// GamePlay
 	inline static constexpr uint8_t move_up = 0;
