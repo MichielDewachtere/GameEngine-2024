@@ -23,9 +23,10 @@ public:
 
 	void CheckForHighScore(int score) const;
 	static int GetHighScore() { return m_HighScore; }
+	static bool IsTopFive(int score);
 
 private:
-	static inline int m_HighScore{ 0 };
+	static inline int m_HighScore{ 0 }, m_TopFiveScore{ 0 };
 	real::TextComponent* m_pTextComponent{ nullptr };
 
 	int LoadHighScore(bool singlePlayer) const;

@@ -33,12 +33,17 @@ void HighScoreDisplay::CheckForHighScore(int score) const
 	}
 }
 
+bool HighScoreDisplay::IsTopFive(int score)
+{
+    return score > m_TopFiveScore;
+}
+
 
 int HighScoreDisplay::LoadHighScore(const bool singlePlayer) const
 {
     std::string filePath = "../data/high_scores.txt";
     std::ifstream file(filePath);
-    int highScore = m_HighScore; // Initialize high score to a value that indicates no score found
+    int highScore = m_HighScore;
 
     if (file.is_open())
     {
@@ -51,25 +56,25 @@ int HighScoreDisplay::LoadHighScore(const bool singlePlayer) const
             // Tokenize the line using ':' as delimiter
             getline(ss, token, ':'); // Get the first token
             if (token != (singlePlayer ? "1" : "2"))
-            {
-                // Skip lines where the second number is not 1
                 continue;
-            }
 
             // Tokenize the line using ':' as delimiter
             while (getline(ss, token, ':'))
             {
                 if (token == "1")
                 {
-            	// Check if it's the mode we are interested in
                     getline(ss, token, ':'); // Skip the second token
                     getline(ss, token, ':'); // Get the third token
-                    // Convert the score token to an integer
                     const int score = stoi(token);
-                    // Update high score if the current score is higher
+
                     if (score > highScore)
                         highScore = score;
-                    break; // We found the mode, so break out of the inner loop
+                }
+                else if (token == "5")
+                {
+                    getline(ss, token, ':'); // Skip the second token
+                    getline(ss, token, ':'); // Get the third token
+                    m_TopFiveScore = stoi(token);
                 }
             }
         }
