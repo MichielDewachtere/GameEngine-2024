@@ -75,7 +75,18 @@ void HUD::AddScore(ScoreEvents event, PlayerNumber p) const
 	if (p == PlayerNumber::playerTwo)
 		m_pScoreDisplayPlayerTwo->AddScore(event);
 
-	m_pHighScoreDisplay->CheckForHighScore(m_pScoreDisplayPlayerOne->GetScore() + m_pScoreDisplayPlayerTwo->GetScore());
+	if (m_pScoreDisplayPlayerTwo != nullptr)
+		m_pHighScoreDisplay->CheckForHighScore(m_pScoreDisplayPlayerOne->GetScore() + m_pScoreDisplayPlayerTwo->GetScore());
+	else
+		m_pHighScoreDisplay->CheckForHighScore(m_pScoreDisplayPlayerOne->GetScore());
+}
+
+int HUD::GetTotalScore()
+{
+	if (m_pScoreDisplayPlayerTwo != nullptr)
+		return m_pScoreDisplayPlayerOne->GetScore() + m_pScoreDisplayPlayerTwo->GetScore();
+
+	return m_pScoreDisplayPlayerOne->GetScore();
 }
 
 void HUD::AddLife() const
@@ -96,7 +107,7 @@ void HUD::InitHud()
 
 void HUD::InitScoreDisplay(PlayerNumber p)
 {
-	auto font = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	auto font = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
 
 	auto& player = m_pUniqueHud->CreateGameObject();
 	player.AddComponent<real::TextureComponent>();
@@ -111,7 +122,7 @@ void HUD::InitScoreDisplay(PlayerNumber p)
 		player.AddComponent<real::TextComponent>("P2", std::move(font), real::Colors::cyan);
 	}
 
-	font = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	font = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
 
 	auto& scoreDisplay = player.CreateGameObject();
 	scoreDisplay.GetTransform()->SetLocalPosition((MAZE_WIDTH - 1) * BLOCK_SIZE, 0);
@@ -125,14 +136,14 @@ void HUD::InitScoreDisplay(PlayerNumber p)
 
 void HUD::InitHighScoreDisplay()
 {
-	auto font = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	auto font = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
 
 	auto& player = m_pUniqueHud->CreateGameObject();
 	player.AddComponent<real::TextureComponent>();
 	player.GetTransform()->SetLocalPosition(WALL_WIDTH * PIXEL_SCALE + MAZE_WIDTH * BLOCK_SIZE, 0);
 	player.AddComponent<real::TextComponent>("HI", std::move(font), real::Colors::cyan);
 
-	font = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	font = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
 
 	auto& highScoreDisplay = player.CreateGameObject();
 	highScoreDisplay.GetTransform()->SetLocalPosition((MAZE_WIDTH - 1) * BLOCK_SIZE, 0);
@@ -165,7 +176,7 @@ void HUD::InitLevelDisplayTop() const
 
 void HUD::InitLevelDisplayBottom() const
 {
-	auto font = real::ResourceManager::GetInstance().LoadFont("joystix-monospace.otf", 24);
+	auto font = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
 	auto& levelDisplay = m_pUniqueHud->CreateGameObject();
 	levelDisplay.GetTransform()->SetLocalPosition(0, ((MAZE_HEIGHT + 2) * BLOCK_SIZE + WALL_WIDTH) * PIXEL_SCALE);

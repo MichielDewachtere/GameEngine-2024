@@ -38,6 +38,7 @@ public:
 	virtual void OnSubjectDestroy() override {}
 
 	void AddScore(ScoreEvents event, PlayerNumber p1) const;
+	int GetTotalScore();
 
 	void AddLife() const;
 	void RemoveLife() const;
