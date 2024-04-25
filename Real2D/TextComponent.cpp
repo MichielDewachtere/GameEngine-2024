@@ -49,7 +49,7 @@ void real::TextComponent::LateUpdate()
 		if (m_Text.empty())
 			Logger::LogWarning({ "No text in text component" });
 
-		auto i = m_pFont->CreateTexture(m_Text, m_Color);
+ 		auto i = m_pFont->CreateTexture(m_Text, m_Color);
 		m_pTextureComponent->SetTexture(std::move(i));
 
 		glm::vec2 renderOffset;

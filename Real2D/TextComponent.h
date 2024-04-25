@@ -49,7 +49,10 @@ namespace real
 
 		void SetFont(std::unique_ptr<Font> pFont);
 		void SetFont(const std::string& fontPath, int size);
+
 		void SetColor(const glm::u8vec4& color);
+		glm::u8vec4 GetColor() const { return m_Color; }
+
 		void SetHorizontalAlignment(HorizontalAlignment alignment);
 		void SetVerticalAlignment(VerticalAlignment alignment);
 
