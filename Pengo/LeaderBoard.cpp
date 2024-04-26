@@ -219,7 +219,7 @@ void LeaderBoard::InsertPlayerScore(int score)
             return data1.score > data2.score;
         });
 
-    for (int i = 0; i < m_LeaderBoard.size(); ++i)
+    for (int i = 0; i < static_cast<int>(m_LeaderBoard.size()); ++i)
         m_LeaderBoard[i].place = i + 1;
 }
 

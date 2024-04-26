@@ -154,9 +154,9 @@ void LevelGenerator::OutputMaze(std::string fileName) const
     }
 
     // Write to the file
-    for (int y{ 0 }; y < m_Maze.front().size(); ++y)
+    for (int y{ 0 }; y < static_cast<int>(m_Maze.front().size()); ++y)
     {
-	    for (int x{ 0 }; x < m_Maze.size(); ++x)
+	    for (int x{ 0 }; x < static_cast<int>(m_Maze.size()); ++x)
 	    {
             outputFile << m_Maze[x][y];
 	    }
