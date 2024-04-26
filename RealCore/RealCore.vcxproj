@@ -169,6 +169,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InputMap.cpp" />
     <ClCompile Include="Locator.cpp" />
+    <ClCompile Include="LogAudio.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Prefab.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="InputMap.h" />
     <ClInclude Include="InputTypes.h" />
     <ClInclude Include="Locator.h" />
+    <ClInclude Include="LogAudio.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="NullAudio.h" />
     <ClInclude Include="Observer.h" />
