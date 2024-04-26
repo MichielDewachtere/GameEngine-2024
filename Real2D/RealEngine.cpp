@@ -19,6 +19,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "SDLAudio.h"
+#include "LogAudio.h"
 
 SDL_Window* g_window{};
 
@@ -59,7 +60,11 @@ real::RealEngine::RealEngine(WindowSettings settings)
 	InitGame();
 	InitImGui();
 
+#ifdef NDEBUG
 	Locator::RegisterAudioSystem(new SDLAudio());
+#else
+	Locator::RegisterAudioSystem(new LogAudio(new SDLAudio()));
+#endif 
 }
 
 real::RealEngine::~RealEngine()
