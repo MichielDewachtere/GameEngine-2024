@@ -25,17 +25,19 @@ void StartMenu::Load()
 
 	auto& startScreen = CreateGameObject("start-screen");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-		startScreen.GetTransform()->SetLocalPosition(m_Settings.width / 2.f, 100);
-		startScreen.AddComponent<real::TextureComponent>();
-		startScreen.AddComponent<real::TextComponent>("Pengo", std::move(pFont))->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+		auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/title.png");
+
+		const auto size = texture->GetSize() * PIXEL_SCALE;
+		startScreen.GetTransform()->SetLocalPosition(m_Settings.width / 2.f, 150);
+		startScreen.GetTransform()->SetUniformScale(PIXEL_SCALE);
+		startScreen.AddComponent<real::TextureComponent>(std::move(texture))->SetRenderOffset(size.x / 2, size.y / 2);
 		startScreen.AddComponent<StartScreen>();
 	}
 
 	auto& mode = startScreen.CreateGameObject("select-mode");
 	{
 		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-		mode.GetTransform()->SetLocalPosition(0, 100);
+		mode.GetTransform()->SetLocalPosition(0, 150);
 		mode.AddComponent<real::TextureComponent>();
 
 		const auto textComponent = mode.AddComponent<real::TextComponent>("mode", std::move(pFont));
