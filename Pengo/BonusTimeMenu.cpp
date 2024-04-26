@@ -23,7 +23,7 @@ void BonusTimeMenu::Load()
 	{
 		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 
-		bonusTime.GetTransform()->SetLocalPosition({ static_cast<float>(m_Settings.width) / 2.f, BLOCK_SIZE * PIXEL_SCALE + WALL_WIDTH * PIXEL_SCALE });
+		bonusTime.GetTransform()->SetLocalPosition({ static_cast<float>(m_Settings.width) / 2.f, 250 });
 		bonusTime.AddComponent<BonusTime>();
 		bonusTime.AddComponent<real::TextureComponent>();
 		const auto textComponent = bonusTime.AddComponent<real::TextComponent>(" ", std::move(pFont));
