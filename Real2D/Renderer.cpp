@@ -34,19 +34,24 @@ void real::Renderer::Init(SDL_Window* window)
 
 void real::Renderer::Render() const
 {
+#ifndef NDEBUG
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+#endif
 
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_pRenderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_pRenderer);
 
 	SceneManager::GetInstance().Render();
+
+#ifndef NDEBUG
 	SceneManager::GetInstance().OnGui();
 
 	ImGui::Render();
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
+#endif 
 	SDL_RenderPresent(m_pRenderer);
 }
 
