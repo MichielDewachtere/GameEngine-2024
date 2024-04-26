@@ -3,6 +3,7 @@
 #include "DrawableComponent.h"
 #include "GameTime.h"
 #include "imgui.h"
+#include "InputManager.h"
 #include "Logger.h"
 #include "SceneManager.h"
 
@@ -227,6 +228,7 @@ void real::GameObject::OnGui()
 void real::GameObject::Destroy()
 {
 	gameObjectDestroyed.Notify(GameObjectEvent::destroyed);
+	InputManager::GetInstance().RemoveGameObjectCommands(this);
 
 	std::ranges::for_each(m_pChildren, [](const auto& go)
 		{

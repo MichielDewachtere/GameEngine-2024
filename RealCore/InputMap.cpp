@@ -3,6 +3,8 @@
 #include <ranges>
 #include <SDL_scancode.h>
 
+#include "GameObject.h"
+
 real::InputMap::InputMap(std::string name)
 	: m_Name(std::move(name))
 {
@@ -23,6 +25,36 @@ void real::InputMap::RemoveGamePadAction(uint8_t id, int controllerId)
 		for (const auto& currentId : m_pControllerActions | std::views::keys)
 		{
 			m_GamePadActionsToRemove[currentId].push_back(id);
+		}
+	}
+}
+
+void real::InputMap::RemoveAction(const GameObject* pGameObject)
+{
+	for (const auto& [id, action] : m_pKeyboardActions)
+	{
+		if (const auto command = dynamic_cast<GameObjectCommand*>(action->pCommand.get());
+			command != nullptr)
+		{
+			if (command->GetGameObject()->GetId() == pGameObject->GetId())
+			{
+				m_KeyboardActionsToRemove.push_back(id);
+			}
+		}
+	}
+
+	for (const auto& [controller, v] : m_pControllerActions)
+	{
+		for (const auto& [id, action] : v)
+		{
+			if (const auto command = dynamic_cast<GameObjectCommand*>(action->pCommand.get());
+				command != nullptr)
+			{
+				if (command->GetGameObject()->GetId() == pGameObject->GetId())
+				{
+					m_GamePadActionsToRemove[controller].push_back(id);
+				}
+			}
 		}
 	}
 }

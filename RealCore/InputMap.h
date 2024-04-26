@@ -32,13 +32,17 @@ namespace real
 		void RemoveKeyboardAction(uint8_t id);
 		void RemoveGamePadAction(uint8_t id, int controllerId);
 
+		void RemoveAction(const GameObject* pGameObject);
+
 		const std::map<uint8_t, std::unique_ptr<KeyboardAction>>& GetKeyboardActions();
 		const std::map<uint8_t, std::map<uint8_t, std::unique_ptr<ControllerAction>>>& GetGamePadActions();
 
 	private:
 		std::string m_Name;
 
+		//			id					action
 		std::map<uint8_t, std::unique_ptr<KeyboardAction>> m_pKeyboardActions{};
+		//		controllerId		id					action
 		std::map<uint8_t, std::map<uint8_t, std::unique_ptr<ControllerAction>>> m_pControllerActions{};
 		std::vector<uint8_t> m_KeyboardActionsToRemove;
 		std::map<uint8_t, std::vector<uint8_t>> m_GamePadActionsToRemove;
