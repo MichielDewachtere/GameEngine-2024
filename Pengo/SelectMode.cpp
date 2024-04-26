@@ -74,10 +74,10 @@ void SelectMode::ConfirmMode() const
 
 void SelectMode::InitMode(char id)
 {
-	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 40);
 
 	auto& mode = GetOwner()->CreateGameObject();
-	mode.GetTransform()->SetLocalPosition(0, static_cast<float>(50 + id * 25));
+	mode.GetTransform()->SetLocalPosition(0, static_cast<float>(40 + id * 30));
 	mode.AddComponent<real::TextureComponent>();
 
 	const auto textComponent = mode.AddComponent<real::TextComponent>(m_ModeNames[static_cast<Modes>(id)], std::move(pFont));
