@@ -120,6 +120,9 @@
     <ClCompile Include="SDLAudio.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClCompile Include="LogAudio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h">
@@ -216,6 +219,9 @@
       <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="NullAudio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="LogAudio.h">
       <Filter>Audio</Filter>
     </ClInclude>
   </ItemGroup>
