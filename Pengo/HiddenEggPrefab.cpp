@@ -24,7 +24,7 @@ HiddenEggPrefab::HiddenEggPrefab(real::Scene* pScene)
 	Init();
 }
 
-void HiddenEggPrefab::Init()
+void HiddenEggPrefab::Init() const
 {
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/egg_sheet.png");
 
@@ -39,9 +39,12 @@ void HiddenEggPrefab::Init()
 	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->Disable();
 
-	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
-	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(real::Colors::red);
+	real::ColliderInfo info;
+	info.pos = go->GetTransform()->GetWorldPosition();
+	info.size = spriteComponent->GetSpriteSize();
+	info.drawDebug = true;
+	info.debugColor = real::Colors::red;
+	go->AddComponent<real::ColliderComponent>(info);
 
 	go->AddComponent<HiddenEgg>();
 }

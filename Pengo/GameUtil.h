@@ -22,4 +22,21 @@ inline glm::ivec2 DirectionToVector(Direction dir)
 	}
 }
 
+inline Direction InvertDirection(Direction dir)
+{
+	switch (dir)
+	{
+	case Direction::up:
+		return Direction::down;
+	case Direction::right:
+		return Direction::left;
+	case Direction::left:
+		return Direction::right;
+	case Direction::down:
+		return Direction::up;
+	default:
+		return dir;
+	}
+}
+
 #endif // GAMEUTIL_H

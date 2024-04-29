@@ -13,12 +13,20 @@ namespace real
 {
 	enum class TransformEvent : char;
 
+	struct ColliderInfo
+	{
+		glm::vec2 pos{ 0,0 };
+		glm::vec2 size{ 0,0 };
+		bool drawDebug{ true };
+		glm::u8vec4 debugColor{ 0,255,0,255 };
+	};
+
 	class ColliderComponent final
 		: public DrawableComponent
 		, public Observer<TransformEvent, const glm::vec3&>
 	{
 	public:
-		explicit ColliderComponent(GameObject* pOwner, const glm::vec2& pos, const glm::vec2& size);
+		explicit ColliderComponent(GameObject* pOwner, ColliderInfo info = {});
 		virtual ~ColliderComponent() override;
 
 		ColliderComponent(const ColliderComponent& other) = delete;
@@ -43,8 +51,8 @@ namespace real
 
 	private:
 		glm::vec2 m_Position, m_Size, m_OffsetFromParent{}, m_Scale{ 1,1 };
-		bool m_DrawDebug{ false };
-		glm::u8vec4 m_DebugColor{ 0,255,0,255 };
+		bool m_DrawDebug;
+		glm::u8vec4 m_DebugColor;
 	};
 }
 

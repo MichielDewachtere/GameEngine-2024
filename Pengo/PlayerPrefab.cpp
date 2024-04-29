@@ -23,7 +23,7 @@ PlayerPrefab::PlayerPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm
 	Init(pos, mazePos, player);
 }
 
-void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player)
+void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player) const
 {
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/pengo/pengo_red.png");
 
@@ -39,11 +39,13 @@ void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, Player
 	spriteSheet.timePerAnimation = 0.2f;
 	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(0);
-	//spriteComponent->PlayAnimation(0, 2);
 
-	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
-	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(real::Colors::appelblauwzeegroen);
+	real::ColliderInfo info;
+	info.pos = go->GetTransform()->GetWorldPosition();
+	info.size = spriteComponent->GetSpriteSize();
+	info.drawDebug = true;
+	info.debugColor = real::Colors::appelblauwzeegroen;
+	go->AddComponent<real::ColliderComponent>(info);
 
 	const auto moveComponent = go->AddComponent<Move>(mazePos, Maze::BlockType::player, PLAYER_SPEED, true);
 	moveComponent->BindAnimationToDirection(Direction::down, { 0, 1 });

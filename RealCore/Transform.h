@@ -11,6 +11,15 @@
 
 namespace real
 {
+	// TODO: use this to initialize component, apply this to other components as well
+	struct TransformInfo
+	{
+		glm::vec3 position{ 0,0,0 };
+		bool useLocalPosition = true;
+		glm::vec3 scale{ 1,1,1 };
+		glm::vec3 rotation{ 0,0,0 };
+	};
+
 	enum class TransformEvent : char
 	{
 		worldPosChanged = 0,
@@ -22,8 +31,7 @@ namespace real
 	class Transform final : public Component
 	{
 	public:
-		explicit Transform(GameObject* pOwner) : Component(pOwner) {}
-		explicit Transform(GameObject* pOwner, glm::vec3 localPos);
+		explicit Transform(GameObject* pOwner, TransformInfo info = {});
 		virtual ~Transform() override = default;
 
 		Transform(const Transform& other) = delete;
@@ -91,8 +99,8 @@ namespace real
 		Subject<TransformEvent, const glm::vec3&> rotationChanged;
 
 	private:
-		bool m_LocalNeedsUpdate{ true }, m_WorldNeedsUpdate{ true }, m_WorldMatNeedsUpdate{ true };
-		glm::vec3 m_LocalPosition{ 0,0,0 }, m_WorldPosition{ 0,0,0 },m_Scale{ 1,1,1 }, m_Rotation{ 0,0,0 };
+		bool m_LocalNeedsUpdate, m_WorldNeedsUpdate, m_WorldMatNeedsUpdate;
+		glm::vec3 m_LocalPosition, m_WorldPosition, m_Scale, m_Rotation;
 		glm::mat4 m_WorldMatrix{ 1.0 };
 
 		void UpdateWorldPosition();

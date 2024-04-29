@@ -51,9 +51,12 @@ void WallPrefab::Init(const glm::ivec2& pos, bool horizontal, WallOrientation or
 	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(0);
 
-	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
-	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(real::Colors::purple);
+	real::ColliderInfo info;
+	info.pos = go->GetTransform()->GetWorldPosition();
+	info.size = spriteComponent->GetSpriteSize();
+	info.drawDebug = true;
+	info.debugColor = real::Colors::purple;
+	go->AddComponent<real::ColliderComponent>(info);
 
 	go->AddComponent<Wall>(orientation);
 }

@@ -10,10 +10,24 @@
 
 #include "GameObject.h"
 
-real::Transform::Transform(GameObject* pOwner, glm::vec3 localPos)
+// ReSharper disable once CppPossiblyUninitializedMember
+real::Transform::Transform(GameObject* pOwner, TransformInfo info)
 	: Component(pOwner)
-	, m_LocalPosition(localPos)
+	, m_Scale(info.scale)
+	, m_Rotation(info.rotation)
 {
+	if (info.useLocalPosition)
+	{
+		m_LocalPosition = info.position;
+		m_WorldNeedsUpdate = true;
+		m_LocalNeedsUpdate = false;
+	}
+	else if (info.useLocalPosition == false)
+	{
+		m_WorldPosition = info.position;
+		m_LocalNeedsUpdate = true;
+		m_WorldNeedsUpdate = false;
+	}
 }
 
 void real::Transform::Start()

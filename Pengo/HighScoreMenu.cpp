@@ -17,24 +17,21 @@ HighScoreMenu::HighScoreMenu(std::string name, std::string inputMap, real::Windo
 void HighScoreMenu::Load()
 {
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
 		auto& test = CreateGameObject();
 		test.GetTransform()->SetLocalPosition(m_Settings.width / 2.f, 100);
 		test.AddComponent<real::TextureComponent>();
-		const auto textComp = test.AddComponent<real::TextComponent>("enter your initials", std::move(pFont), real::Colors::yellow);
-		textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+		real::TextInfo info{};
+		info.text = "enter your initials";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.color = real::Colors::yellow;
+		info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		test.AddComponent<real::TextComponent>(std::move(info));
 		test.AddComponent<RegisterHighScore>();
 	}
 	{
-		//auto pFont = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, 32);
-
 		constexpr float leaderBoardOffset = 104 * PIXEL_SCALE;
 		auto& test = CreateGameObject();
 		test.GetTransform()->SetLocalPosition(m_Settings.width / 2.f, leaderBoardOffset);
-		//test.AddComponent<real::TextureComponent>();
-		//const auto textComp = test.AddComponent<real::TextComponent>("leaderboard", std::move(pFont), real::Colors::pink);
-		//textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
 		test.AddComponent<LeaderBoard>();
 	}
 }

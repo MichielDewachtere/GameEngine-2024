@@ -10,24 +10,15 @@
 #include "TextureComponent.h"
 #include "Texture2D.h"
 
-real::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::unique_ptr<Font> pFont,
-                                  const glm::u8vec4& color)
+real::TextComponent::TextComponent(GameObject* pOwner, TextInfo info)
 	: Component(pOwner)
-	, m_Text(std::move(text))
-	, m_Color(color)
-	, m_pFont(std::move(pFont))
+	, m_Text(std::move(info.text))
+	, m_Color(info.color)
+	, m_HorizontalAlignment(info.horizontalAlignment)
+	, m_VerticalAlignment(info.verticalAlignment)
+	, m_pFont(std::move(info.pFont))
 {
 }
-
-//real::TextComponent::TextComponent(GameObject* pOwner, std::string text, std::string fontPath, int fontSize,
-//                                  const glm::u8vec4& color)
-//	: Component(pOwner)
-//	, m_Text(std::move(text))
-//	, m_Color(color)
-//	, m_pFont(nullptr)
-//{
-//	m_pFont = ResourceManager::GetInstance().LoadFont(fontPath, fontSize);
-//}
 
 void real::TextComponent::Start()
 {
@@ -35,7 +26,7 @@ void real::TextComponent::Start()
 	if (m_pTextureComponent == nullptr)
 	{
 		// TODO: this crashes out if text component is not last in component list
-		m_pTextureComponent = GetOwner()->AddComponent<TextureComponent>(nullptr);
+		m_pTextureComponent = GetOwner()->AddComponent<TextureComponent>();
 	}
 }
 
@@ -86,13 +77,13 @@ void real::TextComponent::SetColor(const glm::u8vec4& color)
 	m_IsDirty = true;
 }
 
-void real::TextComponent::SetHorizontalAlignment(HorizontalAlignment alignment)
+void real::TextComponent::SetHorizontalAlignment(HorizontalTextAlignment alignment)
 {
 	m_HorizontalAlignment = alignment;
 	m_IsDirty = true;
 }
 
-void real::TextComponent::SetVerticalAlignment(VerticalAlignment alignment)
+void real::TextComponent::SetVerticalAlignment(VerticalTextAlignment alignment)
 {
 	m_VerticalAlignment = alignment;
 	m_IsDirty = true;
@@ -105,17 +96,17 @@ float real::TextComponent::HandleHorizontalAlignment() const
 
 	switch (m_HorizontalAlignment)
 	{
-	case HorizontalAlignment::left:
+	case HorizontalTextAlignment::left:
 	{
 		x = static_cast<float>(textureSize.x);
 		break;
 	}
-	case HorizontalAlignment::center:
+	case HorizontalTextAlignment::center:
 	{
 		x = static_cast<float>(textureSize.x) / 2.f;
 		break;
 	}
-	case HorizontalAlignment::right:
+	case HorizontalTextAlignment::right:
 	{
 		x = 0;
 		break;
@@ -132,17 +123,17 @@ float real::TextComponent::HandleVerticalAlignment() const
 
 	switch (m_VerticalAlignment)
 	{
-	case VerticalAlignment::up:
+	case VerticalTextAlignment::up:
 	{
 		y = static_cast<float>(textureSize.y);
 		break;
 	}
-	case VerticalAlignment::center:
+	case VerticalTextAlignment::center:
 	{
 		y = static_cast<float>(textureSize.y) / 2.f;
 		break;
 	}
-	case VerticalAlignment::down:
+	case VerticalTextAlignment::down:
 	{
 		y = 0;
 		break;

@@ -46,31 +46,40 @@ void LeaderBoard::WriteCategories(real::GameObject* pOwner, float localYPos, con
     categories.GetTransform()->SetLocalPosition(0, localYPos);
 
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
         auto& score = categories.CreateGameObject();
         score.GetTransform()->SetLocalPosition(score_offset, 0);
 		score.AddComponent<real::TextureComponent>();
-        const auto textComp = score.AddComponent<real::TextComponent>("score", std::move(pFont), color);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = "score";
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = color;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+        score.AddComponent<real::TextComponent>(std::move(info));
 	}
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
         auto& act = categories.CreateGameObject();
         act.GetTransform()->SetLocalPosition(act_offset, 0);
 		act.AddComponent<real::TextureComponent>();
-        const auto textComp = act.AddComponent<real::TextComponent>("act", std::move(pFont), color);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = "act";
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = color;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+        act.AddComponent<real::TextComponent>(std::move(info));
 	}
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
 		auto& name = categories.CreateGameObject();
         name.GetTransform()->SetLocalPosition(name_offset, 0);
 		name.AddComponent<real::TextureComponent>();
-        const auto textComp = name.AddComponent<real::TextComponent>("name", std::move(pFont), color);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = "name";
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = color;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+        name.AddComponent<real::TextComponent>(std::move(info));
 	}
 }
 
@@ -87,42 +96,54 @@ void LeaderBoard::WriteData(const Data& data)
         color = real::Colors::yellow;
 
     {
-        auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
         auto& place = categories.CreateGameObject();
         place.GetTransform()->SetLocalPosition(place_offset, 0);
         place.AddComponent<real::TextureComponent>();
-        const auto textComp = place.AddComponent<real::TextComponent>(m_PlaceToString[data.place], std::move(pFont), color);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = m_PlaceToString[data.place];
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = color;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+        place.AddComponent<real::TextComponent>(std::move(info));
     }
     {
-        auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
         auto& score = categories.CreateGameObject();
         score.GetTransform()->SetLocalPosition(score_offset, 0);
         score.AddComponent<real::TextureComponent>();
-        const auto textComp = score.AddComponent<real::TextComponent>(std::to_string(data.score), std::move(pFont), color);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = std::to_string(data.score);
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = color;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+        score.AddComponent<real::TextComponent>(std::move(info));
     }
     {
-        auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
         auto& act = categories.CreateGameObject();
         act.GetTransform()->SetLocalPosition(act_offset, 0);
         act.AddComponent<real::TextureComponent>();
-        const auto textComp = act.AddComponent<real::TextComponent>(std::to_string(data.act), std::move(pFont), color);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = std::to_string(data.act);
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = color;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+        act.AddComponent<real::TextComponent>(std::move(info));
     }
     {
-        auto pFont = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
         auto& name = categories.CreateGameObject();
         name.GetTransform()->SetLocalPosition(name_offset, 0);
         if (data.name.empty() == false)
         {
             name.AddComponent<real::TextureComponent>();
-            const auto textComp = name.AddComponent<real::TextComponent>(data.name, std::move(pFont), color);
-            textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+            real::TextInfo info{};
+            info.text = data.name;
+            info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+            info.color = color;
+            info.horizontalAlignment = real::HorizontalTextAlignment::center;
+            name.AddComponent<real::TextComponent>(std::move(info));
         }
         else
         {
@@ -137,12 +158,15 @@ void LeaderBoard::HandleEvent(EnterName::Events event, char character)
     {
         if (m_pPlayerName == nullptr)
         {
-			auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
 			const auto name = GetOwner()->GetChild(m_PLayerNameId);
             name->AddComponent<real::TextureComponent>();
-            m_pPlayerName = name->AddComponent<real::TextComponent>(std::string{ character }, std::move(pFont), real::Colors::yellow);
-            m_pPlayerName->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+            real::TextInfo info{};
+            info.text = std::string{ character };
+            info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+            info.color = real::Colors::yellow;
+            info.horizontalAlignment = real::HorizontalTextAlignment::center;
+            m_pPlayerName = name->AddComponent<real::TextComponent>(std::move(info));
 
         	return;
         }

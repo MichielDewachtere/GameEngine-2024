@@ -11,11 +11,18 @@ namespace real
 {
 	//enum class TransformEvent : char;
 
+	struct TextureInfo
+	{
+		std::unique_ptr<Texture2D> pTexture{ nullptr };
+		glm::vec2 offset{ 0,0 };
+	};
+
 	class TextureComponent final : public DrawableComponent
 	{
 	public:
-		explicit TextureComponent(GameObject* pOwner, std::unique_ptr<Texture2D> pTexture = nullptr);
+		//explicit TextureComponent(GameObject* pOwner, std::unique_ptr<Texture2D> pTexture = nullptr);
 		//explicit TextureComponent(GameObject* pOwner, std::string texturePath = "");
+		explicit TextureComponent(GameObject* pOwner, TextureInfo info = {});
 		virtual ~TextureComponent() override = default;
 
 		TextureComponent(const TextureComponent& other) = delete;
@@ -35,8 +42,8 @@ namespace real
 
 
 	private:
-		std::unique_ptr<Texture2D> m_pTexture{ nullptr };
-		glm::vec2 m_TextureOffset{ 0,0 };
+		std::unique_ptr<Texture2D> m_pTexture;
+		glm::vec2 m_TextureOffset;
 	};
 }
 

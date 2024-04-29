@@ -40,9 +40,12 @@ void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos) const
 	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(2);
 
-	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
-	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(real::Colors::purple);
+	real::ColliderInfo info;
+	info.pos = go->GetTransform()->GetWorldPosition();
+	info.size = spriteComponent->GetSpriteSize();
+	info.debugColor = real::Colors::purple;
+	info.drawDebug = true;
+	go->AddComponent<real::ColliderComponent>(info);
 
 	const auto moveComponent = go->AddComponent<Move>(mazePos, Maze::BlockType::enemy, 75.f, true);
 	moveComponent->BindAnimationToDirection(Direction::down, { 8, 9 });

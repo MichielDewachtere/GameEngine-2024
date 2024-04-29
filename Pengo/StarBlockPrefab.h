@@ -18,7 +18,7 @@ public:
 	StarBlockPrefab& operator=(StarBlockPrefab&& rhs) = delete;
 
 protected:
-	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos);
+	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos) const;
 };
 
 #endif // STARBLOCKPREFAB_H

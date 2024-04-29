@@ -19,7 +19,7 @@ public:
 	PlayerPrefab(PlayerPrefab&& other) = delete;
 	PlayerPrefab& operator=(PlayerPrefab&& rhs) = delete;
 
-	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player);
+	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player) const;
 
 private:
 

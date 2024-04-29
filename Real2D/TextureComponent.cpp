@@ -7,17 +7,24 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
-real::TextureComponent::TextureComponent(GameObject* pOwner, std::unique_ptr<Texture2D> pTexture)
-	: DrawableComponent(pOwner)
-	, m_pTexture(std::move(pTexture))
-{
-}
+//real::TextureComponent::TextureComponent(GameObject* pOwner, std::unique_ptr<Texture2D> pTexture)
+//	: DrawableComponent(pOwner)
+//	, m_pTexture(std::move(pTexture))
+//{
+//}
 
 //real::TextureComponent::TextureComponent(GameObject* pOwner, std::string texturePath)
 //	: DrawableComponent(pOwner)
 //{
 //	m_pTexture = ResourceManager::GetInstance().LoadTexture(std::move(texturePath));
 //}
+
+real::TextureComponent::TextureComponent(GameObject* pOwner, TextureInfo info)
+	: DrawableComponent(pOwner)
+	, m_pTexture(std::move(info.pTexture))
+	, m_TextureOffset(info.offset)
+{
+}
 
 void real::TextureComponent::Render()
 {

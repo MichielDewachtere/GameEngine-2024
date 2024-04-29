@@ -74,19 +74,19 @@ void SelectMode::ConfirmMode() const
 
 void SelectMode::InitMode(char id)
 {
-	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 40);
-
 	auto& mode = GetOwner()->CreateGameObject();
 	mode.GetTransform()->SetLocalPosition(0, static_cast<float>(40 + id * 30));
 	mode.AddComponent<real::TextureComponent>();
 
-	const auto textComponent = mode.AddComponent<real::TextComponent>(m_ModeNames[static_cast<Modes>(id)], std::move(pFont));
-	textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+	real::TextInfo info{};
 
 	if (static_cast<Modes>(id) == Modes::singlePlayer)
-		textComponent->SetColor(real::Colors::yellow);
+		info.color = real::Colors::yellow;
 	else
-		textComponent->SetColor(real::Colors::grey);
+		info.color = real::Colors::grey;
 
-	m_TextComponents[static_cast<Modes>(id)] = textComponent;
+	info.text = m_ModeNames[static_cast<Modes>(id)];
+	info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 40);
+	info.horizontalAlignment = real::HorizontalTextAlignment::center;
+	m_TextComponents[static_cast<Modes>(id)] = mode.AddComponent<real::TextComponent>(std::move(info));
 }

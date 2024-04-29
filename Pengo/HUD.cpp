@@ -15,7 +15,6 @@
 #include "ScoreDisplay.h"
 #include "Macros.h"
 #include "Player.h"
-#include "PlayerManager.h"
 
 HUD::~HUD()
 {
@@ -107,27 +106,38 @@ void HUD::InitHud()
 
 void HUD::InitScoreDisplay(PlayerNumber p)
 {
-	auto font = real::ResourceManager::GetInstance().LoadFont("pengo_arcade.ttf", 48);
-
 	auto& player = m_pUniqueHud->CreateGameObject();
 	player.AddComponent<real::TextureComponent>();
 	if (p == PlayerNumber::playerOne)
 	{
 		player.GetTransform()->SetLocalPosition(WALL_WIDTH * PIXEL_SCALE, 0);
-		player.AddComponent<real::TextComponent>("P1", std::move(font), real::Colors::cyan);
+
+		real::TextInfo info{};
+		info.text = "P1";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.color = real::Colors::cyan;
+		player.AddComponent<real::TextComponent>(std::move(info));
 	}
 	else
 	{
 		player.GetTransform()->SetLocalPosition(WALL_WIDTH * PIXEL_SCALE + MAZE_WIDTH * BLOCK_SIZE * 2, 0);
-		player.AddComponent<real::TextComponent>("P2", std::move(font), real::Colors::cyan);
-	}
 
-	font = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
+		real::TextInfo info{};
+		info.text = "P2";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.color = real::Colors::cyan;
+		player.AddComponent<real::TextComponent>(std::move(info));
+	}
 
 	auto& scoreDisplay = player.CreateGameObject();
 	scoreDisplay.GetTransform()->SetLocalPosition((MAZE_WIDTH - 1) * BLOCK_SIZE, 0);
 	scoreDisplay.AddComponent<real::TextureComponent>();
-	scoreDisplay.AddComponent<real::TextComponent>("0", std::move(font))->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::left);
+
+	real::TextInfo info{};
+	info.text = "0";
+	info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+	info.horizontalAlignment = real::HorizontalTextAlignment::left;
+	scoreDisplay.AddComponent<real::TextComponent>(std::move(info));
 	if (p == PlayerNumber::playerOne)
 		m_pScoreDisplayPlayerOne = scoreDisplay.AddComponent<ScoreDisplay>();
 	else
@@ -136,19 +146,29 @@ void HUD::InitScoreDisplay(PlayerNumber p)
 
 void HUD::InitHighScoreDisplay()
 {
-	auto font = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
-
 	auto& player = m_pUniqueHud->CreateGameObject();
 	player.AddComponent<real::TextureComponent>();
 	player.GetTransform()->SetLocalPosition(WALL_WIDTH * PIXEL_SCALE + MAZE_WIDTH * BLOCK_SIZE, 0);
-	player.AddComponent<real::TextComponent>("HI", std::move(font), real::Colors::cyan);
 
-	font = real::ResourceManager::GetInstance().LoadFont(FONT_PATH, FONT_SIZE);
+	{
+		real::TextInfo info{};
+		info.text = "HI";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.color = real::Colors::cyan;
+		player.AddComponent<real::TextComponent>(std::move(info));
+	}
 
 	auto& highScoreDisplay = player.CreateGameObject();
 	highScoreDisplay.GetTransform()->SetLocalPosition((MAZE_WIDTH - 1) * BLOCK_SIZE, 0);
 	highScoreDisplay.AddComponent<real::TextureComponent>();
-	highScoreDisplay.AddComponent<real::TextComponent>("0", std::move(font))->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::left);
+
+	{
+		real::TextInfo info{};
+		info.text = "0";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.horizontalAlignment = real::HorizontalTextAlignment::left;
+		highScoreDisplay.AddComponent<real::TextComponent>(std::move(info));
+	}
 	m_pHighScoreDisplay = highScoreDisplay.AddComponent<HighScoreDisplay>();
 }
 
@@ -176,11 +196,14 @@ void HUD::InitLevelDisplayTop() const
 
 void HUD::InitLevelDisplayBottom() const
 {
-	auto font = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
 	auto& levelDisplay = m_pUniqueHud->CreateGameObject();
 	levelDisplay.GetTransform()->SetLocalPosition(0, ((MAZE_HEIGHT + 2) * BLOCK_SIZE + WALL_WIDTH) * PIXEL_SCALE);
 	levelDisplay.AddComponent<real::TextureComponent>();
-	levelDisplay.AddComponent<real::TextComponent>("act 1", std::move(font))->SetVerticalAlignment(real::TextComponent::VerticalAlignment::down);
+
+	real::TextInfo info{};
+	info.text = "act 1";
+	info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+	info.verticalAlignment = real::VerticalTextAlignment::down;
+	levelDisplay.AddComponent<real::TextComponent>(std::move(info));
 	levelDisplay.AddComponent<LevelDisplayBottom>();
 }

@@ -21,23 +21,25 @@ void BonusTimeMenu::Load()
 
 	auto& bonusTime = CreateGameObject();
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
 		bonusTime.GetTransform()->SetLocalPosition({ static_cast<float>(m_Settings.width) / 2.f, 250 });
 		bonusTime.AddComponent<BonusTime>();
 		bonusTime.AddComponent<real::TextureComponent>();
-		const auto textComponent = bonusTime.AddComponent<real::TextComponent>(" ", std::move(pFont));
-		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+		real::TextInfo info{};
+		info.text = " ";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		bonusTime.AddComponent<real::TextComponent>(std::move(info));
 	}
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
 		auto& time = bonusTime.CreateGameObject();
 		time.GetTransform()->SetLocalPosition({ 0,0 });
 		time.AddComponent<real::TextureComponent>();
-		const auto textComponent = time.AddComponent<real::TextComponent>("GAME TIME    MIN.   SEC.", std::move(pFont));
-		textComponent->SetColor(real::Colors::yellow);
-		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+		real::TextInfo info{};
+		info.text = "GAME TIME    MIN.   SEC.";
+		info.color = real::Colors::yellow;
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		time.AddComponent<real::TextComponent>(std::move(info));
 	}
 	{
 		WriteLine(bonusTime, 0, "FROM 00 TO 19 .5000 PTS.");
@@ -51,14 +53,14 @@ void BonusTimeMenu::Load()
 
 void BonusTimeMenu::WriteLine(real::GameObject& go, int i, std::string text) const
 {
-	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
 	auto& line = go.CreateGameObject();
 	line.GetTransform()->SetLocalPosition({ 0, 50 + i * 35 });
 	line.AddComponent<real::TextureComponent>();
 
-	const auto textComponent = line.AddComponent<real::TextComponent>(text, std::move(pFont));
-	textComponent->SetColor(real::Colors::cyan);
-
-	textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+	real::TextInfo info{};
+	info.text = std::move(text);
+	info.color = real::Colors::cyan;
+	info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+	info.horizontalAlignment = real::HorizontalTextAlignment::center;
+	line.AddComponent<real::TextComponent>(std::move(info));
 }

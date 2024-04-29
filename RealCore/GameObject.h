@@ -25,7 +25,7 @@ namespace real
 	class GameObject final
 	{
 	public:
-		explicit GameObject(Scene * scene, std::string tag = "none");
+		explicit GameObject(Scene* scene, TransformInfo info = {}, std::string tag = "none");
 		~GameObject() = default;
 
 		GameObject(const GameObject& other) = delete;
@@ -33,7 +33,7 @@ namespace real
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		GameObject& CreateGameObject(std::string tag = "");
+		GameObject& CreateGameObject(TransformInfo info = {}, std::string tag = "");
 		uint32_t GetId() const { return m_Id; }
 
 		void Start();

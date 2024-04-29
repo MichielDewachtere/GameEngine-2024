@@ -3,10 +3,12 @@
 #include "GameObject.h"
 #include "Renderer.h"
 
-real::ColliderComponent::ColliderComponent(GameObject* pOwner, const glm::vec2& pos, const glm::vec2& size)
+real::ColliderComponent::ColliderComponent(GameObject* pOwner, ColliderInfo info)
 	: DrawableComponent(pOwner)
-	, m_Position(pos)
-	, m_Size(size)
+	, m_Position(info.pos)
+	, m_Size(info.size)
+	, m_DrawDebug(info.drawDebug)
+	, m_DebugColor(info.debugColor)
 {
 }
 
@@ -33,6 +35,7 @@ void real::ColliderComponent::Start()
 
 void real::ColliderComponent::DebugRender()
 {
+#ifndef NDEBUG
 	if (m_DrawDebug)
 	{
 		Renderer::GetInstance().RenderRectangle(
@@ -41,6 +44,7 @@ void real::ColliderComponent::DebugRender()
 			m_DebugColor
 		);
 	}
+#endif
 }
 
 bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) const

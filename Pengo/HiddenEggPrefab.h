@@ -1,8 +1,6 @@
 ﻿#ifndef HIDDENEGGPREFAB_H
 #define HIDDENEGGPREFAB_H
 
-#include <glm/vec2.hpp>
-
 #include <Prefab.h>
 
 class HiddenEggPrefab final : public real::Prefab
@@ -18,7 +16,7 @@ public:
 	HiddenEggPrefab& operator=(HiddenEggPrefab&& rhs) = delete;
 
 protected:
-	void Init();
+	void Init() const;
 };
 
 #endif // HIDDENEGGPREFAB_H

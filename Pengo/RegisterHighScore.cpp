@@ -30,25 +30,31 @@ void RegisterHighScore::WriteData() const
     constexpr float verticalOffset = 100;
 
     {
-        auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
         auto& score = GetOwner()->CreateGameObject();
         score.GetTransform()->SetLocalPosition(LeaderBoard::score_offset, verticalOffset);
         score.AddComponent<real::TextureComponent>();
-        const auto textComp = score.AddComponent<real::TextComponent>(std::to_string(HUD::GetInstance().GetTotalScore()), std::move(pFont), real::Colors::white);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = std::to_string(HUD::GetInstance().GetTotalScore());
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = real::Colors::white;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		score.AddComponent<real::TextComponent>(std::move(info));
     }
     {
-        auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
         auto& act = GetOwner()->CreateGameObject();
         act.GetTransform()->SetLocalPosition(LeaderBoard::act_offset, verticalOffset);
         act.AddComponent<real::TextureComponent>();
-        const auto textComp = act.AddComponent<real::TextComponent>(std::to_string(Game::GetCurrentLevel()), std::move(pFont), real::Colors::white);
-        textComp->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+        real::TextInfo info{};
+        info.text = std::to_string(Game::GetCurrentLevel());
+        info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+        info.color = real::Colors::white;
+        info.horizontalAlignment = real::HorizontalTextAlignment::center;
+    	act.AddComponent<real::TextComponent>(std::move(info));
     }
     {
-        auto& name = GetOwner()->CreateGameObject("enter-name");
+        auto& name = GetOwner()->CreateGameObject({}, "enter-name");
         name.GetTransform()->SetLocalPosition(LeaderBoard::name_offset, verticalOffset);
         name.AddComponent<EnterName>();
 

@@ -88,57 +88,54 @@ void StartScreen::PlayerSelected()
 
 void StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
 {
-	auto& player = GetOwner()->CreateGameObject("player-start-screen");
+	auto& player = GetOwner()->CreateGameObject({ glm::vec3{static_cast<float>(offset * 150),300,0} }, "player-start-screen");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
-		player.GetTransform()->SetLocalPosition(static_cast<float>(offset * 150), 300);
 		player.AddComponent<real::TextureComponent>();
 
-		const auto text = "Player " + std::to_string(playerId);
-		const auto textComponent = player.AddComponent<real::TextComponent>(text, std::move(pFont));
-		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
-		textComponent->SetColor(real::Colors::white);
+		real::TextInfo info{};
+		info.text = "Player " + std::to_string(playerId);
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		player.AddComponent<real::TextComponent>(std::move(info));
 	}
-	auto& type = player.CreateGameObject("player-type");
+	auto& type = player.CreateGameObject({}, "player-type");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
 		type.GetTransform()->SetLocalPosition(0, 30);
 		type.AddComponent<real::TextureComponent>();
 
-		std::string text{};
-		glm::u8vec4 color{};
+		real::TextInfo info{};
+
 		if (isEnemy)
 		{
-			text = "enemy";
-			color = real::Colors::green;
+			info.text = "enemy";
+			info.color = real::Colors::green;
 		}
 		else if (playerId == 1)
 		{
-			text = "pengo (red)";
-			color = real::Colors::red;
+			info.text = "pengo (red)";
+			info.color = real::Colors::red;
 		}
 		else if (playerId == 2)
 		{
-			text = "pengo (yellow)";
-			color = real::Colors::yellow;
+			info.text = "pengo (yellow)";
+			info.color = real::Colors::yellow;
 		}
 
-		const auto textComponent = type.AddComponent<real::TextComponent>(text, std::move(pFont));
-		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
-		textComponent->SetColor(color);
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+		info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		type.AddComponent<real::TextComponent>(std::move(info));
 	}
-	auto& instructions = player.CreateGameObject("player-instructions");
+	auto& instructions = player.CreateGameObject({}, "player-instructions");
 	{
-		auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 32);
-
 		instructions.GetTransform()->SetLocalPosition(0, 60);
 		instructions.AddComponent<real::TextureComponent>();
 		instructions.AddComponent<FlickerText>(real::Colors::yellow, 0.5f);
 
-		const auto textComponent = instructions.AddComponent<real::TextComponent>("press space/a to join", std::move(pFont));
-		textComponent->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
-		textComponent->SetColor(real::Colors::grey);
+		real::TextInfo info{};
+		info.text = "press space/a to join";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 32);
+		info.color = real::Colors::grey;
+		info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		instructions.AddComponent<real::TextComponent>(std::move(info));
 	}
 }

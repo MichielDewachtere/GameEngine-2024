@@ -18,7 +18,7 @@ public:
 	IcePrefab& operator=(IcePrefab&& rhs) = delete;
 
 protected:
-	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false);
+	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false) const;
 };
 
 #endif // ICEPREFAB_H

@@ -7,17 +7,17 @@
 #include "Logger.h"
 #include "SceneManager.h"
 
-real::GameObject::GameObject(Scene* scene, std::string tag)
+real::GameObject::GameObject(Scene* scene, TransformInfo info, std::string tag)
 	: m_Tag(std::move(tag))
 	, m_pScene(scene)
 {
 	m_Id = m_IdCounter++;
-	m_pTransform = std::make_unique<Transform>(this);
+	m_pTransform = std::make_unique<Transform>(this, info);
 }
 
-real::GameObject& real::GameObject::CreateGameObject(std::string tag)
+real::GameObject& real::GameObject::CreateGameObject(TransformInfo info, std::string tag)
 {
-	m_pChildrenToAdd.push_back(std::make_unique<GameObject>(m_pScene, std::move(tag)));
+	m_pChildrenToAdd.push_back(std::make_unique<GameObject>(m_pScene, info, std::move(tag)));
 	m_pChildrenToAdd.back()->m_pParent = this;
 	m_pChildrenToAdd.back()->m_pScene = m_pScene;
 

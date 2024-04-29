@@ -26,7 +26,7 @@ IcePrefab::IcePrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec
 	Init(pos, mazePos, hidesEgg);
 }
 
-void IcePrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg)
+void IcePrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg) const
 {
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/block_sheet.png");
 
@@ -42,9 +42,12 @@ void IcePrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hide
 	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(0);
 
-	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
-	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(real::Colors::cyan);
+	real::ColliderInfo info;
+	info.pos = go->GetTransform()->GetWorldPosition();
+	info.size = spriteComponent->GetSpriteSize();
+	info.drawDebug = true;
+	info.debugColor = real::Colors::cyan;
+	go->AddComponent<real::ColliderComponent>(info);
 
 	go->AddComponent<Move>(mazePos, Maze::BlockType::ice, PUSH_SPEED, false);
 	go->AddComponent<IceBlock>(hidesEgg);

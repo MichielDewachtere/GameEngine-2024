@@ -25,7 +25,7 @@ StarBlockPrefab::StarBlockPrefab(real::Scene* pScene, const glm::ivec2& pos, con
 	Init(pos, mazePos);
 }
 
-void StarBlockPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
+void StarBlockPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos) const
 {
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/block_sheet.png");
 
@@ -41,9 +41,12 @@ void StarBlockPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
 	const auto spriteComponent = go->AddComponent<real::SpriteComponent>(std::move(spriteSheet));
 	spriteComponent->SelectSprite(9);
 
-	const auto colliderComponent = go->AddComponent<real::ColliderComponent>(go->GetTransform()->GetWorldPosition(), spriteComponent->GetSpriteSize());
-	colliderComponent->EnableDrawDebug(true);
-	colliderComponent->SetDebugColor(real::Colors::yellow);
+	real::ColliderInfo info;
+	info.pos = go->GetTransform()->GetWorldPosition();
+	info.size = spriteComponent->GetSpriteSize();
+	info.drawDebug = true;
+	info.debugColor = real::Colors::yellow;
+	go->AddComponent<real::ColliderComponent>(info);
 
 	go->AddComponent<Move>(mazePos, Maze::BlockType::star, 300.f, false);
 	go->AddComponent<Pushable>();

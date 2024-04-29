@@ -23,7 +23,6 @@ Game::Game(real::GameObject* pOwner)
 	m_CurrentLevel %= 16;
 	++m_CurrentLevel;
 
-	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 	m_pPauseText = &real::SceneManager::GetInstance().GetActiveScene().CreateGameObject();
 
 	m_pPauseText->GetTransform()->SetLocalPosition(
@@ -32,8 +31,12 @@ Game::Game(real::GameObject* pOwner)
 	);
 
 	m_pPauseText->AddComponent<real::TextureComponent>();
-	m_pPauseText->AddComponent<real::TextComponent>("Ready ?", std::move(pFont))
-		->SetHorizontalAlignment(real::TextComponent::HorizontalAlignment::center);
+
+	real::TextInfo info{};
+	info.text = "ready ?";
+	info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+	info.horizontalAlignment = real::HorizontalTextAlignment::center;
+	m_pPauseText->AddComponent<real::TextComponent>(std::move(info));
 }
 
 void Game::Start()

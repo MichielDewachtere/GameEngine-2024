@@ -98,15 +98,14 @@ void EnterName::AddTextComponent(const size_t id)
 	constexpr float characterOffset = 24.f;
 	constexpr float begin = 34.f;
 
-	auto pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
-
 	auto& text = GetOwner()->CreateGameObject();
 	text.GetTransform()->SetLocalPosition(static_cast<float>(id) * characterOffset - begin, 0);
 
 	text.AddComponent<real::TextureComponent>();
-	const auto textComp = text.AddComponent<real::TextComponent>();
-	textComp->SetFont(std::move(pFont));
-	textComp->SetText({ m_Name[id].first });
+	real::TextInfo info{};
+	info.text = m_Name[id].first;
+	info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
+	const auto textComp = text.AddComponent<real::TextComponent>(std::move(info));
 
 	const auto flickerComp = text.AddComponent<FlickerText>(real::Colors::red, 0.25f);
 	flickerComp->Disable();
