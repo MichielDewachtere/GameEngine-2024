@@ -5,6 +5,9 @@
 
 #include "IEnemyState.h"
 
+class Maze;
+enum class Direction : char;
+
 namespace real
 {
 	class SpriteComponent;
@@ -28,11 +31,18 @@ public:
 	virtual void Exit() override;
 private:
 	Move* m_pMoveComponent{ nullptr };
+	Maze* m_pMazeComponent{ nullptr };
 	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 	static inline std::map<int, Move*> m_Players{};
 
 	void RegisterPlayers() const;
 
+	void MoveEnemy();
+	int GetPoints(Direction direction);
+	bool IsObstacle(Direction direction);
+	bool IsIce(Direction direction);
+
+	static int GetValue(int max);
 };
 
 #endif // MOVESTATE_H

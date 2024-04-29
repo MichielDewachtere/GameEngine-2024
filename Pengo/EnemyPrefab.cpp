@@ -23,7 +23,7 @@ EnemyPrefab::EnemyPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::
 	Init(pos, mazePos);
 }
 
-void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos)
+void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos) const
 {
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee_green.png");
 

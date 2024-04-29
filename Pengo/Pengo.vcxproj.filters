@@ -258,9 +258,6 @@
     <ClInclude Include="InteractCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyPrefab.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
@@ -389,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="LeaderBoard.h">
       <Filter>Components\HighScoreScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
