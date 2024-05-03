@@ -27,6 +27,7 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
+	virtual void OnGui() override;
 
 	void EndAct(bool won);
 	void EndGame();

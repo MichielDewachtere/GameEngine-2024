@@ -1,6 +1,7 @@
 ﻿#include "Game.h"
 
 #include <glm/vec4.hpp>
+#include <imgui.h>
 
 #include <GameObject.h>
 #include <GameTime.h>
@@ -155,6 +156,17 @@ void Game::Render()
 	}
 	case GameState::running: break;
 	}
+}
+
+void Game::OnGui()
+{
+	bool open = true;
+	ImGui::SetNextWindowSize(ImVec2(150, 50));
+	ImGui::Begin("game time", &open);
+	{
+		ImGui::Text(std::to_string(m_GameTime).c_str());
+	}
+	ImGui::End();
 }
 
 void Game::EndAct(bool won)
