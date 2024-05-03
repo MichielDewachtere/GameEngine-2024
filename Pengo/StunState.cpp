@@ -20,7 +20,10 @@ StunState::StunState(real::GameObject* pOwner)
 
 void StunState::Enter()
 {
-	GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 7, 10, .5f);
+	GetOwner()->GetComponent<real::SpriteComponent>()->Pause(false);
+	GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 7/*, -1, .5f*/);
+
+	//GetOwner()->GetComponent<real::SpriteComponent>()->UpdateAnimation(6, 7);
 
 	m_MazePos = GetOwner()->GetComponent<Move>()->GetMazePos();
 
