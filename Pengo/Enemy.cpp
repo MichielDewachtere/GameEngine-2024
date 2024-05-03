@@ -52,6 +52,8 @@ void Enemy::Update()
 {
 	if (const auto newState = m_CurrentState->Update())
 	{
+		m_CurrentState->Exit();
+		newState->Enter();
 		m_CurrentState.reset(newState);
 	}
 }
@@ -76,6 +78,7 @@ void Enemy::HandleEvent(GameEvents event)
 {
 	switch (event)
 	{
+	case GameEvents::finished:
 	case GameEvents::paused:
 	{
 		m_CurrentState->Exit();
@@ -107,7 +110,9 @@ void Enemy::HandleEvent(WallOrientation orientation)
 	if (m_OrientationToPos[orientation].x == mazePos.x
 		|| m_OrientationToPos[orientation].y == mazePos.y)
 	{
-		m_CurrentState.reset(SwitchState<StunState>());
+		m_CurrentState->Exit();
+		m_CurrentState.reset(new StunState(GetOwner()));
+		m_CurrentState->Enter();
 	}
 }
 
