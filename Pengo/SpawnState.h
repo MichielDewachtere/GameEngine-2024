@@ -11,7 +11,7 @@ namespace real
 class SpawnState final : public IEnemyState
 {
 public:
-	explicit SpawnState(real::GameObject* pOwner);
+	explicit SpawnState(real::GameObject* pOwner, bool deSpawn = false);
 	virtual ~SpawnState() override = default;
 
 	SpawnState(const SpawnState& other) = delete;
@@ -24,6 +24,7 @@ public:
 	virtual void Exit() override;
 
 private:
+	bool m_DeSpawn;
 	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 };
 
