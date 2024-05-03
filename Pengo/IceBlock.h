@@ -36,6 +36,8 @@ public:
 
 	void Break(PlayerNumber breakedBy = PlayerNumber::none);
 
+	bool HidesEgg() const { return m_HidesEgg; }
+
 private:
 	bool m_HidesEgg{ false }, m_Break{ false }, m_StartAnimation{ true };
 	real::SpriteComponent* m_pSpriteComponent{ nullptr };
