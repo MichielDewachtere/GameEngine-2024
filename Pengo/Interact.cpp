@@ -47,26 +47,29 @@ void Interact::AttemptInteraction()
 {
 	const auto direction = m_pMove->GetDirection();
 	const auto targetedPos = m_pMove->GetMazePos() + DirectionToVector(direction);
-	const auto targetedBlock = m_pMaze->GetBlockAndObject(targetedPos);
+	const auto [blockType, objects] = m_pMaze->GetBlockAndObject(targetedPos);
 
-	if (targetedBlock.first == Maze::BlockType::ice
-		|| targetedBlock.first == Maze::BlockType::star
-		|| targetedBlock.first == Maze::BlockType::egg)
+	if (blockType == Maze::BlockType::ice
+		|| blockType == Maze::BlockType::star
+		|| blockType == Maze::BlockType::egg)
 	{
 		const auto icePath = targetedPos + DirectionToVector(direction);
 
-		if (m_pMaze->IsOccupied(icePath) && targetedBlock.first != Maze::BlockType::star)
+		for (const auto& object : objects)
 		{
-			targetedBlock.second->GetComponent<IceBlock>()->Break(m_pPlayer->GetPlayerNumber());
-		}
-		else
-		{
-			targetedBlock.second->GetComponent<Pushable>()->Push(direction, m_pPlayer->GetPlayerNumber());
+			if (m_pMaze->IsOccupied(icePath) && blockType != Maze::BlockType::star)
+			{
+				object->GetComponent<IceBlock>()->Break(m_pPlayer->GetPlayerNumber());
+			}
+			else
+			{
+				object->GetComponent<Pushable>()->Push(direction, m_pPlayer->GetPlayerNumber());
+			}
 		}
 
 		Animate(direction);
 	}
-	else if (targetedBlock.first == Maze::BlockType::wall)
+	else if (blockType == Maze::BlockType::wall)
 	{
 		switch (direction)
 		{
