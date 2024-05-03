@@ -164,8 +164,10 @@
     <ClCompile Include="BonusTimeMenu.cpp" />
     <ClCompile Include="BonusTime.cpp" />
     <ClCompile Include="DiedState.cpp" />
+    <ClCompile Include="FleeState.cpp" />
     <ClCompile Include="HighScoreDisplay.cpp" />
     <ClCompile Include="HighScoreMenu.cpp" />
+    <ClCompile Include="IceBreakState.cpp" />
     <ClCompile Include="LeaderBoard.cpp" />
     <ClCompile Include="RegisterHighScore.cpp" />
     <ClCompile Include="TextFadeIn.cpp" />
@@ -220,8 +222,10 @@
     <ClInclude Include="BonusTimeMenu.h" />
     <ClInclude Include="BonusTime.h" />
     <ClInclude Include="DiedState.h" />
+    <ClInclude Include="FleeState.h" />
     <ClInclude Include="HighScoreDisplay.h" />
     <ClInclude Include="HighScoreMenu.h" />
+    <ClInclude Include="IceBreakState.h" />
     <ClInclude Include="LeaderBoard.h" />
     <ClInclude Include="RegisterHighScore.h" />
     <ClInclude Include="TextFadeIn.h" />
