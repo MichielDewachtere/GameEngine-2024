@@ -55,19 +55,14 @@ void Move::Update()
 	{
 		m_Move = false;
 
-		const auto pos = Maze::LocalToMaze(m_NewPosition);
+		const auto newMazePos = Maze::LocalToMaze(m_NewPosition);
+		m_pMaze->MoveObject(m_MazePosition, newMazePos, m_Type, GetOwner());
+		//m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air, nullptr);
+		m_MazePosition = newMazePos;
 
-		m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air, nullptr);
-		m_MazePosition = pos;
-
-		if (m_MoveUntilStopped)
-		{
-			if (m_Type == Maze::BlockType::ice 
-				|| m_Type == Maze::BlockType::star)
-			m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
-		}
-		else
-			m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
+		//if (m_MoveUntilStopped && (m_Type == Maze::BlockType::ice || m_Type == Maze::BlockType::star)
+		//	|| !m_MoveUntilStopped)
+		//	m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
 
 		transform->SetLocalPosition(m_NewPosition);
 
@@ -129,10 +124,11 @@ void Move::BindAnimationToDirection(Direction dir, const std::pair<int, int> ind
 
 void Move::SetMazePos(const glm::ivec2& newPos)
 {
-	m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air);
+	//m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air);
+	m_pMaze->MoveObject(m_MazePosition, newPos, m_Type, GetOwner());
 	m_MazePosition = newPos;
 	GetOwner()->GetTransform()->SetLocalPosition(m_pMaze->MazeToLocal(m_MazePosition));
-	m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
+	//m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
 }
 
 bool Move::HasReachedPosition() const

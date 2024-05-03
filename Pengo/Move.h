@@ -53,6 +53,7 @@ public:
 
 	Direction GetDirection() const { return m_Direction; }
 	const glm::ivec2& GetMazePos() const { return m_MazePosition; }
+	Maze::BlockType GetType() const { return m_Type; }
 
 	bool IsMoving() const { return m_Move; }
 	void Animate(bool animate) { m_Animate = animate; }
