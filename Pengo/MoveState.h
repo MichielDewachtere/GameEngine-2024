@@ -2,8 +2,10 @@
 #define MOVESTATE_H
 
 #include <map>
+#include <vector>
 
 #include "IEnemyState.h"
+#include "Maze.h"
 
 class Maze;
 enum class Direction : char;
@@ -15,7 +17,7 @@ namespace real
 
 class Move;
 
-class MoveState final : public IEnemyState
+class MoveState : public IEnemyState
 {
 public:
 	explicit MoveState(real::GameObject* pOwner);
@@ -29,6 +31,20 @@ public:
 	virtual void Enter() override;
 	virtual IEnemyState* Update() override;
 	virtual void Exit() override;
+
+protected:
+	virtual void MoveEnemy() const;
+	bool GetPoints(Direction direction, std::vector<Direction>& points, bool ignoreIce) const;
+	std::pair<Maze::BlockType, bool> IsObstacle(Direction direction, bool ignoreIce) const;
+	bool IsIce(Direction direction) const;
+
+	void CheckForPlayer() const;
+
+	Move* GetMoveComponent() const { return m_pMoveComponent; }
+	Maze* GetMazeComponent() const { return m_pMazeComponent; }
+	real::SpriteComponent* GetSpriteComponent() const { return m_pSpriteComponent; }
+	static std::map<int, Move*> GetPlayers() { return m_Players; }
+
 private:
 	Move* m_pMoveComponent{ nullptr };
 	Maze* m_pMazeComponent{ nullptr };
@@ -36,11 +52,6 @@ private:
 	static inline std::map<int, Move*> m_Players{};
 
 	void RegisterPlayers() const;
-
-	void MoveEnemy();
-	int GetPoints(Direction direction);
-	bool IsObstacle(Direction direction);
-	bool IsIce(Direction direction);
 
 	static int GetValue(int max);
 };

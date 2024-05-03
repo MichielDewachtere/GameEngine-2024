@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "GameInfo.h"
 #include "GameUtil.h"
+#include "IceBreakState.h"
 #include "Move.h"
 #include "Player.h"
 
@@ -19,15 +20,50 @@ MoveState::MoveState(real::GameObject* pOwner)
 void MoveState::Enter()
 {
 	m_pMoveComponent = GetOwner()->GetComponent<Move>();
+	m_pMoveComponent->Animate(true);
 	m_pMazeComponent = GetOwner()->GetParent()->GetComponent<Maze>();
 	m_pSpriteComponent = GetOwner()->GetComponent<real::SpriteComponent>();
-	m_pSpriteComponent->PlayAnimation(8, 9);
+	m_pSpriteComponent->Pause(false);
+	//m_pSpriteComponent->PlayAnimation(8, 9);
 
 	m_Players.clear();
 	RegisterPlayers();
 }
 
 IEnemyState* MoveState::Update()
+{
+	CheckForPlayer();
+
+	if (m_pMoveComponent->IsMoving() == false)
+	{
+		MoveEnemy();
+	}
+
+	if (Game::GetGameTime() > 30)
+		return new IceBreakState(GetOwner());
+
+	return nullptr;
+}
+
+void MoveState::Exit()
+{
+	m_pSpriteComponent->Pause(true);
+	m_pMoveComponent->Animate(false);
+}
+
+void MoveState::RegisterPlayers() const
+{
+	const auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::pengo);
+	if (v.empty() == false)
+	{
+		std::ranges::for_each(v, [this](real::GameObject* go)
+			{
+				m_Players.try_emplace(go->GetId(), go->GetComponent<Move>());
+			});
+	}
+}
+
+void MoveState::CheckForPlayer() const
 {
 	const auto mazePos = m_pMoveComponent->GetMazePos();
 
@@ -44,82 +80,82 @@ IEnemyState* MoveState::Update()
 
 	if (m_Players.empty())
 		GetOwner()->GetParent()->GetComponent<Game>()->EndAct(false);
+}
 
-	if (m_pMoveComponent->IsMoving() == false)
+void MoveState::MoveEnemy() const
+{
+	std::vector<Direction> directions;
+	GetPoints(Direction::left, directions, true);
+	GetPoints(Direction::right, directions, true);
+	GetPoints(Direction::up, directions, true);
+	GetPoints(Direction::down, directions, true);
+
+	std::random_device rd;
+	std::mt19937 g(rd());
+	std::ranges::shuffle(directions, g);
+
+	if (directions.empty())
+		m_pMoveComponent->MoveInDirection(/*InvertDirection(*/m_pMoveComponent->GetDirection()/*)*/);
+	else
+		m_pMoveComponent->MoveInDirection(directions.front());
+}
+
+bool MoveState::GetPoints(Direction direction, std::vector<Direction>& v, bool ignoreIce) const
+{
+	bool isIce = false;
+	if (auto [type, value] = IsObstacle(direction, ignoreIce); value)
 	{
-		MoveEnemy();
+		if (ignoreIce == false && type == Maze::BlockType::ice)
+			isIce = true;
+		else
+			return isIce;
 	}
-
-	return nullptr;
-}
-
-void MoveState::Exit()
-{
-	m_pSpriteComponent->Pause(true);
-}
-
-void MoveState::RegisterPlayers() const
-{
-	const auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::pengo);
-	if (v.empty() == false)
-	{
-		std::ranges::for_each(v, [this](real::GameObject* go)
-			{
-				m_Players.try_emplace(go->GetId(), go->GetComponent<Move>());
-			});
-	}
-}
-
-void MoveState::MoveEnemy()
-{
-	const int left = GetPoints(Direction::left);
-	const int right = GetPoints(Direction::right) + left;
-	const int up = GetPoints(Direction::up) + right;
-	const int down = GetPoints(Direction::down) + up;
-
-	[[maybe_unused]] const auto value = GetValue(down);
-
-	if (value <= left)
-		m_pMoveComponent->MoveInDirection(Direction::left);
-	else if (value > left && value <= right)
-		m_pMoveComponent->MoveInDirection(Direction::right);
-	else if (value > right && value <= up)
-		m_pMoveComponent->MoveInDirection(Direction::up);
-	else if (value > up)
-		m_pMoveComponent->MoveInDirection(Direction::down);
-}
-
-int MoveState::GetPoints(Direction direction)
-{
-	if (IsObstacle(direction))
-		return 0;
 
 	const auto currentDir = m_pMoveComponent->GetDirection();
 	if (InvertDirection(currentDir) == direction)
 	{
-		if (IsIce(direction))
-			return 0;
-
-		return 1;
+		v.insert(v.end(), 1, direction);
+		return isIce;
 	}
 
-	if (IsIce(direction))
-		return 3;
+	if (direction == currentDir)
+	{
+		if (isIce)
+			v.insert(v.end(), 10, direction);
+		else
+			v.insert(v.end(), 16, direction);
 
-	return 5;
+		return isIce;
+	}
+
+		if (isIce)
+			v.insert(v.end(), 5, direction);
+		else
+			v.insert(v.end(), 9, direction);
+
+	return isIce;
 }
 
-bool MoveState::IsObstacle(Direction direction)
+std::pair<Maze::BlockType, bool> MoveState::IsObstacle(Direction direction, bool ignoreIce) const
 {
 	const auto posToCheck = m_pMoveComponent->GetMazePos() + DirectionToVector(direction);
-	auto type = m_pMazeComponent->GetBlock(posToCheck);
-	if (type == Maze::BlockType::player || type == Maze::BlockType::air || type == Maze::BlockType::ice)
-		return false;
+	const auto type = m_pMazeComponent->GetBlock(posToCheck);
 
-	return true;
+	if (ignoreIce && (type == Maze::BlockType::player || type == Maze::BlockType::air))
+		return { type,false };
+
+	if (!ignoreIce && (type == Maze::BlockType::player || type == Maze::BlockType::air || type == Maze::BlockType::ice))
+	{
+		if (type == Maze::BlockType::ice)
+			return { type,true };
+
+		return { type,false };
+	}
+
+	return { type, true };
 }
 
-bool MoveState::IsIce(Direction direction)
+bool MoveState::IsIce(Direction direction) const
 {
 	const auto posToCheck = m_pMoveComponent->GetMazePos() + DirectionToVector(direction);
 	auto type = m_pMazeComponent->GetBlock(posToCheck);
