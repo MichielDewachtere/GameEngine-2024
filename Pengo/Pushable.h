@@ -3,9 +3,15 @@
 
 #include <Component.h>
 #include <vector>
+#include <glm/vec2.hpp>
 
 #include "Player.h"
 #include "Subject.h"
+
+namespace real
+{
+	class ColliderComponent;
+}
 
 class Maze;
 class Move;
@@ -32,11 +38,18 @@ public:
 
 private:
 	bool m_Pushed{ false };
-	std::vector<real::GameObject*> m_EnemiesPushed{};
+	std::vector<real::GameObject*> m_EnemiesPushed{}, m_EnemiesToPush{};
 	PlayerNumber m_PushedBy{};
 	Direction m_Direction{};
 	Move* m_pMoveComponent{ nullptr };
 	Maze* m_pMazeComponent{ nullptr };
+	real::ColliderComponent* m_pColliderComponent{ nullptr };
+
+	void LookForEnemies();
+	void PushEnemies();
+	void AddPoints();
+
+	static std::map<Direction, glm::ivec2> m_DirectionToOffset;
 };
 
 #endif // PUSHABLE_H
