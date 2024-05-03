@@ -47,10 +47,12 @@ public:
 	virtual void Start() override;
 
 	void SetBlock(const glm::ivec2& pos, BlockType type, real::GameObject* go = nullptr);
+	void RemoveBlock(const glm::ivec2& pos, real::GameObject* go);
+	void MoveObject(const glm::ivec2& from, const glm::ivec2& to, BlockType type, real::GameObject* go = nullptr);
 
 	BlockType GetBlock(const glm::ivec2& pos) const;
-	real::GameObject* GetGameObject(const glm::ivec2& pos) const;
-	std::pair<BlockType, real::GameObject*> GetBlockAndObject(const glm::ivec2& pos);
+	std::vector<real::GameObject*> GetGameObject(const glm::ivec2& pos) const;
+	std::pair<BlockType, std::vector<real::GameObject*>> GetBlockAndObject(const glm::ivec2& pos);
 
 	real::GameObject* GetWall(WallOrientation orientation) const { return m_pWalls.at(orientation); }
 
@@ -64,10 +66,14 @@ public:
 	static glm::ivec2 LocalToMaze(const glm::ivec2& pos);
 
 private:
-	std::vector<std::vector<std::pair<BlockType, real::GameObject*>>> m_Maze{};
+	std::vector<std::vector<std::pair<BlockType, std::vector<real::GameObject*>>>> m_Maze{};
 	std::map<WallOrientation, real::GameObject*> m_pWalls{};
-
+	//			id			pos
+	std::map<uint32_t, glm::ivec2> m_EnemyPositions;
 	static std::pair<bool, WallOrientation> IsWall(const glm::ivec2& pos);
+
+	static bool IsStatic(BlockType type);
+	static bool IsDynamic(BlockType type);
 };
 
 #endif // MAZE_H

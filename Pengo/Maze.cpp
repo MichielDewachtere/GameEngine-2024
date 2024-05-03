@@ -22,7 +22,9 @@
 Maze::Maze(real::GameObject* pOwner, const glm::ivec2& size)
 	: Component(pOwner)
 {
-    m_Maze = std::vector(size.x, std::vector<std::pair<BlockType, real::GameObject*>>(size.y, std::make_pair(BlockType::air, nullptr)));
+    m_Maze = std::vector(
+	    size.x, std::vector<std::pair<BlockType, std::vector<real::GameObject*>>>(
+		    size.y, std::make_pair(BlockType::air, std::vector<real::GameObject*>{})));
 }
 
 void Maze::Init()
@@ -79,14 +81,14 @@ void Maze::Init()
             case BlockType::ice:
             {
                 const auto ice = std::make_unique<IcePrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y });
-                m_Maze[x][y].second = ice->GetGameObject();
+                //m_Maze[x][y].second.push_back(ice->GetGameObject());
                 break;
             }
             case BlockType::star:
             {
                 const auto starBlock = std::make_unique<StarBlockPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y });
-                m_Maze[x][y].second = starBlock->GetGameObject();
                 GetOwner()->GetComponent<StarBlockManager>()->AddStarBlock(starBlock->GetGameObject(), glm::ivec2{ x,y });
+                //m_Maze[x][y].second.push_back(starBlock->GetGameObject());
                 break;
             }
             case BlockType::egg:
@@ -94,7 +96,7 @@ void Maze::Init()
                 const auto iceBlock = std::make_unique<IcePrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, true);
                 const auto hiddenEgg = std::make_unique<HiddenEggPrefab>(iceBlock->GetGameObject());
                 GetOwner()->GetComponent<EnemyHandler>()->AddEnemySpawn(hiddenEgg->GetGameObject());
-                m_Maze[x][y].second = iceBlock->GetGameObject();
+                //m_Maze[x][y].second.push_back(iceBlock->GetGameObject());
                 break;
             }
             }
@@ -117,7 +119,74 @@ void Maze::SetBlock(const glm::ivec2& pos, BlockType type, real::GameObject* go)
         return;
     }
 
-	m_Maze[pos.x][pos.y] = std::make_pair(type, go);
+    m_Maze[pos.x][pos.y].first = type;
+    m_Maze[pos.x][pos.y].second.clear();
+    m_Maze[pos.x][pos.y].second.push_back(go);
+}
+
+void Maze::RemoveBlock(const glm::ivec2& pos, real::GameObject* go)
+{
+    using v = std::vector<real::GameObject*>;
+    v& gameObjects = m_Maze[pos.x][pos.y].second;
+
+    const auto it = std::ranges::find(gameObjects, go);
+    if (it == gameObjects.end())
+        return;
+
+    gameObjects.erase(it);
+
+    if (gameObjects.empty())
+        m_Maze[pos.x][pos.y].first = BlockType::air;
+}
+
+void Maze::MoveObject(const glm::ivec2& from, const glm::ivec2& to, BlockType type, real::GameObject* go)
+{
+    if (const auto [isWall, orientation] = IsWall(to); isWall)
+    {
+        return;
+    }
+
+    //auto [fromBlockType, fromObjects] = m_Maze[from.x][from.y];
+    auto [toBlockType, toObjects] = m_Maze[to.x][to.y];
+
+ //   // TODO: Fix this for enemy crushing
+ //   if ((type != BlockType::enemy && type != BlockType::player) 
+ //       && toBlockType != type/* && toBlockType != BlockType::air*/)
+	//{
+	//	if (toBlockType != type)
+	//	{
+	//		//m_Maze[to.x][to.y].first = type;
+	//		m_Maze[to.x][to.y].second.clear();
+	//		//m_Maze[to.x][to.y].second.push_back(go);
+	//	}
+	//}
+
+    //if (toBlockType != type && toBlockType != BlockType::ice && type != BlockType::enemy)
+    //{
+    //    m_Maze[to.x][to.y].second.clear();
+    //}
+    //else if (toBlockType != type && toBlockType == BlockType::enemy && type == BlockType::ice)
+    //{
+    //    m_Maze[to.x][to.y].second.clear();
+    //}
+
+    const auto it = std::ranges::find(m_Maze[from.x][from.y].second, go);
+    if (it != m_Maze[from.x][from.y].second.end())
+    {
+		m_Maze[from.x][from.y].second.erase(it);
+        //return;
+    }
+
+    if (toBlockType == type || IsDynamic(toBlockType) || IsStatic(type))
+    	m_Maze[to.x][to.y].first = type;
+
+    if (toBlockType == BlockType::air)
+    	m_Maze[to.x][to.y].first = type;
+
+    m_Maze[to.x][to.y].second.push_back(go);
+
+    if (m_Maze[from.x][from.y].second.empty())
+        m_Maze[from.x][from.y].first = BlockType::air;
 }
 
 Maze::BlockType Maze::GetBlock(const glm::ivec2& pos) const
@@ -130,21 +199,21 @@ Maze::BlockType Maze::GetBlock(const glm::ivec2& pos) const
 	return m_Maze[pos.x][pos.y].first;
 }
 
-real::GameObject* Maze::GetGameObject(const glm::ivec2& pos) const
+std::vector<real::GameObject*> Maze::GetGameObject(const glm::ivec2& pos) const
 {
     if (const auto [isWall, orientation] = IsWall(pos); isWall)
     {
-        return m_pWalls.at(orientation);
+        return { m_pWalls.at(orientation) };
     }
 
 	return m_Maze[pos.x][pos.y].second;
 }
 
-std::pair<Maze::BlockType, real::GameObject*> Maze::GetBlockAndObject(const glm::ivec2& pos)
+std::pair<Maze::BlockType, std::vector<real::GameObject*>> Maze::GetBlockAndObject(const glm::ivec2& pos)
 {
     if (const auto [isWall, orientation] = IsWall(pos); isWall)
     {
-        return { BlockType::wall, m_pWalls.at(orientation) };
+        return { BlockType::wall, {m_pWalls.at(orientation) } };
     }
 
     return m_Maze[pos.x][pos.y];
@@ -230,8 +299,11 @@ void Maze::PrintMaze() const
                 std::cout << 'u';
                 break;
             case BlockType::enemy:
-                std::cout << 'O';
+            {
+                auto v = m_Maze.at(x).at(y).second;
+	            std::cout << std::to_string(v.size()).c_str();
                 break;
+            }
             case BlockType::none:
                 std::cout << '_';
                 break;
@@ -274,4 +346,17 @@ std::pair<bool, WallOrientation> Maze::IsWall(const glm::ivec2& pos)
         return { true, WallOrientation::north };
 
     return { false, WallOrientation::none };
+}
+
+bool Maze::IsStatic(BlockType type)
+{
+    return type == BlockType::egg
+        || type == BlockType::ice
+        || type == BlockType::star;
+}
+
+bool Maze::IsDynamic(BlockType type)
+{
+    return type == BlockType::enemy
+        || type == BlockType::player;
 }
