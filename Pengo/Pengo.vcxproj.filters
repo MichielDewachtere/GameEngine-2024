@@ -217,6 +217,12 @@
     <ClCompile Include="LeaderBoard.cpp">
       <Filter>Components\HighScoreScreen</Filter>
     </ClCompile>
+    <ClCompile Include="IceBreakState.cpp">
+      <Filter>Components\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="FleeState.cpp">
+      <Filter>Components\Enemy\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Macros.h">
@@ -389,6 +395,12 @@
     </ClInclude>
     <ClInclude Include="PlayerManager.h">
       <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="IceBreakState.h">
+      <Filter>Components\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="FleeState.h">
+      <Filter>Components\Enemy\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
