@@ -79,7 +79,8 @@ void IceBlock::Break(PlayerNumber breakedBy)
 
 	const auto maze = GetOwner()->GetParent()->GetComponent<Maze>();
 	const auto move = GetOwner()->GetComponent<Move>();
-	maze->SetBlock(move->GetMazePos(), Maze::BlockType::air, nullptr);
+	//maze->SetBlock(move->GetMazePos(), Maze::BlockType::air, nullptr);
+	maze->RemoveBlock(move->GetMazePos(), GetOwner());
 	move->Disable();
 
 	if (m_pSpriteComponent == nullptr)
