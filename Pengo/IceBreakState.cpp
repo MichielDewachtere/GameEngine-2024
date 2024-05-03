@@ -60,20 +60,32 @@ void IceBreakState::MoveEnemy() const
 
 	if (directions.empty())
 	{
-		GetMoveComponent()->MoveInDirection(/*InvertDirection(*/GetMoveComponent()->GetDirection()/*)*/);
+		GetMoveComponent()->MoveInDirection(GetMoveComponent()->GetDirection());
 	}
 	else
 	{
-		const auto dirToGo = directions.front();
-
-		if (isIce[dirToGo])
+		while (directions.empty() == false)
 		{
-			const auto icePos = GetMoveComponent()->GetMazePos() + DirectionToVector(dirToGo);
-			const auto iceBlock = GetMazeComponent()->GetBlockAndObject(icePos).second.front();
 
-			iceBlock->GetComponent<IceBlock>()->Break();
+			const auto dirToGo = directions.back();
+
+			if (isIce[dirToGo])
+			{
+				const auto icePos = GetMoveComponent()->GetMazePos() + DirectionToVector(dirToGo);
+				const auto iceBlock = GetMazeComponent()->GetBlockAndObject(icePos).second.front();
+
+				const auto iceComp = iceBlock->GetComponent<IceBlock>();
+				if (iceComp->HidesEgg())
+				{
+					directions.pop_back();
+					continue;
+				}
+
+				iceComp->Break();
+			}
+
+			GetMoveComponent()->MoveInDirection(dirToGo);
+			break;
 		}
-
-		GetMoveComponent()->MoveInDirection(dirToGo);
 	}
 }
