@@ -14,6 +14,7 @@
 
 #include "Macros.h"
 #include "Player.h"
+#include "PlayerEnemyPrefab.h"
 #include "PlayerManager.h"
 #include "PrintMazeCommand.h"
 #include "StarBlockManager.h"
@@ -71,8 +72,17 @@ void Maze::Init()
                 }
                 if (x == 6 && y == 10)
                 {
-                    const auto player = std::make_unique<PlayerPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerTwo);
-                    PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                    if (PlayerManager::GetInstance().GetPlayers().back().isEnemy)
+                    {
+                        // TODO: Fix this
+	                    const auto player = std::make_unique<PlayerEnemyPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerTwo);
+                		PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                    }
+                    else
+                    {
+	                    const auto player = std::make_unique<PlayerPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerTwo);
+                		PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                    }
                 }
             }
 
