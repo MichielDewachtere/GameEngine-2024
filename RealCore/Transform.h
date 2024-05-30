@@ -99,8 +99,8 @@ namespace real
 		Subject<TransformEvent, const glm::vec3&> rotationChanged;
 
 	private:
-		bool m_LocalNeedsUpdate, m_WorldNeedsUpdate, m_WorldMatNeedsUpdate;
-		glm::vec3 m_LocalPosition, m_WorldPosition, m_Scale, m_Rotation;
+		bool m_LocalNeedsUpdate{}, m_WorldNeedsUpdate{}, m_WorldMatNeedsUpdate{};
+		glm::vec3 m_LocalPosition{}, m_WorldPosition{}, m_Scale{}, m_Rotation{};
 		glm::mat4 m_WorldMatrix{ 1.0 };
 
 		void UpdateWorldPosition();

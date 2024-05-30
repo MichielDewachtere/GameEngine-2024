@@ -215,11 +215,18 @@ const glm::mat4& real::Transform::GetWorldMatrix()
 {
 	if (m_WorldMatNeedsUpdate)
 	{
-		const glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), GetWorldPosition());
-		const glm::mat4 rotationMatrix = glm::eulerAngleXYZ(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-		const glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), m_Scale);
+		m_WorldMatrix = glm::mat4(1.0f);
+		const auto worldPos = GetWorldPosition();
 
-		m_WorldMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+		m_WorldMatrix = glm::translate(m_WorldMatrix, worldPos);
+
+		m_WorldMatrix = glm::rotate(m_WorldMatrix, m_Rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+		m_WorldMatrix = glm::rotate(m_WorldMatrix, m_Rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+		m_WorldMatrix = glm::rotate(m_WorldMatrix, m_Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+
+		m_WorldMatrix = glm::scale(m_WorldMatrix, m_Scale);
+
+		m_WorldMatNeedsUpdate = false;
 	}
 
 	return m_WorldMatrix;
