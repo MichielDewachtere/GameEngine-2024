@@ -1,6 +1,5 @@
 ﻿#include "SDLAudio.h"
 
-#include <array>
 #include <deque>
 #include <mutex>
 #include <ranges>
@@ -27,15 +26,13 @@ namespace real
 				printf("SDL_mixer could not open audio! SDL_mixer Error: %s\n", Mix_GetError());
 			}
 
-			m_Head = 0;
-			m_Tail = 0;
+			m_SoundsToPlay.resize(max_pending);
 
 			m_PlayingThread = std::jthread(&SDLAudioImpl::PlaySounds, this);
 		}
 		virtual ~SDLAudioImpl() override
 		{
 			m_KeepWorking = false;
-			m_SoundsToPlay.clear();
 		}
 		SDLAudioImpl(const SDLAudioImpl& other) = delete;
 		SDLAudioImpl operator=(const SDLAudioImpl& rhs) = delete;
@@ -54,11 +51,7 @@ namespace real
 		std::map<int, uint8_t> m_ChannelVolumes;
 		std::mutex m_ChannelVolumesMutex{};
 
-		int m_Head{ 0 }, m_Tail{ 0 };
-
 		static constexpr size_t max_pending = 8;
-
-		std::array<Sound, max_pending> m_Pending{};
 
 		std::atomic_bool m_KeepWorking{ true };
 		std::mutex m_SoundMutex{};
@@ -68,54 +61,24 @@ namespace real
 		void PlaySounds();
 	};
 
-	void SDLAudio::SDLAudioImpl::Update()
-	{
-		// If no pending sounds, return
-		if (m_Head == m_Tail)
-			return;
-
-		// Get the sound at the front of the queue
-		const auto sound = m_Pending[m_Head]; // ReSharper disable once CppUseStructuredBinding
-
-		// If the sound is already playing, return
-		if (sound.channel != -1 && Mix_Playing(sound.channel))
-			return;
-
-		// Load the sound and play on different (worker?) thread
-		// Pass the sound via promise/future?
-		// Or via vector m_SoundsToPlay and locks?
-		{
-			std::lock_guard lock(m_SoundMutex);
-			m_SoundsToPlay.push_back(sound);
-		}
-
-		// Current first in line is processed, so move on
-		m_Head = (m_Head + 1) % static_cast<int>(max_pending);
-	}
+	void SDLAudio::SDLAudioImpl::Update() {}
 
 	void SDLAudio::SDLAudioImpl::Play(const Sound sound, const int volume, const int loops)
 	{
 		// TODO: Merge adjacent sounds with the same id? Or all sounds with the same id in queue?
 
-		// If queue overflows, return
-		if ((m_Tail + 1) % static_cast<int>(max_pending) == m_Head)
+		std::lock_guard lock(m_SoundMutex);
+
+		if (m_SoundsToPlay.size() > max_pending)
 			return;
 
-		m_Pending[m_Tail].id = sound.id;
-		m_Pending[m_Tail].fileName = sound.fileName;
-		m_Pending[m_Tail].channel = sound.channel;
+		m_SoundsToPlay.push_back(sound);
 
 		if (volume != -1)
-			m_Pending[m_Tail].volume = volume;
-		else
-			m_Pending[m_Tail].volume = sound.volume;
+			m_SoundsToPlay.back().volume = volume;
 
 		if (loops != -1)
-			m_Pending[m_Tail].loops = loops;
-		else
-			m_Pending[m_Tail].loops = sound.loops;
-
-		m_Tail = (m_Tail + 1) % static_cast<int>(max_pending);
+			m_SoundsToPlay.back().loops = loops;
 	}
 
 	void SDLAudio::SDLAudioImpl::Stop(const Sound sound)
