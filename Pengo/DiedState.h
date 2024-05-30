@@ -14,7 +14,7 @@ public:
 	DiedState(DiedState&& other) = delete;
 	DiedState& operator=(DiedState&& rhs) = delete;
 
-	virtual IEnemyState* Update() override;
+	virtual void Enter() override;
 
 private:
 	
