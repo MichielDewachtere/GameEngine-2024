@@ -58,7 +58,7 @@ namespace real
 
 		Transform* GetTransform() const { return m_pTransform.get(); }
 
-		Subject<GameObjectEvent> gameObjectDestroyed;
+		Subject<GameObjectEvent, GameObject*> gameObjectDestroyed;
 
 #pragma region Component Logic
 		/**
@@ -106,6 +106,7 @@ namespace real
 		GameObject* GetChildAt(uint32_t index) const;
 		GameObject* GetChild(uint32_t id) const;
 		bool IsChild(GameObject* pGo) const;
+		void MoveChildBack(GameObject* pGo);
 #pragma endregion
 
 		std::vector<GameObject*> GetGameObjectsWithTag(const std::string& tag) const;
@@ -292,13 +293,17 @@ namespace real
 	{
 		if (!from.empty())
 		{
-			for (auto& pComponent : from)
+			std::vector<std::unique_ptr<T>> tempComponents;
+			tempComponents.swap(from);
+			from.clear();
+
+			for (auto& pComponent : tempComponents)
 			{
 				to.push_back(std::move(pComponent));
 				to.back()->Start();
 			}
 
-			from.clear();
+			tempComponents.clear();
 		}
 	}
 

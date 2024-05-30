@@ -227,7 +227,7 @@ void real::GameObject::OnGui()
 
 void real::GameObject::Destroy()
 {
-	gameObjectDestroyed.Notify(GameObjectEvent::destroyed);
+	gameObjectDestroyed.Notify(GameObjectEvent::destroyed, this);
 	InputManager::GetInstance().RemoveGameObjectCommands(this);
 
 	std::ranges::for_each(m_pChildren, [](const auto& go)
@@ -387,6 +387,20 @@ bool real::GameObject::IsChild(GameObject* pGo) const
 		{
 			return pChild->GetId() == pGo->GetId();
 		});
+}
+
+void real::GameObject::MoveChildBack(GameObject* pGo)
+{
+	const auto it = std::ranges::find_if(m_pChildren,
+		[pGo](const std::unique_ptr<GameObject>& child) {
+			return child.get() == pGo;
+		});
+
+	if (it != m_pChildren.end() && it != m_pChildren.end() - 1)
+	{
+		// Move the found element to the back
+		std::rotate(it, it + 1, m_pChildren.end());
+	}
 }
 
 std::vector<real::GameObject*> real::GameObject::GetGameObjectsWithTag(const std::string& tag) const
