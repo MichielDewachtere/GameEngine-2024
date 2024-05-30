@@ -13,6 +13,7 @@
 #include <GameTime.h>
 
 #include "FlickerText.h"
+#include "Game.h"
 #include "SelectMode.h"
 #include "PlayerJoinCommand.h"
 #include "GameInfo.h"
@@ -28,6 +29,7 @@ StartScreen::StartScreen(real::GameObject* pOwner)
 void StartScreen::ModeSelected(Modes mode)
 {
 	m_CurrentState = State::selectPlayers;
+	bool isPvp = false;
 
 	switch (mode)
 	{
@@ -49,6 +51,7 @@ void StartScreen::ModeSelected(Modes mode)
 			m_AmountOfPlayersToRegister = 2;
 			AddPlayerText(-1, false, 1);
 			AddPlayerText(1, true, 2);
+			isPvp = true;
 			break;
 		}
 	}
@@ -59,11 +62,13 @@ void StartScreen::ModeSelected(Modes mode)
 	for (const auto& gamePads : input.GetGamePads())
 	{
 		map->AddGamePadAction<PlayerJoinCommand>(gamePads->GetIndex(), InputCommands::player_join, real::KeyState::keyDown,
-			real::GamePad::Button::buttonDown, GetOwner(), m_AmountOfPlayersToRegister);
+			real::GamePad::Button::buttonDown, GetOwner(), m_AmountOfPlayersToRegister, isPvp);
 	}
 
 	map->AddKeyboardAction<PlayerJoinCommand>(InputCommands::player_join, real::KeyState::keyDown, SDL_SCANCODE_SPACE,
-		GetOwner(), m_AmountOfPlayersToRegister);
+		GetOwner(), m_AmountOfPlayersToRegister, isPvp);
+
+	Game::SetIsPvP(isPvp);
 }
 
 void StartScreen::PlayerSelected()
