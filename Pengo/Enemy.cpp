@@ -50,6 +50,32 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
+ //                                                      if enemy class is notified by
+ //                                                      wall shake -> switch to stun            
+ //        Enemy State Machine                                +------------+                     
+ //                                                           | Stun State |-------+             
+ //                                                           +------------+       |             
+ //                                                                 |              |             
+ //                                                                 |              |             
+ //                             game time is over 30 sec            |              v             
+ //                                        |                        |       +------------+       
+ //                                        |                        |       | Died State |       
+ //                 +-----------------+    |   +------------+       |       +------------+       
+ //                 | Ice Break State | <------| Move State |<------+              ^             
+ //                 +-----------------+        +------------+                      |             
+ //                         |                        ^                             |             
+ //                         |                        |                             |             
+ //game time is over 60 sec |                        |                     +--------------+      
+ //and only 1 enemy remains |                        |                     | Pushed State |      
+ //                         |                        |                     +--------------+      
+ //                         v                        |                  if ice block detects     
+ //                  +------------+         +-----------------+         enemy -> switch to pushed
+ //                  | Flee State |-------->| (de)Spawn State |                                  
+ //                  +------------+    |    +-----------------+                                  
+ //                                    |                                                         
+ //                            if enemy reached                                                  
+ //                            corner -> de-spawn
+
 	if (const auto newState = m_CurrentState->Update())
 	{
 		m_CurrentState->Exit();
