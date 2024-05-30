@@ -18,7 +18,7 @@ enum class PlayerNumber : char
 class Player final : public real::Component
 {
 public:
-	explicit Player(real::GameObject* pOwner, PlayerNumber number);
+	explicit Player(real::GameObject* pOwner, PlayerNumber number, bool isEnemy);
 	virtual ~Player() override = default;
 
 	Player(const Player& other) = delete;
@@ -35,7 +35,7 @@ public:
 
 private:
 	PlayerNumber m_PlayerNumber;
-	bool m_IsDirty{ false };
+	bool m_IsDying{ false }, m_IsEnemy{ false };
 	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 };
 
