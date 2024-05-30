@@ -27,6 +27,9 @@ void SelectMode::Start()
 	const auto& input = real::InputManager::GetInstance();
 	const auto map = input.GetActiveInputMap();
 
+	if (map == nullptr)
+		return;
+
 	for (const auto& gamePads : input.GetGamePads())
 	{
 		map->AddGamePadAction<SelectModeCommand>(gamePads->GetIndex(), InputCommands::mode_confirm, real::KeyState::keyUp,
