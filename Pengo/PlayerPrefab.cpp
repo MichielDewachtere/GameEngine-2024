@@ -54,6 +54,11 @@ void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, Player
 	moveComponent->BindAnimationToDirection(Direction::right, { 6, 7 });
 	moveComponent->Disable();
 
-	go->AddComponent<Interact>();
+	const auto interactComponent = go->AddComponent<Interact>();
+	interactComponent->BindAnimationToDirection(Direction::down, { 8,9 });
+	interactComponent->BindAnimationToDirection(Direction::left, { 10,11 });
+	interactComponent->BindAnimationToDirection(Direction::up, { 12,13 });
+	interactComponent->BindAnimationToDirection(Direction::right, { 14,15 });
+
 	go->AddComponent<Player>(player, false);
 }
