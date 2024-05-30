@@ -32,6 +32,9 @@ void EggCounter::HandleEvent(real::SceneEvents event, real::Scene* scene)
 	if (scene->GetName().find("level") == std::string::npos)
 		return;
 
+	if (EnemyHandler::GetAmountOfEnemies() == 0)
+		return;
+
 	if (event == real::SceneEvents::load)
 	{
 		scene->FindGameObjectsWithTag(Tags::game).front()->GetComponent<EnemyHandler>()->enemySpawned.AddObserver(this);
