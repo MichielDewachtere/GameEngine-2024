@@ -7,8 +7,9 @@
 #include "StartScreen.h"
 #include "PlayerManager.h"
 
-PlayerJoinCommand::PlayerJoinCommand(int id, int controllerId, real::GameObject* pGameObject, int amountOfPlayers)
+PlayerJoinCommand::PlayerJoinCommand(int id, int controllerId, real::GameObject* pGameObject, int amountOfPlayers, bool isPvp)
 	: GameObjectCommand(id, controllerId, pGameObject)
+	, m_IsPvP(isPvp)
 {
 	m_AmountOfPlayers = amountOfPlayers;
 }
@@ -27,7 +28,10 @@ void PlayerJoinCommand::Execute()
 	{
 		map->RemoveKeyboardAction(InputCommands::player_join);
 
-		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX });
+		if (m_IsPvP && m_CurrentPlayer == 1)
+			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX, true });
+		else
+			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX, false });
 		++m_CurrentPlayer;
 
 		GetGameObject()->GetComponent<StartScreen>()->PlayerSelected();
@@ -37,7 +41,10 @@ void PlayerJoinCommand::Execute()
 	{
 		map->RemoveGamePadAction(InputCommands::player_join, GetControllerId());
 
-		PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, static_cast<uint8_t>(GetControllerId()) });
+		if (m_IsPvP && m_CurrentPlayer == 1)
+			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, static_cast<uint8_t>(GetControllerId()), true });
+		else
+			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, static_cast<uint8_t>(GetControllerId()), false });
 		++m_CurrentPlayer;
 
 		GetGameObject()->GetComponent<StartScreen>()->PlayerSelected();

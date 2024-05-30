@@ -7,7 +7,7 @@
 class PlayerJoinCommand final : public real::GameObjectCommand
 {
 public:
-	explicit PlayerJoinCommand(int id, int controllerId, real::GameObject* pGameObject, int amountOfPlayers);
+	explicit PlayerJoinCommand(int id, int controllerId, real::GameObject* pGameObject, int amountOfPlayers, bool isPvp);
 	virtual ~PlayerJoinCommand() override = default;
 
 	PlayerJoinCommand(const PlayerJoinCommand& other) = delete;
@@ -19,6 +19,7 @@ public:
 
 private:
 	std::vector<int> m_ControllersRegistered{};
+	bool m_IsPvP;
 	static inline int m_CurrentPlayer{ 0 }, m_AmountOfPlayers{ 0 };
 };
 
