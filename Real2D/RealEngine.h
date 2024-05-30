@@ -1,9 +1,9 @@
 #ifndef MINIGIN_H
 #define MINIGIN_H
 
-#include <functional>
-#include <stdint.h>
-#include <string>
+#include <cstdint>
+
+#include <EngineBase.h>
 
 namespace real
 {
@@ -14,25 +14,24 @@ namespace real
 		std::string windowTitle, dataPath;
 	};
 
-	class RealEngine
+	class RealEngine final : public EngineBase
 	{
 	public:
 		explicit RealEngine(WindowSettings settings);
-		~RealEngine();
+		virtual ~RealEngine() override;
 
 		RealEngine(const RealEngine& other) = delete;
 		RealEngine(RealEngine&& other) = delete;
 		RealEngine& operator=(const RealEngine& other) = delete;
 		RealEngine& operator=(RealEngine&& other) = delete;
 
-		void Run(const std::function<void()>& load);
+		virtual void Run(const std::function<void()>& load) override;
 
 	private:
 		WindowSettings m_Settings;
 
-		void InitWindow();
 		void InitImGui();
-		void InitGame();
+		void InitGame() const;
 	};
 }
 

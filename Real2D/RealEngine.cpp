@@ -21,8 +21,6 @@
 #include "SDLAudio.h"
 #include "LogAudio.h"
 
-SDL_Window* g_window{};
-
 void PrintSDLVersion()
 {
 	SDL_version version;
@@ -56,7 +54,8 @@ real::RealEngine::RealEngine(WindowSettings settings)
 {
 	m_Settings.frameTime = 1.f / static_cast<float>(m_Settings.fps);
 
-	InitWindow();
+	PrintSDLVersion();
+	InitWindow(m_Settings.windowTitle, m_Settings.width, m_Settings.height, 0);
 	InitGame();
 	InitImGui();
 
@@ -76,10 +75,6 @@ real::RealEngine::~RealEngine()
 	ImGui_ImplSDL2_Shutdown();
 	ImPlot::DestroyContext();
 	ImGui::DestroyContext();
-
-	SDL_DestroyWindow(g_window);
-	g_window = nullptr;
-	SDL_Quit();
 }
 
 void real::RealEngine::Run(const std::function<void()>& load)
@@ -131,30 +126,6 @@ void real::RealEngine::Run(const std::function<void()>& load)
 	}
 }
 
-void real::RealEngine::InitWindow()
-{
-	PrintSDLVersion();
-
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
-	{
-		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
-	}
-
-	g_window = SDL_CreateWindow(
-		m_Settings.windowTitle.c_str(),
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		static_cast<int>(m_Settings.width),
-		static_cast<int>(m_Settings.height),
-		SDL_WINDOW_OPENGL
-	);
-
-	if (g_window == nullptr)
-	{
-		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
-	}
-}
-
 void real::RealEngine::InitImGui()
 {
 	IMGUI_CHECKVERSION();
@@ -168,16 +139,16 @@ void real::RealEngine::InitImGui()
 	ImGui::StyleColorsDark();
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplSDL2_InitForSDLRenderer(g_window, Renderer::GetInstance().GetSDLRenderer());
+	ImGui_ImplSDL2_InitForSDLRenderer(GetWindow(), Renderer::GetInstance().GetSDLRenderer());
 	ImGui_ImplSDLRenderer2_Init(Renderer::GetInstance().GetSDLRenderer());
 }
 
-void real::RealEngine::InitGame()
+void real::RealEngine::InitGame() const
 {
 	GameTime::GetInstance().Init();
 
 	Logger::Initialize();
 
-	Renderer::GetInstance().Init(g_window);
+	Renderer::GetInstance().Init(GetWindow());
 	ResourceManager::GetInstance().Init(m_Settings.dataPath);
 }
