@@ -78,7 +78,7 @@ namespace real
 	template <class CommandType, typename ... CommandArgs> requires std::is_base_of_v<Command, CommandType>
 	void InputMap::AddMouseAction(uint8_t id, KeyState event, MouseButton button, CommandArgs... commandArgs)
 	{
-		m_pMouseActions[id] = std::make_unique<MouseAction>(event, button, new CommandType(id, -1, commandArgs));
+		m_pMouseActions[id] = std::make_unique<MouseAction>(event, button, new CommandType(id, -1, commandArgs...));
 	}
 
 	template <class CommandType, typename ... CommandArgs>
