@@ -22,7 +22,9 @@ void LevelParser::ParseLevel(real::Scene* pScene, const std::string& levelPath, 
 	// Create Level Object
 	auto& level = pScene->CreateGameObject({}, Tags::game);
 	level.GetTransform()->SetLocalPosition({ 0, HUD_SIZE_TOP });
-	level.AddComponent<EnemyHandler>(difficulty);
+	if (Game::GetIsPvP() == false)
+		level.AddComponent<EnemyHandler>(difficulty);
+
 	const auto mazeComponent = level.AddComponent<Maze>(glm::ivec2{ MAZE_WIDTH, MAZE_HEIGHT});
 	level.AddComponent<StarBlockManager>();
 	level.AddComponent<Game>();
@@ -58,7 +60,10 @@ void LevelParser::ParseLevel(real::Scene* pScene, const std::string& levelPath, 
 			}
 			case '!':
 			{
-				mazeComponent->SetBlock(pos, Maze::BlockType::egg);
+				if (Game::GetIsPvP())
+					mazeComponent->SetBlock(pos, Maze::BlockType::ice);
+				else
+					mazeComponent->SetBlock(pos, Maze::BlockType::egg);
 				break;
 			}
 			}
