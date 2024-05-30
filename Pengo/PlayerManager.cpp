@@ -119,3 +119,15 @@ void PlayerManager::AddPlayer(real::GameObject* pPlayer, const glm::ivec2& playe
 		}
 	}
 }
+
+uint8_t PlayerManager::GetAmountOfActivePlayers() const
+{
+	uint8_t counter = 0;
+	for (const auto & pPlayer : m_pPlayers)
+	{
+		if (pPlayer.object->IsActive())
+			++counter;
+	}
+
+	return counter;				
+}

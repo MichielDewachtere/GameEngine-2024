@@ -50,6 +50,8 @@ public:
 	uint8_t GetAmountOfPlayers() const { return m_AmountOfPlayers; }
 	const std::vector<PlayerInfo>& GetPlayers() { return m_pPlayers; }
 
+	uint8_t GetAmountOfActivePlayers() const;
+
 private:
 	friend class Singleton<PlayerManager>;
 	explicit PlayerManager() = default;
