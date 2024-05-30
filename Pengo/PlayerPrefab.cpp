@@ -55,5 +55,5 @@ void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, Player
 	moveComponent->Disable();
 
 	go->AddComponent<Interact>();
-	go->AddComponent<Player>(player);
+	go->AddComponent<Player>(player, false);
 }
