@@ -11,7 +11,7 @@
 #include "FleeState.h"
 
 IceBreakState::IceBreakState(real::GameObject* pOwner)
-	: MoveState(pOwner)
+	: MoveState(pOwner, false)
 {
 }
 

@@ -11,9 +11,11 @@
 #include "IceBreakState.h"
 #include "Move.h"
 #include "Player.h"
+#include "PlayerManager.h"
 
-MoveState::MoveState(real::GameObject* pOwner)
+MoveState::MoveState(real::GameObject* pOwner, bool controlledManually)
 	: IEnemyState(pOwner)
+	, m_ControlledManually(controlledManually)
 {
 }
 
@@ -33,6 +35,9 @@ void MoveState::Enter()
 IEnemyState* MoveState::Update()
 {
 	CheckForPlayer();
+
+	if (m_ControlledManually)
+		return nullptr;
 
 	if (m_pMoveComponent->IsMoving() == false)
 	{
@@ -155,15 +160,15 @@ std::pair<Maze::BlockType, bool> MoveState::IsObstacle(Direction direction, bool
 	return { type, true };
 }
 
-bool MoveState::IsIce(Direction direction) const
-{
-	const auto posToCheck = m_pMoveComponent->GetMazePos() + DirectionToVector(direction);
-	auto type = m_pMazeComponent->GetBlock(posToCheck);
-	if (type == Maze::BlockType::ice)
-		return true;
-
-	return false;
-}
+//bool MoveState::IsIce(Direction direction) const
+//{
+//	const auto posToCheck = m_pMoveComponent->GetMazePos() + DirectionToVector(direction);
+//	auto type = m_pMazeComponent->GetBlock(posToCheck);
+//	if (type == Maze::BlockType::ice)
+//		return true;
+//
+//	return false;
+//}
 
 int MoveState::GetValue(int max)
 {

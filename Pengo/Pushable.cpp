@@ -4,6 +4,7 @@
 #include <ColliderComponent.h>
 
 #include "Enemy.h"
+#include "EnemyPlayer.h"
 #include "Game.h"
 #include "GameUtil.h"
 #include "HUD.h"
@@ -101,9 +102,9 @@ void Pushable::PushEnemies()
 		{
 			std::cout << "is overlapping\n";
 			e->GetComponent<Move>()->Reset();
-			//if (Game::GetIsPvP())
-			//	//e->GetComponent<Player>()->Push(m_Direction);
-			//else
+			if (Game::GetIsPvP())
+				e->GetComponent<EnemyPlayer>()->Push(m_Direction);
+			else
 				e->GetComponent<Enemy>()->Push(m_Direction); 
 			m_EnemiesPushed.push_back(e);
 		}

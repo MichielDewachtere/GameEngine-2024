@@ -57,11 +57,11 @@ void Interact::AttemptInteraction()
 
 		for (const auto& object : objects)
 		{
-			if (m_pMaze->IsOccupied(icePath) && blockType != Maze::BlockType::star)
+			if ((m_pMaze->IsOccupied(icePath) || m_pPlayer->IsEnemy()) && blockType != Maze::BlockType::star)
 			{
 				object->GetComponent<IceBlock>()->Break(m_pPlayer->GetPlayerNumber());
 			}
-			else
+			else if (m_pPlayer->IsEnemy() == false)
 			{
 				object->GetComponent<Pushable>()->Push(direction, m_pPlayer->GetPlayerNumber());
 			}
@@ -69,7 +69,7 @@ void Interact::AttemptInteraction()
 
 		Animate(direction);
 	}
-	else if (blockType == Maze::BlockType::wall)
+	else if (blockType == Maze::BlockType::wall && m_pPlayer->IsEnemy() == false)
 	{
 		switch (direction)
 		{
@@ -91,6 +91,11 @@ void Interact::AttemptInteraction()
 	}
 }
 
+void Interact::BindAnimationToDirection(Direction dir, std::pair<int, int> indices)
+{
+	m_DirectionToAnimation[dir] = indices;
+}
+
 void Interact::Animate(Direction dir)
 {
 	m_pMove->Animate(false);
@@ -98,19 +103,21 @@ void Interact::Animate(Direction dir)
 
 	m_IsAnimating = true;
 
-	switch (dir)
-	{
-	case Direction::up:
-		m_pSpriteComponent->PlayAnimation(12, 13, 1);
-		break;
-	case Direction::right:
-		m_pSpriteComponent->PlayAnimation(14, 15, 1);
-		break;
-	case Direction::left:
-		m_pSpriteComponent->PlayAnimation(10, 11, 1);
-		break;
-	case Direction::down:
-		m_pSpriteComponent->PlayAnimation(8, 9, 1);
-		break;
-	}
+	m_pSpriteComponent->PlayAnimation(m_DirectionToAnimation[dir].first, m_DirectionToAnimation[dir].second, 1);
+
+	//switch (dir)
+	//{
+	//case Direction::up:
+	//	m_pSpriteComponent->PlayAnimation(12, 13, 1);
+	//	break;
+	//case Direction::right:
+	//	m_pSpriteComponent->PlayAnimation(14, 15, 1);
+	//	break;
+	//case Direction::left:
+	//	m_pSpriteComponent->PlayAnimation(10, 11, 1);
+	//	break;
+	//case Direction::down:
+	//	m_pSpriteComponent->PlayAnimation(8, 9, 1);
+	//	break;
+	//}
 }

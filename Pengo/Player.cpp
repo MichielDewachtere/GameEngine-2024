@@ -24,11 +24,6 @@ void Player::Update()
 		m_IsDying = false;
 		GetOwner()->SetIsActive(false, true);
 	}
-
-	if (m_IsEnemy)
-	{
-		
-	}
 }
 
 void Player::Die()
@@ -40,6 +35,11 @@ void Player::Die()
 void Player::ReSpawn() const
 {
 	GetOwner()->SetIsActive(true, true);
-	m_pSpriteComponent->SelectSprite(0);
+	m_pSpriteComponent->SelectSprite(m_ReSpawnSprite);
 	GetOwner()->GetComponent<Move>()->Reset();
+}
+
+bool Player::IsEnemy() const
+{
+	return m_IsEnemy;
 }

@@ -13,8 +13,9 @@
 #include "Player.h"
 #include "ScoreDisplay.h"
 
-StunState::StunState(real::GameObject* pOwner)
+StunState::StunState(real::GameObject* pOwner, bool controlledManually)
 	: IEnemyState(pOwner)
+	, m_ControlledManually(controlledManually)
 {
 }
 
@@ -37,7 +38,7 @@ IEnemyState* StunState::Update()
 	if (m_AccuTime > m_StunTime)
 	{
 		Exit();
-		const auto returnState = new MoveState(GetOwner());
+		const auto returnState = new MoveState(GetOwner(), m_ControlledManually);
 		returnState->Enter();
 		return returnState;
 	}

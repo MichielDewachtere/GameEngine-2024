@@ -20,7 +20,7 @@ class Move;
 class MoveState : public IEnemyState
 {
 public:
-	explicit MoveState(real::GameObject* pOwner);
+	explicit MoveState(real::GameObject* pOwner, bool controlledManually);
 	virtual ~MoveState() override = default;
 
 	MoveState(const MoveState& other) = delete;
@@ -36,7 +36,7 @@ protected:
 	virtual void MoveEnemy() const;
 	bool GetPoints(Direction direction, std::vector<Direction>& points, bool ignoreIce) const;
 	std::pair<Maze::BlockType, bool> IsObstacle(Direction direction, bool ignoreIce) const;
-	bool IsIce(Direction direction) const;
+	//bool IsIce(Direction direction) const;
 
 	void CheckForPlayer() const;
 
@@ -46,6 +46,7 @@ protected:
 	static std::map<int, Move*> GetPlayers() { return m_Players; }
 
 private:
+	bool m_ControlledManually;
 	Move* m_pMoveComponent{ nullptr };
 	Maze* m_pMazeComponent{ nullptr };
 	real::SpriteComponent* m_pSpriteComponent{ nullptr };

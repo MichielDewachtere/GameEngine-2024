@@ -7,6 +7,8 @@
 
 #include "IEnemyState.h"
 
+class Maze;
+
 namespace real
 {
 	enum class GameObjectEvent : char;
@@ -46,26 +48,30 @@ public:
 	real::Subject<> enemyDied;
 
 private:
+	friend class EnemyPlayer;
+
 	std::unique_ptr<IEnemyState> m_CurrentState{};
 	glm::ivec2 m_SpawnPos{};
 
 	Move* m_pMoveComponent{ nullptr };
 
-	template <typename T>
+	template <typename T, typename... Args>
 		requires std::is_base_of_v<IEnemyState, T>
-	T* SwitchState();
+	T* SwitchState(Args... args);
 
-	void WallObservers(bool remove);
+	static void WallObservers(Observer<WallOrientation>* observer, Maze* maze, const bool remove);
+
+	static void PushHelper(std::unique_ptr<IEnemyState>& state, Move& moveComponent, Direction direction);
 
 	static std::map<WallOrientation, glm::ivec2> m_OrientationToPos;
 };
 
-template <typename T>
+template <typename T, typename... Args>
 	requires std::is_base_of_v<IEnemyState, T>
-T* Enemy::SwitchState()
+T* Enemy::SwitchState(Args... args)
 {
 	m_CurrentState->Exit();
-	auto newState = new T(GetOwner());
+	auto newState = new T(GetOwner(), args...);
 	newState->Enter();
 	return newState;
 }

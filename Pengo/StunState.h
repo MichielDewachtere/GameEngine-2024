@@ -11,7 +11,7 @@ class Move;
 class StunState final : public IEnemyState
 {
 public:
-	explicit StunState(real::GameObject* pOwner);
+	explicit StunState(real::GameObject* pOwner, bool controlledManually = false);
 	virtual ~StunState() override = default;
 
 	StunState(const StunState& other) = delete;
@@ -24,6 +24,7 @@ public:
 	virtual void Exit() override;
 
 private:
+	bool m_ControlledManually;
 	float m_StunTime{ 5.f }, m_AccuTime{ 0.f };
 
 	glm::ivec2 m_MazePos{};

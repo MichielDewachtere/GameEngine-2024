@@ -28,7 +28,7 @@ IEnemyState* SpawnState::Update()
 	{
 		if (m_DeSpawn == false)
 		{
-			const auto returnState = new MoveState(GetOwner());
+			const auto returnState = new MoveState(GetOwner(), false);
 			returnState->Enter();
 			return returnState;
 		}

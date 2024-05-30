@@ -43,38 +43,38 @@ void Enemy::Start()
 	m_CurrentState = std::make_unique<SpawnState>(GetOwner());
 	m_CurrentState->Enter();
 
-	WallObservers(false);
+	WallObservers(this, GetOwner()->GetParent()->GetComponent<Maze>(), false);
 
 	GetOwner()->GetParent()->GetComponent<Game>()->gameEvent.AddObserver(this);
 }
 
 void Enemy::Update()
 {
- //                                                      if enemy class is notified by
- //                                                      wall shake -> switch to stun            
- //        Enemy State Machine                                +------------+                     
- //                                                           | Stun State |-------+             
- //                                                           +------------+       |             
- //                                                                 |              |             
- //                                                                 |              |             
- //                             game time is over 30 sec            |              v             
- //                                        |                        |       +------------+       
- //                                        |                        |       | Died State |       
- //                 +-----------------+    |   +------------+       |       +------------+       
- //                 | Ice Break State | <------| Move State |<------+              ^             
- //                 +-----------------+        +------------+                      |             
- //                         |                        ^                             |             
- //                         |                        |                             |             
- //game time is over 60 sec |                        |                     +--------------+      
- //and only 1 enemy remains |                        |                     | Pushed State |      
- //                         |                        |                     +--------------+      
- //                         v                        |                  if ice block detects     
- //                  +------------+         +-----------------+         enemy -> switch to pushed
- //                  | Flee State |-------->| (de)Spawn State |                                  
- //                  +------------+    |    +-----------------+                                  
- //                                    |                                                         
- //                            if enemy reached                                                  
- //                            corner -> de-spawn
+ //                                                       if enemy class is notified by
+ //                                                       wall shake -> switch to stun            
+ //         Enemy State Machine                                +------------+                     
+ //                                                            | Stun State |-------+             
+ //                                                            +------------+       |             
+ //                                                                  |              |             
+ //                                                                  |              |             
+ //                              game time is over 30 sec            |              v             
+ //                                         |                        |       +------------+       
+ //                                         |                        |       | Died State |       
+ //                  +-----------------+    |   +------------+       |       +------------+       
+ //                  | Ice Break State | <------| Move State |<------+              ^             
+ //                  +-----------------+        +------------+                      |             
+ //                          |                        ^                             |             
+ //                          |                        |                             |             
+ // game time is over 60 sec |                        |                     +--------------+      
+ // and only 1 enemy remains |                        |                     | Pushed State |      
+ //                          |                        |                     +--------------+      
+ //                          v                        |                  if ice block detects     
+ //                   +------------+         +-----------------+         enemy -> switch to pushed
+ //                   | Flee State |-------->| (de)Spawn State |                                  
+ //                   +------------+    |    +-----------------+                                  
+ //                                     |                                                         
+ //                             if enemy reached                                                  
+ //                             corner -> de-spawn
 
 	if (const auto newState = m_CurrentState->Update())
 	{
@@ -91,7 +91,7 @@ void Enemy::Kill()
 	if (const auto game = GetOwner()->GetParent()->GetComponent<Game>())
 		game->gameEvent.RemoveObserver(this);
 
-	WallObservers(true);
+	WallObservers(this, GetOwner()->GetParent()->GetComponent<Maze>(), true);
 }
 
 void Enemy::HandleEvent(real::GameObjectEvent event)
@@ -119,7 +119,7 @@ void Enemy::HandleEvent(GameEvents event)
 	}
 	case GameEvents::resumed:
 	{
-		m_CurrentState.reset(SwitchState<MoveState>());
+		m_CurrentState.reset(SwitchState<MoveState>(false));
 		Enable();
 		break;
 	}
@@ -144,34 +144,37 @@ void Enemy::HandleEvent(WallOrientation orientation)
 
 void Enemy::Push(Direction direction)
 {
-	m_CurrentState->Exit();
-	const auto newState = new PushedState(GetOwner());
-	newState->SetDirection(direction);
-	newState->Enter();
-	m_CurrentState.reset(newState);
-
-	m_pMoveComponent->SetMovementSpeed(PUSH_SPEED);
+	PushHelper(m_CurrentState, *m_pMoveComponent, direction);
 }
 
-void Enemy::WallObservers(const bool remove)
+void Enemy::WallObservers(Observer<WallOrientation>* observer, Maze* maze, const bool remove)
 {
-	const auto maze = GetOwner()->GetParent()->GetComponent<Maze>();
-
 	if (maze == nullptr)
 		return;
 
 	if (remove)
 	{
-		maze->GetWall(WallOrientation::north)->GetComponent<Wall>()->wallShaked.RemoveObserver(this);
-		maze->GetWall(WallOrientation::east)->GetComponent<Wall>()->wallShaked.RemoveObserver(this);
-		maze->GetWall(WallOrientation::south)->GetComponent<Wall>()->wallShaked.RemoveObserver(this);
-		maze->GetWall(WallOrientation::west)->GetComponent<Wall>()->wallShaked.RemoveObserver(this);
+		maze->GetWall(WallOrientation::north)->GetComponent<Wall>()->wallShaked.RemoveObserver(observer);
+		maze->GetWall(WallOrientation::east)->GetComponent<Wall>()->wallShaked.RemoveObserver(observer);
+		maze->GetWall(WallOrientation::south)->GetComponent<Wall>()->wallShaked.RemoveObserver(observer);
+		maze->GetWall(WallOrientation::west)->GetComponent<Wall>()->wallShaked.RemoveObserver(observer);
 	}
 	else
 	{
-		maze->GetWall(WallOrientation::north)->GetComponent<Wall>()->wallShaked.AddObserver(this);
-		maze->GetWall(WallOrientation::east)->GetComponent<Wall>()->wallShaked.AddObserver(this);
-		maze->GetWall(WallOrientation::south)->GetComponent<Wall>()->wallShaked.AddObserver(this);
-		maze->GetWall(WallOrientation::west)->GetComponent<Wall>()->wallShaked.AddObserver(this);
+		maze->GetWall(WallOrientation::north)->GetComponent<Wall>()->wallShaked.AddObserver(observer);
+		maze->GetWall(WallOrientation::east)->GetComponent<Wall>()->wallShaked.AddObserver(observer);
+		maze->GetWall(WallOrientation::south)->GetComponent<Wall>()->wallShaked.AddObserver(observer);
+		maze->GetWall(WallOrientation::west)->GetComponent<Wall>()->wallShaked.AddObserver(observer);
 	}
+}
+
+void Enemy::PushHelper(std::unique_ptr<IEnemyState>& state, Move& moveComponent, Direction direction)
+{
+	state->Exit();
+	const auto newState = new PushedState(moveComponent.GetOwner());
+	newState->SetDirection(direction);
+	newState->Enter();
+	state.reset(newState);
+
+	moveComponent.SetMovementSpeed(PUSH_SPEED);
 }

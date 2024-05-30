@@ -2,6 +2,8 @@
 #define INTERACTCOMPONENT_H
 
 #include <Component.h>
+#include <map>
+#include <utility>
 
 class Player;
 enum class Direction : char;
@@ -29,6 +31,7 @@ public:
 	virtual void Update() override;
 
 	void AttemptInteraction();
+	void BindAnimationToDirection(Direction dir, std::pair<int, int> indices);
 
 private:
 	Maze* m_pMaze{ nullptr };
@@ -36,6 +39,8 @@ private:
 	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 	Player* m_pPlayer{ nullptr };
 	bool m_IsAnimating{ false };
+
+	std::map<Direction, std::pair<int, int>> m_DirectionToAnimation;
 
 	void Animate(Direction dir);
 };

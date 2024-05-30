@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <Component.h>
+#include <cstdint>
 
 namespace real
 {
@@ -15,10 +16,10 @@ enum class PlayerNumber : char
 	none = 2,
 };
 
-class Player final : public real::Component
+class Player : public real::Component
 {
 public:
-	explicit Player(real::GameObject* pOwner, PlayerNumber number, bool isEnemy);
+	explicit Player(real::GameObject* pOwner, PlayerNumber number, bool isEnemy = false);
 	virtual ~Player() override = default;
 
 	Player(const Player& other) = delete;
@@ -32,6 +33,10 @@ public:
 	void Die();
 	void ReSpawn() const;
 	PlayerNumber GetPlayerNumber() const { return m_PlayerNumber; }
+	bool IsEnemy() const;
+
+protected:
+	uint8_t m_ReSpawnSprite{ 0 };
 
 private:
 	PlayerNumber m_PlayerNumber;
