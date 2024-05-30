@@ -5,9 +5,10 @@
 
 #include "Move.h"
 
-Player::Player(real::GameObject* pOwner, PlayerNumber number)
+Player::Player(real::GameObject* pOwner, PlayerNumber number, bool isEnemy)
 	: Component(pOwner)
 	, m_PlayerNumber(number)
+	, m_IsEnemy(isEnemy)
 {
 }
 
@@ -18,17 +19,22 @@ void Player::Start()
 
 void Player::Update()
 {
-	if (m_IsDirty && m_pSpriteComponent->IsAnimationPlaying() == false)
+	if (m_IsDying && m_pSpriteComponent->IsAnimationPlaying() == false)
 	{
-		m_IsDirty = false;
+		m_IsDying = false;
 		GetOwner()->SetIsActive(false, true);
+	}
+
+	if (m_IsEnemy)
+	{
+		
 	}
 }
 
 void Player::Die()
 {
 	m_pSpriteComponent->PlayAnimation(16, 17, 0);
-	m_IsDirty = true;
+	m_IsDying = true;
 }
 
 void Player::ReSpawn() const
