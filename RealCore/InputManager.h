@@ -36,6 +36,7 @@ namespace real
 		std::vector<GamePad*> GetGamePads() const;
 
 		const glm::ivec2& GetMouseMovement() const { return m_MouseMovement; }
+		const glm::vec2& GetNormalizedMouseMovement() const { return m_NormalizedMouseMovement; }
 		const glm::ivec2& GetMousePosition() const { return m_CurrentMousePosition; }
 
 		void SetMaxAmountOfGamePads(const uint8_t amount) { m_MaxAmountOfControllers = amount; }
@@ -59,6 +60,7 @@ namespace real
 
 		uint32_t m_CurrentMouseState{}, m_OldMouseState{};
 		glm::ivec2 m_CurrentMousePosition{ 0,0 }, m_OldMousePosition{ 0,0 }, m_MouseMovement{ 0,0 };
+		glm::vec2 m_NormalizedMouseMovement{ 0,0 };
 
 		std::vector<uint8_t>RegisterGamePadsHelper(bool one);
 

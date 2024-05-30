@@ -13,32 +13,10 @@
 #include "EngineBase.h"
 #include "imgui_impl_sdl2.h"
 #include "Logger.h"
+#include "glm/geometric.hpp"
 
-real::InputManager::InputManager()
-{
-	//m_pOldKeyboardState = new BYTE[SDL_NUM_SCANCODES];
-	//m_pCurrentKeyboardState = new BYTE[SDL_NUM_SCANCODES];
-
-	//m_OldMouseState = new BYTE[3];
-	//m_CurrentMouseState = new BYTE[3];
-
-	//m_CurrentMouseState = {
-	//	{ MouseButton::left, false },
-	//	{ MouseButton::middle, false },
-	//	{ MouseButton::right, false }
-	//};
-
-	//std::copy(m_CurrentMouseState.begin(), m_CurrentMouseState.end(), m_OldMouseState.begin());
-}
-
-real::InputManager::~InputManager()
-{
-	//delete[] m_pOldKeyboardState;
-	//delete[] m_pCurrentKeyboardState;
-
-	//delete[] m_OldMouseState;
-	//delete[] m_CurrentMouseState;
-}
+real::InputManager::InputManager() = default;
+real::InputManager::~InputManager() = default;
 
 bool real::InputManager::ProcessInput()
 {
@@ -208,6 +186,11 @@ void real::InputManager::UpdateMouseStates()
 
 	m_MouseMovement.x = m_CurrentMousePosition.x - m_OldMousePosition.x;
 	m_MouseMovement.y = m_CurrentMousePosition.y - m_OldMousePosition.y;
+
+	if (m_MouseMovement == glm::ivec2{ 0,0 })
+		m_NormalizedMouseMovement = glm::vec2{ 0,0 };
+	else
+		m_NormalizedMouseMovement = glm::normalize(glm::vec2(m_MouseMovement));
 }
 
 bool real::InputManager::IsKeyboardKeyDown(int key, bool previousFrame) const
