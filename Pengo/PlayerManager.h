@@ -5,7 +5,6 @@
 #include <vector>
 
 #include <Singleton.h>
-#include <string>
 #include <glm/vec2.hpp>
 
 #include "Observer.h"
@@ -23,6 +22,7 @@ struct PlayerInfo
 	glm::ivec2 spawnPos;
 	bool useKeyboard;
 	uint8_t controllerId;
+	bool isEnemy;
 };
 
 class PlayerManager final

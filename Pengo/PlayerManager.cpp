@@ -90,7 +90,7 @@ bool PlayerManager::RequestPlayer() const
 void PlayerManager::AddPlayer(real::GameObject* pPlayer, const glm::ivec2& playerSpawn)
 {
 	const auto map = real::InputManager::GetInstance().GetActiveInputMap();
-	for (auto& [object, spawnPos, useKeyboard, controllerId] : m_pPlayers)
+	for (auto& [object, spawnPos, useKeyboard, controllerId, isEnemy] : m_pPlayers)
 	{
 		if (object == nullptr)
 		{
