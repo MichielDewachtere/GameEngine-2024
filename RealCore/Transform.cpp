@@ -172,12 +172,9 @@ void real::Transform::SetScale(const glm::vec3& scale)
 	scaleChanged.Notify(TransformEvent::scaleChanged, scale);
 }
 
-const glm::vec3& real::Transform::GetEulerRotation() const
+glm::vec3 real::Transform::GetEulerRotation() const
 {
-	glm::vec3 v;
-	v.x = GetPitch();
-	v.y = GetYaw();
-	v.z = GetRoll();
+	const glm::vec3 v{ GetPitch(), GetYaw(), GetRoll() };
 	return v;
 }
 

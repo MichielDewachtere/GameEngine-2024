@@ -5,7 +5,10 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+
+#pragma warning(disable : 4201) // Disable warning 4201
 #include <glm/gtc/quaternion.hpp>
+#pragma warning(default : 4201) // Restore the warning state to default
 
 #include "Component.h"
 #include "Subject.h"
@@ -70,7 +73,7 @@ namespace real
 		 * \brief Returns the rotations vector (pitch, yaw, roll)
 		 * \return Returns the pitch, yaw and roll in RADIANS
 		 */
-		const glm::vec3& GetEulerRotation() const;
+		glm::vec3 GetEulerRotation() const;
 		const glm::quat& GetRotation() const { return m_Rotation; }
 		void SetRotation(const glm::vec3& rotation, bool degrees = true);
 		void SetRotation(const glm::quat& rotation);
