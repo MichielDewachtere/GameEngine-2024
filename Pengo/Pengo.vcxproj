@@ -169,6 +169,7 @@
     <ClCompile Include="HighScoreMenu.cpp" />
     <ClCompile Include="IceBreakState.cpp" />
     <ClCompile Include="LeaderBoard.cpp" />
+    <ClCompile Include="PlayerEnemyPrefab.cpp" />
     <ClCompile Include="RegisterHighScore.cpp" />
     <ClCompile Include="TextFadeIn.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="HighScoreMenu.h" />
     <ClInclude Include="IceBreakState.h" />
     <ClInclude Include="LeaderBoard.h" />
+    <ClInclude Include="PlayerEnemyPrefab.h" />
     <ClInclude Include="RegisterHighScore.h" />
     <ClInclude Include="TextFadeIn.h" />
     <ClInclude Include="Enemy.h" />
