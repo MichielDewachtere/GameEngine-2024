@@ -5,7 +5,6 @@
 #pragma warning(disable : 4201) // Disable warning 4201
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/euler_angles.hpp>
 #pragma warning(default : 4201) // Restore the warning state to default
 
 #include "GameObject.h"
@@ -14,7 +13,6 @@
 real::Transform::Transform(GameObject* pOwner, TransformInfo info)
 	: Component(pOwner)
 	, m_Scale(info.scale)
-	, m_Rotation(info.rotation)
 {
 	if (info.useLocalPosition)
 	{
@@ -28,6 +26,8 @@ real::Transform::Transform(GameObject* pOwner, TransformInfo info)
 		m_LocalNeedsUpdate = true;
 		m_WorldNeedsUpdate = false;
 	}
+
+	SetRotation(info.rotation, true);
 }
 
 void real::Transform::Start()
@@ -60,9 +60,10 @@ void real::Transform::SetLocalPosition(const glm::vec3& localPos)
 {
 	m_LocalPosition = localPos;
 	SetWorldPositionDirty();
+	SetWorldMatrixDirty();
 
 	localPosChanged.Notify(TransformEvent::localPosChanged, m_WorldPosition);
-	m_WorldMatNeedsUpdate = true;
+
 	std::ranges::for_each(GetOwner()->GetChildren(), [](GameObject* go)
 		{
 			go->GetTransform()->SetLocalPositionDirty();
@@ -96,9 +97,9 @@ void real::Transform::SetWorldPosition(const glm::vec3& worldPos)
 {
 	m_WorldPosition = worldPos;
 	SetLocalPositionDirty();
+	SetWorldMatrixDirty();
 
 	worldPosChanged.Notify(TransformEvent::worldPosChanged, m_WorldPosition);
-	m_WorldMatNeedsUpdate = true;
 	std::ranges::for_each(GetOwner()->GetChildren(), [](GameObject* go)
 		{
 			go->GetTransform()->SetWorldPositionDirty();
@@ -125,8 +126,8 @@ void real::Transform::Translate(const glm::vec3& translation)
 	m_LocalPosition += translation;
 	localPosChanged.Notify(TransformEvent::localPosChanged, m_LocalPosition);
 
-	m_WorldNeedsUpdate = true;
-	m_WorldMatNeedsUpdate = true;
+	SetWorldPositionDirty();
+	SetWorldMatrixDirty();
 	if (worldPosChanged.GetObservers().empty() == false)
 	{
 		GetWorldPosition();
@@ -167,48 +168,65 @@ void real::Transform::SetScale(const glm::vec2& scale)
 void real::Transform::SetScale(const glm::vec3& scale)
 {
 	m_Scale = scale;
-	m_WorldMatNeedsUpdate = true;
+	SetWorldMatrixDirty();
 	scaleChanged.Notify(TransformEvent::scaleChanged, scale);
+}
+
+const glm::vec3& real::Transform::GetEulerRotation() const
+{
+	glm::vec3 v;
+	v.x = GetPitch();
+	v.y = GetYaw();
+	v.z = GetRoll();
+	return v;
 }
 
 void real::Transform::SetRotation(const glm::vec3& rotation, bool degrees)
 {
-	if (degrees)
-		m_Rotation = glm::radians(rotation);
-	else
-		m_Rotation = rotation;
+	glm::quat rotationQuat;
 
-	m_WorldMatNeedsUpdate = true;
+	if (degrees)
+		rotationQuat = glm::quat(glm::radians(rotation));
+	else
+		rotationQuat = glm::quat(rotation);
+
+	SetRotation(glm::normalize(rotationQuat));
+}
+
+void real::Transform::SetRotation(const glm::quat& rotation)
+{
+	m_Rotation = rotation;
+
+	SetOrientVecDirty();
+	SetRotationMatrixDirty();
+	SetWorldMatrixDirty();
 }
 
 void real::Transform::SetPitch(const float pitch, bool degrees)
 {
-	if (degrees)
-		m_Rotation.x = glm::radians(pitch);
-	else
-		m_Rotation.x = pitch;
+	m_Rotation = glm::normalize(glm::angleAxis(degrees ? glm::radians(pitch) : pitch, glm::vec3(unit_x)) * GetRotation());
 
-	m_WorldMatNeedsUpdate = true;
+	SetOrientVecDirty();
+	SetRotationMatrixDirty();
+	SetWorldMatrixDirty();
 }
 
 void real::Transform::SetYaw(const float yaw, bool degrees)
 {
-	if (degrees)
-		m_Rotation.y = glm::radians(yaw);
-	else
-		m_Rotation.y = yaw;
+	m_Rotation = glm::normalize(glm::angleAxis(degrees ? glm::radians(yaw) : yaw, glm::vec3(unit_y)) * GetRotation());
 
-	m_WorldMatNeedsUpdate = true;
+	SetOrientVecDirty();
+	SetRotationMatrixDirty();
+	SetWorldMatrixDirty();
 }
 
 void real::Transform::SetRoll(const float roll, bool degrees)
 {
-	if (degrees)
-		m_Rotation.z = glm::radians(roll);
-	else
-		m_Rotation.z = roll;
+	m_Rotation = glm::normalize(glm::angleAxis(degrees ? glm::radians(roll) : roll, glm::vec3(unit_z)) * GetRotation());
 
-	m_WorldMatNeedsUpdate = true;
+	SetOrientVecDirty();
+	SetRotationMatrixDirty();
+	SetWorldMatrixDirty();
 }
 
 const glm::mat4& real::Transform::GetWorldMatrix()
@@ -220,9 +238,7 @@ const glm::mat4& real::Transform::GetWorldMatrix()
 
 		m_WorldMatrix = glm::translate(m_WorldMatrix, worldPos);
 
-		m_WorldMatrix = glm::rotate(m_WorldMatrix, m_Rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-		m_WorldMatrix = glm::rotate(m_WorldMatrix, m_Rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-		m_WorldMatrix = glm::rotate(m_WorldMatrix, m_Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+		m_WorldMatrix *= GetRotationMatrix();
 
 		m_WorldMatrix = glm::scale(m_WorldMatrix, m_Scale);
 
@@ -230,6 +246,49 @@ const glm::mat4& real::Transform::GetWorldMatrix()
 	}
 
 	return m_WorldMatrix;
+}
+
+const glm::mat4& real::Transform::GetRotationMatrix()
+{
+	if (m_RotationMatNeedsUpdate)
+	{
+		m_RotationMatrix = glm::mat4{ GetRotation() };
+	}
+
+	return m_RotationMatrix;
+}
+
+const glm::vec3& real::Transform::GetUp()
+{
+	if (m_UpNeedsUpdate)
+	{
+		m_Up = glm::vec3(GetRotationMatrix() * unit_y);
+		m_UpNeedsUpdate = false;
+	}
+
+	return m_Up;
+}
+
+const glm::vec3& real::Transform::GetForward()
+{
+	if (m_ForwardNeedsUpdate)
+	{
+		m_Forward = glm::vec3(GetRotationMatrix() * unit_z);
+		m_ForwardNeedsUpdate = false;
+	}
+
+	return m_Forward;
+}
+
+const glm::vec3& real::Transform::GetRight()
+{
+	if (m_RightNeedsUpdate)
+	{
+		m_Right = glm::vec3(GetRotationMatrix() * unit_x);
+		m_RightNeedsUpdate = false;
+	}
+
+	return m_Right;
 }
 
 void real::Transform::UpdateLocalPosition()
@@ -261,6 +320,38 @@ void real::Transform::SetLocalPositionDirty()
 	std::ranges::for_each(GetOwner()->GetChildren(), [](GameObject* go)
 		{
 			go->GetTransform()->SetLocalPositionDirty();
+		});
+}
+
+void real::Transform::SetWorldMatrixDirty()
+{
+	m_WorldMatNeedsUpdate = true;
+
+	std::ranges::for_each(GetOwner()->GetChildren(), [](GameObject* go)
+		{
+			go->GetTransform()->SetWorldMatrixDirty();
+		});
+}
+
+void real::Transform::SetOrientVecDirty()
+{
+	m_ForwardNeedsUpdate = true;
+	m_UpNeedsUpdate = true;
+	m_RightNeedsUpdate = true;
+
+	std::ranges::for_each(GetOwner()->GetChildren(), [](GameObject* go)
+		{
+			go->GetTransform()->SetOrientVecDirty();
+		});
+}
+
+void real::Transform::SetRotationMatrixDirty()
+{
+	m_RotationMatNeedsUpdate = true;
+
+	std::ranges::for_each(GetOwner()->GetChildren(), [](GameObject* go)
+		{
+			go->GetTransform()->SetRotationMatrixDirty();
 		});
 }
 
