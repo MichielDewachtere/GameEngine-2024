@@ -154,6 +154,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DrawableComponent.cpp" />
+    <ClCompile Include="EngineBase.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GameTime.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DrawableComponent.h" />
+    <ClInclude Include="EngineBase.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GameTime.h" />
