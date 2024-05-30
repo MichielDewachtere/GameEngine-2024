@@ -36,6 +36,8 @@ public:
 
 	static float GetGameTime() { return m_GameTime; }
 	static int GetCurrentLevel() { return m_CurrentLevel; }
+	static void SetIsPvP(bool isPvP) { m_IsPvP = isPvP; }
+	static int GetIsPvP() { return m_IsPvP; }
 
 private:
 	enum class GameState : char
@@ -57,6 +59,7 @@ private:
 
 	static inline float m_GameTime{ 0.f };
 	static inline int m_CurrentLevel{ 0 };
+	static inline bool m_IsPvP{ false };
 };
 
 #endif // GAME_H
