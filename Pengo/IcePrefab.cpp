@@ -8,6 +8,7 @@
 #include <ColliderComponent.h>
 
 #include "Colors.h"
+#include "Game.h"
 #include "HiddenEggPrefab.h"
 #include "IceBlock.h"
 #include "Macros.h"
@@ -28,6 +29,12 @@ IcePrefab::IcePrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec
 
 void IcePrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg) const
 {
+	if (Game::GetCurrentLevel() != m_Act)
+	{
+		m_Act = Game::GetCurrentLevel();
+		m_CurrentColor = static_cast<ECharacterColors>(m_Act % static_cast<int>(ECharacterColors::amountOfColors));
+	}
+
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/block_sheet.png");
 
 	const auto go = GetGameObject();
@@ -50,6 +57,6 @@ void IcePrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hide
 	go->AddComponent<real::ColliderComponent>(info);
 
 	go->AddComponent<Move>(mazePos, Maze::BlockType::ice, PUSH_SPEED, false);
-	go->AddComponent<IceBlock>(hidesEgg);
+	go->AddComponent<IceBlock>(hidesEgg, m_CurrentColor);
 	go->AddComponent<Pushable>();
 }

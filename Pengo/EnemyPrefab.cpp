@@ -8,6 +8,8 @@
 
 #include "Pushable.h"
 #include "Enemy.h"
+#include "GameUtil.h"
+#include "IcePrefab.h"
 #include "Macros.h"
 #include "Move.h"
 
@@ -25,7 +27,8 @@ EnemyPrefab::EnemyPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::
 
 void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos) const
 {
-	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee_green.png");
+	const auto fileExtension = GetFileExtensionFromColor(IcePrefab::m_CurrentColor);
+	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee" + fileExtension);
 
 	const auto go = GetGameObject();
 	go->SetTag("Enemy");

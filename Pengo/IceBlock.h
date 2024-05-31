@@ -5,6 +5,7 @@
 #include <Observer.h>
 
 #include "Player.h"
+#include "PlayerManager.h"
 
 namespace real
 {
@@ -20,7 +21,7 @@ class IceBlock final
 	, public real::Observer<GameEvents>
 {
 public:
-	explicit IceBlock(real::GameObject* pOwner, bool hidesEgg);
+	explicit IceBlock(real::GameObject* pOwner, bool hidesEgg, ECharacterColors color);
 	virtual ~IceBlock() override;
 
 	IceBlock(const IceBlock& other) = delete;
@@ -39,6 +40,7 @@ public:
 	bool HidesEgg() const { return m_HidesEgg; }
 
 private:
+	ECharacterColors m_Color;
 	bool m_HidesEgg{ false }, m_Break{ false }, m_StartAnimation{ true };
 	real::SpriteComponent* m_pSpriteComponent{ nullptr };
 	PlayerNumber m_BreakedBy{};

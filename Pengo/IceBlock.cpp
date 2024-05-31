@@ -5,13 +5,15 @@
 
 #include "EnemyHandler.h"
 #include "Game.h"
+#include "GameUtil.h"
 #include "HiddenEgg.h"
 #include "HUD.h"
 #include "Move.h"
 #include "ScoreDisplay.h"
 
-IceBlock::IceBlock(real::GameObject* pOwner, bool hidesEgg)
+IceBlock::IceBlock(real::GameObject* pOwner, bool hidesEgg, ECharacterColors color)
 	: Component(pOwner)
+	, m_Color(color)
 	, m_HidesEgg(hidesEgg)
 {
 }
@@ -67,7 +69,9 @@ void IceBlock::HandleEvent(GameEvents event)
 {
 	if ((event == GameEvents::started || event == GameEvents::resumed) && m_HidesEgg)
 	{
-		m_pSpriteComponent->PlayAnimation(0, 1, 3, 0.5f);
+
+		m_pSpriteComponent->PlayAnimation({ 0,GetSpriteIndexFromColor(m_Color) }, 3, 0.5f);
+		//m_pSpriteComponent->PlayAnimation(0, 1, 3, 0.5f);
 		m_StartAnimation = true;
 	}
 }

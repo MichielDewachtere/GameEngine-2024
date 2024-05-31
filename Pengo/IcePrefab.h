@@ -5,6 +5,8 @@
 
 #include <Prefab.h>
 
+#include "PlayerManager.h"
+
 class IcePrefab final : public real::Prefab
 {
 public:
@@ -19,6 +21,10 @@ public:
 
 protected:
 	void Init(const glm::ivec2& pos, const glm::ivec2& mazePos, bool hidesEgg = false) const;
+
+	friend class EnemyPrefab;
+	static inline int m_Act{ 0 };
+	static inline ECharacterColors m_CurrentColor{ ECharacterColors::amountOfColors };
 };
 
 #endif // ICEPREFAB_H
