@@ -16,6 +16,20 @@ namespace real
 	class GameObject;
 }
 
+enum class ECharacterColors : uint8_t
+{
+	blue = 0,
+	green = 1,
+	red = 2,
+	yellow = 3,
+	pink = 4,
+	orange = 5,
+	lightYellow = 6,
+	cyan = 7,
+	gold = 8,
+	amountOfColors = 9
+};
+
 struct PlayerInfo
 {
 	real::GameObject* object;
@@ -23,6 +37,7 @@ struct PlayerInfo
 	bool useKeyboard;
 	uint8_t controllerId;
 	bool isEnemy;
+	ECharacterColors color;
 };
 
 class PlayerManager final
@@ -43,14 +58,18 @@ public:
 	void HandleEvent(GameEvents) override;
 	void OnSubjectDestroy() override;
 
-	uint8_t RegisterPlayer(PlayerInfo info);
+	void SetAmountOfPlayers(int amount, bool isPvp);
+	void SetPlayerInput(int player, bool keyboard, uint8_t controllerId = UCHAR_MAX);
+	void SetObjectAndPosition(int player, real::GameObject* pPlayer, const glm::ivec2& spawnPos);
 
 	bool RequestPlayer() const;
-	void AddPlayer(real::GameObject* pPlayer, const glm::ivec2&);
 	uint8_t GetAmountOfPlayers() const { return m_AmountOfPlayers; }
 	const std::vector<PlayerInfo>& GetPlayers() { return m_pPlayers; }
-
 	uint8_t GetAmountOfActivePlayers() const;
+
+	PlayerInfo GetPlayerInfo(int player) const;
+
+	ECharacterColors GetRandomColor();
 
 private:
 	friend class Singleton<PlayerManager>;

@@ -28,26 +28,20 @@ void PlayerJoinCommand::Execute()
 	{
 		map->RemoveKeyboardAction(InputCommands::player_join);
 
-		if (m_IsPvP && m_CurrentPlayer == 1)
-			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX, true });
-		else
-			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, true, UCHAR_MAX, false });
 		++m_CurrentPlayer;
+		PlayerManager::GetInstance().SetPlayerInput(m_CurrentPlayer, true, UCHAR_MAX);
 
 		GetGameObject()->GetComponent<StartScreen>()->PlayerSelected();
-		GetGameObject()->GetChildAt(2)->GetChildAt(1)->SetIsActive(false, true);
+		GetGameObject()->GetChildAt(1 + m_CurrentPlayer)->GetChildAt(1)->SetIsActive(false, true);
 	}
 	else
 	{
 		map->RemoveGamePadAction(InputCommands::player_join, GetControllerId());
 
-		if (m_IsPvP && m_CurrentPlayer == 1)
-			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, static_cast<uint8_t>(GetControllerId()), true });
-		else
-			PlayerManager::GetInstance().RegisterPlayer({ nullptr, {}, false, static_cast<uint8_t>(GetControllerId()), false });
 		++m_CurrentPlayer;
+		PlayerManager::GetInstance().SetPlayerInput(m_CurrentPlayer, false, static_cast<uint8_t>(GetControllerId()));
 
 		GetGameObject()->GetComponent<StartScreen>()->PlayerSelected();
-		GetGameObject()->GetChildAt(2)->GetChildAt(1)->SetIsActive(false, true);
+		GetGameObject()->GetChildAt(1 + m_CurrentPlayer)->GetChildAt(1)->SetIsActive(false, true);
 	}
 }

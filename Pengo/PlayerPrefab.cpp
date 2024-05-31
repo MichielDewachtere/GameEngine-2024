@@ -6,10 +6,12 @@
 #include <ResourceManager.h>
 #include <SpriteComponent.h>
 
+#include "GameUtil.h"
 #include "Macros.h"
 #include "Move.h"
 #include "Interact.h"
 #include "Player.h"
+#include "PlayerManager.h"
 
 PlayerPrefab::PlayerPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player)
 	: Prefab(pOwner)
@@ -25,7 +27,10 @@ PlayerPrefab::PlayerPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm
 
 void PlayerPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player) const
 {
-	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/pengo/pengo_red.png");
+	const auto playerColor = PlayerManager::GetInstance().GetPlayerInfo(static_cast<int>(player) + 1).color;
+
+	const auto fileExtension = GetFileExtensionFromColor(playerColor);
+	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/pengo/pengo" + fileExtension);
 
 	const auto go = GetGameObject();
 	go->SetTag("Player");

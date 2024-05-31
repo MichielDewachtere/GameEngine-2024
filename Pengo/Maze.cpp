@@ -68,20 +68,19 @@ void Maze::Init()
                 if (x == 6 && y == 6)
                 {
                     const auto player = std::make_unique<PlayerPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerOne);
-                    PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                    PlayerManager::GetInstance().SetObjectAndPosition(1, player->GetGameObject(), glm::ivec2{ x,y });
                 }
                 if (x == 6 && y == 10)
                 {
                     if (PlayerManager::GetInstance().GetPlayers().back().isEnemy)
                     {
-                        // TODO: Fix this
 	                    const auto player = std::make_unique<PlayerEnemyPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerTwo);
-                		PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                		PlayerManager::GetInstance().SetObjectAndPosition(2, player->GetGameObject(), glm::ivec2{ x,y });
                     }
                     else
                     {
 	                    const auto player = std::make_unique<PlayerPrefab>(GetOwner(), scaledPos, glm::ivec2{ x,y }, PlayerNumber::playerTwo);
-                		PlayerManager::GetInstance().AddPlayer(player->GetGameObject(), glm::ivec2{ x,y });
+                		PlayerManager::GetInstance().SetObjectAndPosition(2, player->GetGameObject(), glm::ivec2{ x,y });
                     }
                 }
             }

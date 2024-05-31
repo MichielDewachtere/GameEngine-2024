@@ -17,6 +17,7 @@
 #include "SelectMode.h"
 #include "PlayerJoinCommand.h"
 #include "GameInfo.h"
+#include "GameUtil.h"
 #include "Macros.h"
 #include "PlayerManager.h"
 #include "StartGameCommand.h"
@@ -42,14 +43,14 @@ void StartScreen::ModeSelected(Modes mode)
 		case Modes::coOp:
 		{
 			m_AmountOfPlayersToRegister = 2;
-			AddPlayerText(-1, false, 1);
+			AddPlayerText(0, false, 1);
 			AddPlayerText(1, false, 2);
 			break;
 		}
 		case Modes::pvp:
 		{
 			m_AmountOfPlayersToRegister = 2;
-			AddPlayerText(-1, false, 1);
+			AddPlayerText(0, false, 1);
 			AddPlayerText(1, true, 2);
 			isPvp = true;
 			break;
@@ -93,7 +94,7 @@ void StartScreen::PlayerSelected()
 
 void StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
 {
-	auto& player = GetOwner()->CreateGameObject({ glm::vec3{static_cast<float>(offset * 150),300,0} }, "player-start-screen");
+	auto& player = GetOwner()->CreateGameObject({ glm::vec3{ 0,300 + (100 * offset),0} }, "player-start-screen");
 	{
 		player.AddComponent<real::TextureComponent>();
 
@@ -110,21 +111,16 @@ void StartScreen::AddPlayerText(int offset, bool isEnemy, int playerId) const
 
 		real::TextInfo info{};
 
+		auto playerColor = PlayerManager::GetInstance().GetPlayerInfo(playerId).color;
+		auto colorName = GetNameFromColor(playerColor);
+		auto colorValue = GetColorFromEnum(playerColor);
+
 		if (isEnemy)
-		{
-			info.text = "enemy";
-			info.color = real::Colors::green;
-		}
-		else if (playerId == 1)
-		{
-			info.text = "pengo (red)";
-			info.color = real::Colors::red;
-		}
-		else if (playerId == 2)
-		{
-			info.text = "pengo (yellow)";
-			info.color = real::Colors::yellow;
-		}
+			info.text = "enemy (" + colorName + ')';
+		else
+			info.text = "pengo (" + colorName + ')';
+		
+		info.color = colorValue;
 
 		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 		info.horizontalAlignment = real::HorizontalTextAlignment::center;

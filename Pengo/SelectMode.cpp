@@ -9,6 +9,7 @@
 
 #include "GameInfo.h"
 #include "Macros.h"
+#include "PlayerManager.h"
 #include "SelectModeCommand.h"
 #include "StartScreen.h"
 
@@ -62,6 +63,21 @@ void SelectMode::Change(bool goUp)
 
 void SelectMode::ConfirmMode() const
 {
+	// ReSharper disable once CppIncompleteSwitchStatement
+	// ReSharper disable once CppDefaultCaseNotHandledInSwitchStatement
+	switch (m_CurrentMode)
+	{
+	case Modes::singlePlayer:
+		PlayerManager::GetInstance().SetAmountOfPlayers(1, false);
+		break;
+	case Modes::coOp:
+		PlayerManager::GetInstance().SetAmountOfPlayers(2, false);
+		break;
+	case Modes::pvp:
+		PlayerManager::GetInstance().SetAmountOfPlayers(2, true);
+		break;
+	}
+
 	const auto startScreen = GetOwner()->GetParent()->GetComponent<StartScreen>();
 	startScreen->ModeSelected(m_CurrentMode);
 

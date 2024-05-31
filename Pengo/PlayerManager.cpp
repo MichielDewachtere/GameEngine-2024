@@ -68,12 +68,50 @@ void PlayerManager::OnSubjectDestroy()
 	}
 }
 
-uint8_t PlayerManager::RegisterPlayer(const PlayerInfo info)
+void PlayerManager::SetAmountOfPlayers(int amount, bool isPvp)
 {
-	m_pPlayers.push_back(info);
-	++m_AmountOfPlayers;
+	for (int i = 0; i < amount; ++i)
+	{
+		PlayerInfo info{};
+		info.color = GetRandomColor();
+		info.isEnemy = isPvp && i == 1 ? true : false;
 
-	return m_AmountOfPlayers - 1;
+		m_pPlayers.push_back(info);
+	}
+
+	m_AmountOfPlayers = static_cast<uint8_t>(amount);
+}
+
+void PlayerManager::SetPlayerInput(int player, bool keyboard, uint8_t controllerId)
+{
+	m_pPlayers[player - 1].useKeyboard = keyboard;
+	m_pPlayers[player - 1].controllerId = controllerId;
+}
+
+void PlayerManager::SetObjectAndPosition(int player, real::GameObject* pPlayer, const glm::ivec2& spawnPos)
+{
+	const auto map = real::InputManager::GetInstance().GetActiveInputMap();
+	m_pPlayers[player - 1].object = pPlayer;
+	m_pPlayers[player - 1].spawnPos = spawnPos;
+
+	if (m_pPlayers[player - 1].useKeyboard)
+	{
+		map->AddKeyboardAction<MoveCommand>(InputCommands::move_up, real::KeyState::keyPressed, SDL_SCANCODE_UP, pPlayer, Direction::up);
+		map->AddKeyboardAction<MoveCommand>(InputCommands::move_down, real::KeyState::keyPressed, SDL_SCANCODE_DOWN, pPlayer, Direction::down);
+		map->AddKeyboardAction<MoveCommand>(InputCommands::move_left, real::KeyState::keyPressed, SDL_SCANCODE_LEFT, pPlayer, Direction::left);
+		map->AddKeyboardAction<MoveCommand>(InputCommands::move_right, real::KeyState::keyPressed, SDL_SCANCODE_RIGHT, pPlayer, Direction::right);
+
+		map->AddKeyboardAction<InteractCommand>(InputCommands::interact, real::KeyState::keyDown, SDL_SCANCODE_SPACE, pPlayer);
+	}
+	else
+	{
+		map->AddGamePadAction<MoveCommand>(m_pPlayers[player - 1].controllerId, InputCommands::move_up, real::KeyState::keyPressed, real::GamePad::Button::dPadUp, pPlayer, Direction::up);
+		map->AddGamePadAction<MoveCommand>(m_pPlayers[player - 1].controllerId, InputCommands::move_down, real::KeyState::keyPressed, real::GamePad::Button::dPadDown, pPlayer, Direction::down);
+		map->AddGamePadAction<MoveCommand>(m_pPlayers[player - 1].controllerId, InputCommands::move_left, real::KeyState::keyPressed, real::GamePad::Button::dPadLeft, pPlayer, Direction::left);
+		map->AddGamePadAction<MoveCommand>(m_pPlayers[player - 1].controllerId, InputCommands::move_right, real::KeyState::keyPressed, real::GamePad::Button::dPadRight, pPlayer, Direction::right);
+
+		map->AddGamePadAction<InteractCommand>(m_pPlayers[player - 1].controllerId, InputCommands::interact, real::KeyState::keyDown, real::GamePad::Button::buttonDown, pPlayer);
+	}
 }
 
 bool PlayerManager::RequestPlayer() const
@@ -87,39 +125,6 @@ bool PlayerManager::RequestPlayer() const
 	return counter < m_AmountOfPlayers;
 }
 
-void PlayerManager::AddPlayer(real::GameObject* pPlayer, const glm::ivec2& playerSpawn)
-{
-	const auto map = real::InputManager::GetInstance().GetActiveInputMap();
-	for (auto& [object, spawnPos, useKeyboard, controllerId, isEnemy] : m_pPlayers)
-	{
-		if (object == nullptr)
-		{
-			object = pPlayer;
-			spawnPos = playerSpawn;
-
-			if (useKeyboard)
-			{
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_up, real::KeyState::keyPressed, SDL_SCANCODE_UP, pPlayer, Direction::up);
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_down, real::KeyState::keyPressed, SDL_SCANCODE_DOWN, pPlayer, Direction::down);
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_left, real::KeyState::keyPressed, SDL_SCANCODE_LEFT, pPlayer, Direction::left);
-				map->AddKeyboardAction<MoveCommand>(InputCommands::move_right, real::KeyState::keyPressed, SDL_SCANCODE_RIGHT, pPlayer, Direction::right);
-
-				map->AddKeyboardAction<InteractCommand>(InputCommands::interact, real::KeyState::keyDown, SDL_SCANCODE_SPACE, pPlayer);
-			}
-			else
-			{
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_up, real::KeyState::keyPressed, real::GamePad::Button::dPadUp, pPlayer, Direction::up);
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_down, real::KeyState::keyPressed, real::GamePad::Button::dPadDown, pPlayer, Direction::down);
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_left, real::KeyState::keyPressed, real::GamePad::Button::dPadLeft, pPlayer, Direction::left);
-				map->AddGamePadAction<MoveCommand>(controllerId, InputCommands::move_right, real::KeyState::keyPressed, real::GamePad::Button::dPadRight, pPlayer, Direction::right);
-
-				map->AddGamePadAction<InteractCommand>(controllerId, InputCommands::interact, real::KeyState::keyDown, real::GamePad::Button::buttonDown, pPlayer);
-			}
-			break;
-		}
-	}
-}
-
 uint8_t PlayerManager::GetAmountOfActivePlayers() const
 {
 	uint8_t counter = 0;
@@ -130,4 +135,23 @@ uint8_t PlayerManager::GetAmountOfActivePlayers() const
 	}
 
 	return counter;				
+}
+
+PlayerInfo PlayerManager::GetPlayerInfo(int player) const
+{
+	return m_pPlayers[player - 1];
+}
+
+ECharacterColors PlayerManager::GetRandomColor()
+{
+	ECharacterColors color;
+
+	do
+	{
+		color = static_cast<ECharacterColors>(rand() % static_cast<uint8_t>(ECharacterColors::amountOfColors));
+	}
+	while (std::ranges::find_if(m_pPlayers, [color](const PlayerInfo& info) { return info.color == color; }) 
+		!= m_pPlayers.end());
+
+	return color;
 }
