@@ -5,6 +5,7 @@
 //#include <vld.h>
 #endif 
 
+#include <chrono>
 #include <RealEngine.h>
 #include <SceneManager.h>
 #include <ResourceManager.h>
@@ -26,6 +27,8 @@ void load()
 {
 	using namespace real;
 
+	std::srand(static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()));
+
 	LevelGenerator::GetInstance().GenerateLevel();
 
 	auto& input = InputManager::GetInstance();
@@ -46,7 +49,7 @@ void load()
 	SceneManager::GetInstance().CreateScene(new HighScoreMenu(Scenes::high_score_menu, InputMaps::high_score_menu, g_windowSettings));
 	SceneManager::GetInstance().CreateScene(new GameOverMenu(Scenes::game_over_menu, "none", g_windowSettings));
 
-	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay, false));
+	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level2", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level3", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level4", InputMaps::gameplay));
