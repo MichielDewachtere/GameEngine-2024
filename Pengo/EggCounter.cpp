@@ -41,22 +41,28 @@ void EggCounter::HandleEvent(real::SceneEvents event, real::Scene* scene)
 	}
 	else if (event == real::SceneEvents::exit)
 	{
+		for (const auto& go : GetOwner()->GetChildren())
+		{
+			go->Destroy();
+		}
+
 		scene->FindGameObjectsWithTag(Tags::game).front()->GetComponent<EnemyHandler>()->enemySpawned.RemoveObserver(this);
 	}
 }
 
 void EggCounter::HandleEvent()
 {
-	//const auto child = GetOwner()->GetChildren().front();
+	const auto children = GetOwner()->GetChildren();
 
-	for (const auto& c : GetOwner()->GetChildren())
+	for (auto it = children.end() - 1; it != children.begin(); --it)
+	//for (const auto& c : GetOwner()->GetChildren())
 	{
-		if (std::ranges::find(m_AlreadyDestroyed, c->GetId()) != m_AlreadyDestroyed.end())
+		if (std::ranges::find(m_AlreadyDestroyed, (*it)->GetId()) != m_AlreadyDestroyed.end())
 			continue;
 
-		m_AlreadyDestroyed.push_back(c->GetId());
-		c->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2, 0);
-		c->Destroy(1.f);
+		m_AlreadyDestroyed.push_back((*it)->GetId());
+		(*it)->GetComponent<real::SpriteComponent>()->PlayAnimation(0, 2, 0);
+		(*it)->Destroy(1.f);
 		break;
 	}
 }
