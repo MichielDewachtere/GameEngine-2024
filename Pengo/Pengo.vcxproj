@@ -170,8 +170,11 @@
     <ClCompile Include="HighScoreMenu.cpp" />
     <ClCompile Include="IceBreakState.cpp" />
     <ClCompile Include="LeaderBoard.cpp" />
+    <ClCompile Include="MuteCommand.cpp" />
     <ClCompile Include="PlayerEnemyPrefab.cpp" />
     <ClCompile Include="RegisterHighScore.cpp" />
+    <ClCompile Include="RestartCommand.cpp" />
+    <ClCompile Include="SkipLevelCommand.cpp" />
     <ClCompile Include="TextFadeIn.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EggCounter.cpp" />
@@ -230,8 +233,11 @@
     <ClInclude Include="HighScoreMenu.h" />
     <ClInclude Include="IceBreakState.h" />
     <ClInclude Include="LeaderBoard.h" />
+    <ClInclude Include="MuteCommand.h" />
     <ClInclude Include="PlayerEnemyPrefab.h" />
     <ClInclude Include="RegisterHighScore.h" />
+    <ClInclude Include="RestartCommand.h" />
+    <ClInclude Include="SkipLevelCommand.h" />
     <ClInclude Include="TextFadeIn.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EggCounter.h" />
