@@ -21,4 +21,6 @@
 #define FONT_PATH "pengo_arcade.ttf"
 #define FONT_SIZE 48
 
+#define VOLUME 64
+
 #endif // MACROS_H
