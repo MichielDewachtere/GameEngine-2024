@@ -26,7 +26,7 @@ namespace real
 				printf("SDL_mixer could not open audio! SDL_mixer Error: %s\n", Mix_GetError());
 			}
 
-			m_SoundsToPlay.resize(max_pending);
+//			m_SoundsToPlay.resize(max_pending);
 
 			m_PlayingThread = std::jthread(&SDLAudioImpl::PlaySounds, this);
 		}
@@ -143,6 +143,10 @@ namespace real
 					Logger::LogError({ "SDL_mixer could not play sound effect! SDL_mixer Error: {}" }, Mix_GetError());
 					break;
 				}
+
+				m_ChannelVolumesMutex.lock();
+				m_ChannelVolumes[sound.channel] = static_cast<uint8_t>(sound.volume);
+				m_ChannelVolumesMutex.unlock();
 
 				if (m_IsMuted)
 					Mix_Volume(result, 0);
