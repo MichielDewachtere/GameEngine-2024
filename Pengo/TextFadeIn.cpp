@@ -31,7 +31,7 @@ void TextFadeIn::Update()
 		if (m_AccuChar == m_Text.size())
 		{
 			if (GetOwner()->GetChildCount() > 0)
-				GetOwner()->GetChildAt(0)->SetIsActive(true, true);
+				GetOwner()->GetChildAt(0)->SetIsActive(true, false);
 		}
 	}
 }
