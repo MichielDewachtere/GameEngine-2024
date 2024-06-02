@@ -131,6 +131,11 @@ void Move::SetMazePos(const glm::ivec2& newPos)
 	//m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
 }
 
+void Move::StopMoving()
+{
+	m_Move = false;
+}
+
 bool Move::HasReachedPosition() const
 {
 	const auto curPos = GetOwner()->GetTransform()->GetLocalPosition();

@@ -55,6 +55,7 @@ public:
 	const glm::ivec2& GetMazePos() const { return m_MazePosition; }
 	Maze::BlockType GetType() const { return m_Type; }
 
+	void StopMoving();
 	bool IsMoving() const { return m_Move; }
 	void Animate(bool animate) { m_Animate = animate; }
 
