@@ -21,8 +21,6 @@ StartMenu::StartMenu(std::string name, std::string inputMap, real::WindowSetting
 
 void StartMenu::Load()
 {
-	real::Locator::GetAudioSystem().Play(Sounds::game_music);
-
 	real::TransformInfo transformInfo{};
 	transformInfo.position = glm::vec3{ static_cast<float>(m_Settings.width) / 2.f, 150, 0 };
 	transformInfo.scale = glm::vec3{ PIXEL_SCALE };
