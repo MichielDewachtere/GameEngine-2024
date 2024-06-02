@@ -4,10 +4,12 @@
 #include <SpriteComponent.h>
 #include <GameTime.h>
 #include <SceneManager.h>
+#include <ColliderComponent.h>
 
 #include "DiedState.h"
 #include "GameInfo.h"
 #include "HUD.h"
+#include "Locator.h"
 #include "Move.h"
 #include "MoveState.h"
 #include "Player.h"
@@ -21,12 +23,14 @@ StunState::StunState(real::GameObject* pOwner, bool controlledManually)
 
 void StunState::Enter()
 {
-	GetOwner()->GetComponent<real::SpriteComponent>()->Pause(false);
-	GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 7/*, -1, .5f*/);
+	real::Locator::GetAudioSystem().Play(Sounds::sno_bee_stunned);
 
-	//GetOwner()->GetComponent<real::SpriteComponent>()->UpdateAnimation(6, 7);
+	GetOwner()->GetComponent<real::SpriteComponent>()->Pause(false);
+	GetOwner()->GetComponent<real::SpriteComponent>()->PlayAnimation(6, 7);
 
 	m_MazePos = GetOwner()->GetComponent<Move>()->GetMazePos();
+
+	m_pColliderComponent = GetOwner()->GetComponent<real::ColliderComponent>();
 
 	RegisterPlayers();
 }
@@ -43,9 +47,10 @@ IEnemyState* StunState::Update()
 		return returnState;
 	}
 
-	for (const auto & player : m_Players)
+	for (const auto& player : m_Players)
 	{
-		if (player->GetMazePos() == m_MazePos)
+		if (m_pColliderComponent->IsEntirelyOverlapping(*player, { 1,1 }))
+		//if (player->GetMazePos() == m_MazePos)
 		{
 			HUD::GetInstance().AddScore(ScoreEvents::stunKill, player->GetOwner()->GetComponent<Player>()->GetPlayerNumber());
 			return new DiedState(GetOwner());
@@ -67,7 +72,8 @@ void StunState::RegisterPlayers()
 	{
 		std::ranges::for_each(v, [this](real::GameObject* go)
 			{
-				m_Players.push_back(go->GetComponent<Move>());
+				m_Players.push_back(go->GetComponent<real::ColliderComponent>());
+				//m_Players.push_back(go->GetComponent<Move>());
 			});
 	}
 }

@@ -6,6 +6,11 @@
 
 #include "IEnemyState.h"
 
+namespace real
+{
+	class ColliderComponent;
+}
+
 class Move;
 
 class StunState final : public IEnemyState
@@ -28,7 +33,8 @@ private:
 	float m_StunTime{ 5.f }, m_AccuTime{ 0.f };
 
 	glm::ivec2 m_MazePos{};
-	std::vector<Move*> m_Players{};
+	real::ColliderComponent* m_pColliderComponent{ nullptr };
+	std::vector<real::ColliderComponent*> m_Players{};
 
 	void RegisterPlayers();
 };
