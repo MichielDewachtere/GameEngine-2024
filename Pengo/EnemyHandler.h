@@ -49,6 +49,7 @@ private:
 	static inline int m_TotalEnemies{};
 
 	void SpawnSnoBee();
+	static float CalculateSpeed();
 };
 
 #endif // ENEMYHANDLER_H

@@ -20,10 +20,12 @@ EnemyHandler::EnemyHandler(real::GameObject* pOwner, int difficulty)
         spawns = 4;
 
     m_AmountOfEnemiesAtOnce = spawns;
+    m_TotalEnemies = 0;
 }
 
 EnemyHandler::~EnemyHandler()
 {
+    m_TotalEnemies = 0;
     m_pGameComponent->gameEvent.RemoveObserver(this);
 }
 
@@ -116,16 +118,31 @@ void EnemyHandler::RemoveEnemySpawn(real::GameObject* go)
 
 void EnemyHandler::SpawnSnoBee()
 {
-	auto level = GetOwner();
+	const auto level = GetOwner();
 
 	const auto spawn = m_EnemySpawns.back();
-	auto mazePos = spawn->GetOwner()->GetParent()->GetComponent<Move>()->GetMazePos();
-	auto pos = spawn->GetOwner()->GetParent()->GetTransform()->GetLocalPosition();
+	const auto mazePos = spawn->GetOwner()->GetParent()->GetComponent<Move>()->GetMazePos();
+	const auto pos = spawn->GetOwner()->GetParent()->GetTransform()->GetLocalPosition();
 
-	const auto snoBee = std::make_unique<EnemyPrefab>(level, pos, mazePos);
-    snoBee->GetGameObject()->GetComponent<Enemy>()->enemyDied.AddObserver(this);
+    const EnemyPrefab snoBee(level, pos, mazePos, CalculateSpeed());
+    snoBee.GetGameObject()->GetComponent<Enemy>()->enemyDied.AddObserver(this);
 
-    level->GetComponent<Maze>()->SetBlock(mazePos, Maze::BlockType::enemy, snoBee->GetGameObject());
+    level->GetComponent<Maze>()->SetBlock(mazePos, Maze::BlockType::enemy, snoBee.GetGameObject());
 
     enemySpawned.Notify();
+}
+
+float EnemyHandler::CalculateSpeed()
+{
+    float speed = PLAYER_SPEED * 0.75;
+
+    const auto currentLevel = Game::GetCurrentLevel();
+    if (currentLevel >= 13)
+        speed = PLAYER_SPEED * 1.5f;
+    else if (currentLevel >= 9)
+        speed = PLAYER_SPEED * 1.25f;
+    else if (currentLevel >= 2)
+        speed = PLAYER_SPEED;
+
+    return speed;
 }

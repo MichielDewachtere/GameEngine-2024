@@ -13,19 +13,19 @@
 #include "Macros.h"
 #include "Move.h"
 
-EnemyPrefab::EnemyPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos)
+EnemyPrefab::EnemyPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos, float moveSpeed)
 	: Prefab(pOwner)
 {
-	Init(pos, mazePos);
+	Init(pos, mazePos, moveSpeed);
 }
 
-EnemyPrefab::EnemyPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos)
+EnemyPrefab::EnemyPrefab(real::Scene* pScene, const glm::ivec2& pos, const glm::ivec2& mazePos, float moveSpeed)
 	: Prefab(pScene)
 {
-	Init(pos, mazePos);
+	Init(pos, mazePos, moveSpeed);
 }
 
-void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos) const
+void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, float moveSpeed) const
 {
 	const auto fileExtension = GetFileExtensionFromColor(IcePrefab::m_CurrentColor);
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee" + fileExtension);
@@ -50,7 +50,7 @@ void EnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos) const
 	info.drawDebug = true;
 	go->AddComponent<real::ColliderComponent>(info);
 
-	const auto moveComponent = go->AddComponent<Move>(mazePos, Maze::BlockType::enemy, 75.f, true);
+	const auto moveComponent = go->AddComponent<Move>(mazePos, Maze::BlockType::enemy, moveSpeed, true);
 	moveComponent->BindAnimationToDirection(Direction::down, { 8, 9 });
 	moveComponent->BindAnimationToDirection(Direction::left, { 10, 11 });
 	moveComponent->BindAnimationToDirection(Direction::up, { 12, 13 });
