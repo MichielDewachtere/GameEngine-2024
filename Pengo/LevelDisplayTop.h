@@ -26,6 +26,8 @@ public:
 	void HandleEvent(real::SceneEvents, real::Scene*) override;
 	void OnSubjectDestroy() override {}
 
+	void Reset() const;
+
 private:
 	
 };

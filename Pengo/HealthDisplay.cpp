@@ -38,6 +38,19 @@ void HealthDisplay::RemoveLife()
 	childToRemove->Destroy(0.6f);
 }
 
+void HealthDisplay::Reset()
+{
+	m_AmountOfLives = m_InitialAmount;
+
+	for (const auto& c : GetOwner()->GetChildren())
+		c->Destroy();
+
+	for (int i{ 0 }; i < m_AmountOfLives; ++i)
+	{
+		AddLifeTexture(i);
+	}
+}
+
 void HealthDisplay::AddLifeTexture(const int index) const
 {
 	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/pengo_lives_sheet.png");

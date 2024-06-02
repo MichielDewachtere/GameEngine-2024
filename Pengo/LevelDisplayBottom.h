@@ -27,13 +27,13 @@ public:
 	void HandleEvent(real::SceneEvents, real::Scene*) override;
 	void OnSubjectDestroy() override {}
 
+	void Reset() const;
+
 private:
 	real::TextComponent* m_pTextComponent{ nullptr };
 
-	void Reset() const;
 	void InitAct(int id) const;
 	void SetActive(int amount) const;
-
 };
 
 #endif // LEVELDISPLAYBOTTOM_H

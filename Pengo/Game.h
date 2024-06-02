@@ -34,6 +34,8 @@ public:
 
 	real::Subject<GameEvents> gameEvent;
 
+	static void Reset();
+
 	static float GetGameTime() { return m_GameTime; }
 	static int GetCurrentLevel() { return m_CurrentLevel; }
 	static void SetIsPvP(bool isPvP) { m_IsPvP = isPvP; }

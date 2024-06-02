@@ -18,3 +18,9 @@ void ScoreDisplay::AddScore(ScoreEvents event)
 	m_Score += event_to_points.at(event);
 	m_pTextComponent->SetText(std::to_string(m_Score));
 }
+
+void ScoreDisplay::Reset()
+{
+	m_Score = 0;
+	m_pTextComponent->SetText(std::to_string(m_Score));
+}

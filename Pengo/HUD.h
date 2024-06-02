@@ -6,6 +6,8 @@
 
 #include "Observer.h"
 
+class LevelDisplayBottom;
+class LevelDisplayTop;
 class HighScoreDisplay;
 class HealthDisplay;
 
@@ -37,6 +39,8 @@ public:
 	virtual void HandleEvent(real::SceneEvents, real::Scene* pScene) override;
 	virtual void OnSubjectDestroy() override {}
 
+	void Reset() const;
+
 	void AddScore(ScoreEvents event, PlayerNumber p1) const;
 	int GetTotalScore();
 
@@ -53,13 +57,16 @@ private:
 	HighScoreDisplay* m_pHighScoreDisplay{ nullptr };
 	HealthDisplay* m_pHealthDisplay{ nullptr };
 
+	LevelDisplayBottom* m_pLevelDisplayBot{ nullptr };
+	LevelDisplayTop* m_pLevelDisplayTop{ nullptr };
+
 	void InitHud();
 	void InitScoreDisplay(PlayerNumber p);
 	void InitHighScoreDisplay();
 	void InitLivesDisplay();
 	void InitEnemyDisplay() const;
-	void InitLevelDisplayTop() const;
-	void InitLevelDisplayBottom() const;
+	void InitLevelDisplayTop();
+	void InitLevelDisplayBottom();
 };
 
 #endif // HUD_H

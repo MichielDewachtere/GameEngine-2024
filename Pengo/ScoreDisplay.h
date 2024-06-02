@@ -51,6 +51,8 @@ public:
 
 	uint32_t GetScore() const { return m_Score; }
 
+	void Reset();
+
 private:
 	uint32_t m_Score{ 0 };
 	real::TextComponent* m_pTextComponent{ nullptr };

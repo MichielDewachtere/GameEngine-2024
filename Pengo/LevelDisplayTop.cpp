@@ -42,3 +42,9 @@ void LevelDisplayTop::HandleEvent(real::SceneEvents, real::Scene* scene)
 		go.GetTransform()->SetUniformScale(PIXEL_SCALE);
 	}
 }
+
+void LevelDisplayTop::Reset() const
+{
+	for (const auto& go : GetOwner()->GetChildren())
+		go->Destroy();
+}

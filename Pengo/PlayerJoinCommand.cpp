@@ -12,6 +12,7 @@ PlayerJoinCommand::PlayerJoinCommand(int id, int controllerId, real::GameObject*
 	, m_IsPvP(isPvp)
 {
 	m_AmountOfPlayers = amountOfPlayers;
+	m_CurrentPlayer = 0;
 }
 
 void PlayerJoinCommand::Execute()

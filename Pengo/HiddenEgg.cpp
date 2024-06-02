@@ -32,6 +32,7 @@ void HiddenEgg::Update()
 				m_pSpriteComponent->Enable();
 				m_pSpriteComponent->PlayAnimation(0, 2, 3);
 				m_CurrentState = EggBreakSequence::eggFlashAnim;
+				GetOwner()->GetParent()->GetParent()->GetComponent<EnemyHandler>()->RemoveEnemySpawn(GetOwner());
 			}
 			break;
 		}
@@ -49,7 +50,6 @@ void HiddenEgg::Update()
 			if (m_pSpriteComponent->IsAnimationPlaying() == false)
 			{
 				m_CurrentState = EggBreakSequence::destroyEgg;
-				GetOwner()->GetParent()->GetParent()->GetComponent<EnemyHandler>()->RemoveEnemySpawn(GetOwner());
 			}
 			break;
 		}

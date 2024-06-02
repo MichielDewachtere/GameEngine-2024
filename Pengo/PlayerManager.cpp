@@ -8,8 +8,10 @@
 #include "GameObject.h"
 #include "InteractCommand.h"
 #include "MoveCommand.h"
+#include "MuteCommand.h"
 #include "Player.h"
 #include "SceneManager.h"
+#include "SkipLevelCommand.h"
 
 void PlayerManager::Reset()
 {
@@ -18,8 +20,15 @@ void PlayerManager::Reset()
 			p.object = nullptr;
 		});
 
-	const auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
-	v.front()->GetComponent<Game>()->gameEvent.AddObserver(this);
+	
+	if (const auto v = real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag(Tags::game);
+		v.empty() == false)
+		v.front()->GetComponent<Game>()->gameEvent.AddObserver(this);
+	else
+	{
+		m_pPlayers.clear();
+		m_AmountOfPlayers = 0;
+	}
 }
 
 void PlayerManager::HandleEvent(GameEvents event)
@@ -102,6 +111,9 @@ void PlayerManager::SetObjectAndPosition(int player, real::GameObject* pPlayer, 
 		map->AddKeyboardAction<MoveCommand>(InputCommands::move_right, real::KeyState::keyPressed, SDL_SCANCODE_RIGHT, pPlayer, Direction::right);
 
 		map->AddKeyboardAction<InteractCommand>(InputCommands::interact, real::KeyState::keyDown, SDL_SCANCODE_SPACE, pPlayer);
+
+		map->AddKeyboardAction<MuteCommand>(5, real::KeyState::keyUp, SDL_SCANCODE_F3);
+		map->AddKeyboardAction<SkipLevelCommand>(6, real::KeyState::keyUp, SDL_SCANCODE_F1);
 	}
 	else
 	{
@@ -111,6 +123,9 @@ void PlayerManager::SetObjectAndPosition(int player, real::GameObject* pPlayer, 
 		map->AddGamePadAction<MoveCommand>(m_pPlayers[player - 1].controllerId, InputCommands::move_right, real::KeyState::keyPressed, real::GamePad::Button::dPadRight, pPlayer, Direction::right);
 
 		map->AddGamePadAction<InteractCommand>(m_pPlayers[player - 1].controllerId, InputCommands::interact, real::KeyState::keyDown, real::GamePad::Button::buttonDown, pPlayer);
+
+		map->AddGamePadAction<MuteCommand>(m_pPlayers[player - 1].controllerId, 5, real::KeyState::keyUp, real::GamePad::Button::buttonUp);
+		map->AddGamePadAction<SkipLevelCommand>(m_pPlayers[player - 1].controllerId, 6, real::KeyState::keyUp, real::GamePad::Button::start);
 	}
 }
 

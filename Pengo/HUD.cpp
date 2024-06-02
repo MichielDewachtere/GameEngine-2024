@@ -67,6 +67,17 @@ void HUD::HandleEvent(real::SceneEvents event, real::Scene* pScene)
 	}
 }
 
+void HUD::Reset() const
+{
+	m_pScoreDisplayPlayerOne->Reset();
+	m_pScoreDisplayPlayerTwo->Reset();
+
+	m_pHealthDisplay->Reset();
+
+	m_pLevelDisplayBot->Reset();
+	m_pLevelDisplayTop->Reset();
+}
+
 void HUD::AddScore(ScoreEvents event, PlayerNumber p) const
 {
 	if (p == PlayerNumber::playerOne)
@@ -187,14 +198,14 @@ void HUD::InitEnemyDisplay() const
 	enemies.AddComponent<EggCounter>();
 }
 
-void HUD::InitLevelDisplayTop() const
+void HUD::InitLevelDisplayTop()
 {
 	auto& levelDisplay = m_pUniqueHud->CreateGameObject();
 	levelDisplay.GetTransform()->SetLocalPosition((MAZE_WIDTH + 1) * BLOCK_SIZE * PIXEL_SCALE, WALL_WIDTH * PIXEL_SCALE);
-	levelDisplay.AddComponent<LevelDisplayTop>();
+	m_pLevelDisplayTop = levelDisplay.AddComponent<LevelDisplayTop>();
 }
 
-void HUD::InitLevelDisplayBottom() const
+void HUD::InitLevelDisplayBottom()
 {
 	auto& levelDisplay = m_pUniqueHud->CreateGameObject();
 	levelDisplay.GetTransform()->SetLocalPosition(0, ((MAZE_HEIGHT + 2) * BLOCK_SIZE + WALL_WIDTH) * PIXEL_SCALE);
@@ -205,5 +216,5 @@ void HUD::InitLevelDisplayBottom() const
 	info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), FONT_SIZE);
 	info.verticalAlignment = real::VerticalTextAlignment::down;
 	levelDisplay.AddComponent<real::TextComponent>(std::move(info));
-	levelDisplay.AddComponent<LevelDisplayBottom>();
+	m_pLevelDisplayBot = levelDisplay.AddComponent<LevelDisplayBottom>();
 }

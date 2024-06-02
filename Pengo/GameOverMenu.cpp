@@ -3,8 +3,11 @@
 #include <TextureComponent.h>
 #include <ResourceManager.h>
 #include <TextComponent.h>
+#include <InputManager.h>
 
+#include "Colors.h"
 #include "Macros.h"
+#include "RestartCommand.h"
 #include "TextFadeIn.h"
 
 GameOverMenu::GameOverMenu(std::string name, std::string inputMap, real::WindowSettings settings)
@@ -27,8 +30,8 @@ void GameOverMenu::Load()
 		textOne.AddComponent<real::TextComponent>(std::move(info));
 		textOne.AddComponent<TextFadeIn>("thanks for playing.");
 	}
+	auto& textTwo = textOne.CreateGameObject();
 	{
-		auto& textTwo = textOne.CreateGameObject();
 		textTwo.SetIsActive(false, true);
 		textTwo.GetTransform()->SetLocalPosition(0, 50);
 		textTwo.AddComponent<real::TextureComponent>();
@@ -40,4 +43,28 @@ void GameOverMenu::Load()
 		textTwo.AddComponent<real::TextComponent>(std::move(info));
 		textTwo.AddComponent<TextFadeIn>("try once more !");
 	}
+	{
+		auto& restart = textTwo.CreateGameObject();
+		restart.SetIsActive(false, true);
+		restart.GetTransform()->SetLocalPosition(0, 100);
+		restart.AddComponent<real::TextureComponent>();
+
+		real::TextInfo info{};
+		info.text = " ";
+		info.pFont = real::ResourceManager::GetInstance().LoadFont(std::string(FONT_PATH), 32);
+		info.horizontalAlignment = real::HorizontalTextAlignment::center;
+		info.color = real::Colors::dark_grey;
+		restart.AddComponent<real::TextComponent>(std::move(info));
+		restart.AddComponent<TextFadeIn>("- press space/a to restart -");
+	}
+
+	auto& input = real::InputManager::GetInstance();
+	auto map = input.GetActiveInputMap();
+	map->AddKeyboardAction<RestartCommand>(1, real::KeyState::keyUp, SDL_SCANCODE_SPACE);
+
+	for (const auto& gamePads : input.GetGamePads())
+	{
+		map->AddGamePadAction<RestartCommand>(gamePads->GetIndex(), 0, real::KeyState::keyUp, real::GamePad::Button::buttonDown);
+	}
+
 }

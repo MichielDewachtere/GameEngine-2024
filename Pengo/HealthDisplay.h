@@ -19,8 +19,10 @@ public:
 	void AddLife();
 	void RemoveLife();
 
+	void Reset();
+
 private:
-	int8_t m_AmountOfLives{ 2 };
+	int8_t m_InitialAmount{ 4 }, m_AmountOfLives{ m_InitialAmount };
 
 	void AddLifeTexture(int index) const;
 };
