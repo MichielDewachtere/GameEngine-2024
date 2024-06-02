@@ -100,6 +100,17 @@ real::InputMap* real::InputManager::GetActiveInputMap() const
 	return m_pActiveInputMap;
 }
 
+std::vector<real::InputMap*> real::InputManager::GetAllInputMaps() const
+{
+	std::vector<InputMap*> v;
+	v.reserve(m_pInputMaps.size());
+
+	std::ranges::transform(m_pInputMaps, std::back_inserter(v),
+	                       [](const auto& pair) { return pair.second.get(); });
+
+	return v;
+}
+
 uint8_t real::InputManager::RegisterGamePad()
 {
 	if (const auto controllers = RegisterGamePadsHelper(true); 

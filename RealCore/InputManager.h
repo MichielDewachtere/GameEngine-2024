@@ -29,6 +29,7 @@ namespace real
 		void SetInputMapActive(const std::string& name);
 		InputMap* GetInputMap(const std::string& name) const;
 		InputMap* GetActiveInputMap() const;
+		std::vector<InputMap*> GetAllInputMaps() const;
 
 		uint8_t RegisterGamePad();
 		std::vector<uint8_t> RegisterGamePads();
