@@ -9,6 +9,7 @@
 #include "GameInfo.h"
 #include "GameUtil.h"
 #include "IceBreakState.h"
+#include "Locator.h"
 #include "Move.h"
 #include "Player.h"
 #include "PlayerManager.h"
@@ -45,7 +46,12 @@ IEnemyState* MoveState::Update()
 	}
 
 	if (Game::GetGameTime() > 30)
+	{
+		real::Locator::GetAudioSystem().Stop(Sounds::popcorn_fast.channel);
+		real::Locator::GetAudioSystem().Play(Sounds::popcorn_fast);
+
 		return new IceBreakState(GetOwner());
+	}
 
 	return nullptr;
 }

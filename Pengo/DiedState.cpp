@@ -4,6 +4,8 @@
 
 #include "Enemy.h"
 #include "Game.h"
+#include "GameInfo.h"
+#include "Locator.h"
 #include "Move.h"
 #include "Maze.h"
 
@@ -14,6 +16,8 @@ DiedState::DiedState(real::GameObject* pOwner)
 
 void DiedState::Enter()
 {
+	real::Locator::GetAudioSystem().Play(Sounds::sno_bee_killed);
+
 	if (const auto enemyComp = GetOwner()->GetComponent<Enemy>())
 		enemyComp->enemyDied.Notify();
 	else

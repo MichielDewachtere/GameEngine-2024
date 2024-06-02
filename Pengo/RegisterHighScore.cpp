@@ -12,6 +12,7 @@
 #include "HandleNameCommand.h"
 #include "HUD.h"
 #include "LeaderBoard.h"
+#include "Locator.h"
 #include "PlayerManager.h"
 
 RegisterHighScore::RegisterHighScore(real::GameObject* pOwner)
@@ -21,6 +22,9 @@ RegisterHighScore::RegisterHighScore(real::GameObject* pOwner)
 
 void RegisterHighScore::Start()
 {
+    real::Locator::GetAudioSystem().Stop(Sounds::name_entry.channel);
+    real::Locator::GetAudioSystem().Play(Sounds::name_entry);
+
 	LeaderBoard::WriteCategories(GetOwner(), 50, real::Colors::green);
     WriteData();
 }

@@ -6,9 +6,11 @@
 #include <GameObject.h>
 #include <SpriteComponent.h>
 
+#include "GameInfo.h"
 #include "GameUtil.h"
 #include "HUD.h"
 #include "IceBlock.h"
+#include "Locator.h"
 #include "Maze.h"
 #include "Move.h"
 #include "Player.h"
@@ -63,6 +65,7 @@ void Interact::AttemptInteraction()
 			}
 			else if (m_pPlayer->IsEnemy() == false)
 			{
+				real::Locator::GetAudioSystem().Play(Sounds::push_ice);
 				object->GetComponent<Pushable>()->Push(direction, m_pPlayer->GetPlayerNumber());
 			}
 		}
@@ -71,6 +74,8 @@ void Interact::AttemptInteraction()
 	}
 	else if (blockType == Maze::BlockType::wall && m_pPlayer->IsEnemy() == false)
 	{
+		real::Locator::GetAudioSystem().Play(Sounds::push_wall);
+
 		switch (direction)
 		{
 		case Direction::up:

@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <Audio.h>
 
+#include "Macros.h"
+
 struct Tags
 {
 	inline static const std::string pengo = "Player";
@@ -54,10 +56,52 @@ struct InputCommands
 
 struct Sounds
 {
-	inline static const real::Sound test = { 1, 128, 0, -1,
-		"../data/audio/block_stopped.mp3" };
-	inline static const real::Sound game_music = { 1, 32, -1, 1,
-		"../data/audio/popcorn.mp3" };
+	inline static const real::Sound act_clear = { 1, VOLUME, 0, 1,
+	"../data/audio/act_clear.mp3" };
+	inline static const real::Sound act_start = { 1, VOLUME, 0, 1,
+	"../data/audio/act_start.mp3" };
+	inline static const real::Sound block_stopped = { 1, VOLUME, 0, -1,
+	"../data/audio/block_stopped.mp3" };
+	inline static const real::Sound counting_bonus_points = { 1, VOLUME, 0, -1,
+	"../data/audio/counting_bonus_points.mp3" };
+	inline static const real::Sound credit_sound = { 1, VOLUME, 0, -1,
+	"../data/audio/credit_sound.mp3" };
+	inline static const real::Sound diamond_block_bonus = { 1, VOLUME, 0, -1,
+	"../data/audio/diamond_block_bonus.mp3" };
+	inline static const real::Sound drawing_maze = { 1, VOLUME, 0, -1,
+	"../data/audio/drawing_maze.mp3" };
+	inline static const real::Sound egg_destroyed = { 1, VOLUME, 0, -1,
+	"../data/audio/egg_destroyed.mp3" };
+	inline static const real::Sound ice_destroyed = { 1, VOLUME, 0, -1,
+	"../data/audio/ice_destroyed.mp3" };
+	inline static const real::Sound intermission = { 1, VOLUME, 0, -1,
+	"../data/audio/intermission.mp3" };
+	inline static const real::Sound killed = { 1, VOLUME, 0, 1,
+	"../data/audio/killed.mp3" };
+	inline static const real::Sound last_sno_bee = { 1, VOLUME, 0, -1,
+	"../data/audio/last_sno_bee.mp3" };
+	inline static const real::Sound miss = { 1, VOLUME, 0, -1,
+	"../data/audio/miss.mp3" };
+	inline static const real::Sound name_entry = { 1, VOLUME, -1, 1,
+	"../data/audio/name_entry.mp3" };
+	inline static const real::Sound popcorn = { 1, VOLUME, -1, 1,
+	"../data/audio/popcorn.mp3" };
+	inline static const real::Sound popcorn_fast = { 1, VOLUME, -1, 1,
+	"../data/audio/popcorn_fast.mp3" };
+	inline static const real::Sound popcorn_faster = { 1, VOLUME, -1, 1,
+	"../data/audio/popcorn_faster.mp3" };
+	inline static const real::Sound push_ice = { 1, VOLUME, 0, -1,
+	"../data/audio/push_ice.mp3" };
+	inline static const real::Sound push_wall = { 1, VOLUME, 0, -1,
+	"../data/audio/push_wall.mp3" };
+	inline static const real::Sound sno_bee_killed = { 1, VOLUME, 0, -1,
+	"../data/audio/sno_bee_killed.mp3" };
+	inline static const real::Sound sno_bee_spawned = { 1, VOLUME, 0, -1,
+	"../data/audio/sno_bee_spawned.mp3" };
+	inline static const real::Sound sno_bee_stunned = { 1, VOLUME, 0, -1,
+	"../data/audio/sno_bee_stunned.mp3" };
+	inline static const real::Sound time_bonus_extension = { 1, VOLUME, 0, -1,
+	"../data/audio/time_bonus_extension.mp3" };
 };
 
 #endif // GAMEINFO_H

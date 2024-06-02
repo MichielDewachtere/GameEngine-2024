@@ -6,8 +6,10 @@
 #include "Enemy.h"
 #include "EnemyPlayer.h"
 #include "Game.h"
+#include "GameInfo.h"
 #include "GameUtil.h"
 #include "HUD.h"
+#include "Locator.h"
 #include "Move.h"
 #include "Maze.h"
 #include "ScoreDisplay.h"
@@ -37,9 +39,18 @@ void Pushable::Update()
 	if (m_Pushed)
 	{
 		if (m_pMoveComponent->IsMoving() == false)
-			m_Pushed = false;
+		{
+			if (m_pMoveComponent->GetType() == Maze::BlockType::ice
+				|| m_pMoveComponent->GetType() == Maze::BlockType::egg
+				|| m_pMoveComponent->GetType() == Maze::BlockType::star)
+				real::Locator::GetAudioSystem().Play(Sounds::block_stopped);
 
-		if (m_pMoveComponent->GetType() != Maze::BlockType::ice)
+			m_Pushed = false;
+		}
+
+		if (m_pMoveComponent->GetType() != Maze::BlockType::ice
+			&& m_pMoveComponent->GetType() != Maze::BlockType::egg
+			&& m_pMoveComponent->GetType() != Maze::BlockType::star)
 		return;
 
 		LookForEnemies();

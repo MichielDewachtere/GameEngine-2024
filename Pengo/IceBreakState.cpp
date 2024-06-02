@@ -9,6 +9,8 @@
 #include "GameUtil.h"
 #include "IceBlock.h"
 #include "FleeState.h"
+#include "GameInfo.h"
+#include "Locator.h"
 
 IceBreakState::IceBreakState(real::GameObject* pOwner)
 	: MoveState(pOwner, false)
@@ -35,7 +37,12 @@ IEnemyState* IceBreakState::Update()
 	}
 
 	if (Game::GetGameTime() > 60 && EnemyHandler::GetAmountOfEnemies() == 1)
+	{
+		real::Locator::GetAudioSystem().Stop(Sounds::popcorn_faster.channel);
+		real::Locator::GetAudioSystem().Play(Sounds::popcorn_faster);
+
 		return new FleeState(GetOwner());
+	}
 
 	return nullptr;
 }

@@ -5,9 +5,11 @@
 
 #include "EnemyHandler.h"
 #include "Game.h"
+#include "GameInfo.h"
 #include "GameUtil.h"
 #include "HiddenEgg.h"
 #include "HUD.h"
+#include "Locator.h"
 #include "Move.h"
 #include "ScoreDisplay.h"
 
@@ -80,6 +82,8 @@ void IceBlock::Break(PlayerNumber breakedBy)
 {
 	if (m_Break)
 		return;
+
+	real::Locator::GetAudioSystem().Play(Sounds::ice_destroyed);
 
 	const auto maze = GetOwner()->GetParent()->GetComponent<Maze>();
 	const auto move = GetOwner()->GetComponent<Move>();

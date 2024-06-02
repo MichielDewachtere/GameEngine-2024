@@ -16,6 +16,7 @@
 #include "Renderer.h"
 #include "SceneManager.h"
 #include "HighScoreDisplay.h"
+#include "Locator.h"
 
 Game::Game(real::GameObject* pOwner)
 	: DrawableComponent(pOwner)
@@ -42,6 +43,7 @@ Game::Game(real::GameObject* pOwner)
 
 void Game::Start()
 {
+	real::Locator::GetAudioSystem().Play(Sounds::act_start);
 }
 
 void Game::Update()
@@ -58,6 +60,7 @@ void Game::Update()
 
 		if (m_AccuTime > m_StartTime)
 		{
+			real::Locator::GetAudioSystem().Play(Sounds::popcorn);
 			HUD::GetInstance().RemoveLife();
 			gameEvent.Notify(GameEvents::started);
 			m_CurrentState = GameState::running;
@@ -76,6 +79,9 @@ void Game::Update()
 
 		if (m_AccuTime > m_PauseTime + m_PauseCurtainTime)
 		{
+			real::Locator::GetAudioSystem().Stop(Sounds::popcorn.channel);
+			real::Locator::GetAudioSystem().Play(Sounds::popcorn);
+
 			m_pPauseText->SetIsActive(false, true);
 			m_CurrentState = GameState::resume;
 			m_AccuTime = 0;
@@ -176,12 +182,18 @@ void Game::EndAct(bool won)
 
 	if (won)
 	{
+		real::Locator::GetAudioSystem().Stop(Sounds::act_clear.channel);
+		real::Locator::GetAudioSystem().Play(Sounds::act_clear);
+
 		HUD::GetInstance().AddLife();
 		m_CurrentState = GameState::actFinished;
 		gameEvent.Notify(GameEvents::finished);
 	}
 	else
 	{
+		real::Locator::GetAudioSystem().Stop(Sounds::killed.channel);
+		real::Locator::GetAudioSystem().Play(Sounds::killed);
+
 		gameEvent.Notify(GameEvents::paused);
 		m_CurrentState = GameState::paused;
 		HUD::GetInstance().RemoveLife();
@@ -194,6 +206,13 @@ void Game::EndGame()
 {
 	m_CurrentState = GameState::gameFinished;
 	std::cout << "Game Ended\n";
+}
+
+void Game::Reset()
+{
+	m_IsPvP = false;
+	m_CurrentLevel = 0;
+	m_GameTime = 0;
 }
 
 void Game::DrawCurtain(bool open, float curtainTime) const

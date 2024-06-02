@@ -26,6 +26,4 @@ void HandleNameCommand::Execute()
 	}
 	else
 		m_pEnterNameComponent->ChangeCharacter(m_Up);
-
-	real::Locator::GetAudioSystem().Play(Sounds::test);
 }
