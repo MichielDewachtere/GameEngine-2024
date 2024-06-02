@@ -136,6 +136,8 @@ void Enemy::HandleEvent(WallOrientation orientation)
 	if (m_OrientationToPos[orientation].x == mazePos.x
 		|| m_OrientationToPos[orientation].y == mazePos.y)
 	{
+		m_pMoveComponent->StopMoving();
+
 		m_CurrentState->Exit();
 		m_CurrentState.reset(new StunState(GetOwner()));
 		m_CurrentState->Enter();
