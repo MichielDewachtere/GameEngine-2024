@@ -223,7 +223,9 @@ void LeaderBoard::LoadLeaderBoard(const bool singlePlayer)
             data.name = token;
             getline(ss, token, ':');
             data.score = std::stoi(token);
-            data.act = Game::GetCurrentLevel();
+            getline(ss, token, ':');
+            data.act = std::stoi(token);
+            //data.act = Game::GetCurrentLevel();
 
             m_LeaderBoard[data.place - 1] = data;
         }
@@ -279,6 +281,9 @@ void LeaderBoard::SaveLeaderBoard(bool singlePlayer)
 
         getline(ss, token, ':');
         newFile += ':' + std::to_string(data.score);
+
+        getline(ss, token, ':');
+        newFile += ':' + std::to_string(data.act);
 
 		newFile += '\n';
     }
