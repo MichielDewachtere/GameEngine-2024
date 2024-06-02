@@ -18,6 +18,6 @@ A class can have a subject as a public variable of a custom type. This subject c
 
 ## Other Patterns Used
 
-The Dirty Flag Pattern is also used in certain cases. This is mostly used to prevent the update function from executing when nothing has changed. The flag is set to true when something relevant has changed, enabling the update function to operate again.
+The `Dirty Flag` Pattern is also used in certain cases. This is mostly used to prevent the update function from executing when nothing has changed. The flag is set to true when something relevant has changed, enabling the update function to operate again.
 
-The Service Locator Pattern is a safe and more flexible alternative to the Singleton Pattern. RealEngine applies this pattern only to the audio system for now. The locator has a pointer to the active audio system, and when something happens or crashes, it always returns a pointer to the null service, which doesn't do anything but prevents the game from crashing. This pattern also makes it easy for the user to add their own audio system if they want to use a different library, for example. It can easily be added to the locator and set as active.
+The `Service Locator` Pattern is a safe and more flexible alternative to the Singleton Pattern. RealEngine applies this pattern only to the audio system for now. The locator has a pointer to the active audio system, and when something happens or crashes, it always returns a pointer to the null service, which doesn't do anything but prevents the game from crashing. This pattern also makes it easy for the user to add their own audio system if they want to use a different library, for example. It can easily be added to the locator and set as active.
