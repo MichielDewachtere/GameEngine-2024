@@ -7,9 +7,11 @@
 #include <SpriteComponent.h>
 
 #include "EnemyPlayer.h"
+#include "GameUtil.h"
 #include "Macros.h"
 #include "Move.h"
 #include "Interact.h"
+#include "PlayerManager.h"
 #include "Pushable.h"
 
 PlayerEnemyPrefab::PlayerEnemyPrefab(real::GameObject* pOwner, const glm::ivec2& pos, const glm::ivec2& mazePos,
@@ -28,7 +30,10 @@ PlayerEnemyPrefab::PlayerEnemyPrefab(real::Scene* pScene, const glm::ivec2& pos,
 
 void PlayerEnemyPrefab::Init(const glm::ivec2& pos, const glm::ivec2& mazePos, PlayerNumber player) const
 {
-	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee_green.png");
+	const auto playerColor = PlayerManager::GetInstance().GetPlayerInfo(static_cast<int>(player) + 1).color;
+
+	const auto fileExtension = GetFileExtensionFromColor(playerColor);
+	auto texture = real::ResourceManager::GetInstance().LoadTexture("textures/sno-bee/sno-bee" + fileExtension);
 
 	const auto go = GetGameObject();
 	go->SetTag("Enemy");
