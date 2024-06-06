@@ -49,7 +49,7 @@ void real::ColliderComponent::DebugRender()
 
 bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) const
 {
-	if (GetOwner()->IsActive() == false || IsActive() == false)
+	if (GetOwner() && (GetOwner()->IsActive() == false || IsActive() == false))
 		return false;
 
 	const auto otherSize = other.GetSize();
@@ -75,7 +75,7 @@ bool real::ColliderComponent::IsOverlapping(const ColliderComponent& other) cons
 
 bool real::ColliderComponent::IsEntirelyOverlapping(const ColliderComponent& other, const glm::vec2& offset) const
 {
-	if (GetOwner()->IsActive() == false)
+	if (GetOwner() && (GetOwner()->IsActive() == false || IsActive() == false))
 		return false;
 
 	const auto otherSize = other.GetSize();
@@ -89,7 +89,12 @@ bool real::ColliderComponent::IsEntirelyOverlapping(const ColliderComponent& oth
 	size.x += offset.x;
 	size.y += offset.y;
 
-
+	//if (pos.x < otherPos.x ||
+	//	pos.x + size.x > otherPos.x + otherSize.x ||
+	//	pos.y < otherPos.y ||
+	//	pos.y + size.y > otherPos.y + otherSize.y)
+	//	return false;
+	//
 	if (static_cast<int>(pos.x) >= static_cast<int>(otherPos.x)
 		|| static_cast<int>(pos.x + size.x) <= static_cast<int>(otherPos.x + otherSize.x)
 		// Y(0,0) IS ON THE TOP RIGHT OF THE SCREEN

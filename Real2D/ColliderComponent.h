@@ -40,7 +40,7 @@ namespace real
 		bool IsOverlapping(const ColliderComponent& other) const;
 		bool IsEntirelyOverlapping(const ColliderComponent& other, const glm::vec2& = glm::vec2{ 0,0 }) const;
 
-		const glm::vec2& GetSize() const { return m_Size; }
+		glm::vec2 GetSize() const { return m_Size * m_Scale; }
 		const glm::vec2& GetPosition() const { return m_Position; }
 
 		void EnableDrawDebug(bool enable) { m_DrawDebug = enable; }
