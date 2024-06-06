@@ -54,7 +54,6 @@ public:
 
 	void Reset();
 
-	// TODO: link to subject
 	void HandleEvent(GameEvents) override;
 	void OnSubjectDestroy() override;
 
