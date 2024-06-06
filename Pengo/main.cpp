@@ -49,7 +49,7 @@ void load()
 	SceneManager::GetInstance().CreateScene(new HighScoreMenu(Scenes::high_score_menu, InputMaps::high_score_menu, g_windowSettings));
 	SceneManager::GetInstance().CreateScene(new GameOverMenu(Scenes::game_over_menu, "none", g_windowSettings));
 
-	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay, false));
+	SceneManager::GetInstance().CreateScene(new Level("level1", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level2", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level3", InputMaps::gameplay));
 	SceneManager::GetInstance().CreateScene(new Level("level4", InputMaps::gameplay));
@@ -77,18 +77,19 @@ int main(int, char* [])
 	g_windowSettings.width = WINDOW_WIDTH;
 	g_windowSettings.height = WINDOW_HEIGHT;
 
+#ifndef NDEBUG
 	real::RealEngine engine(g_windowSettings);
 	engine.Run(load);
-
-	//try
-	//{
-	//	real::RealEngine engine(g_windowSettings);
-	//	engine.Run(load);
-	//}
-	//catch (std::exception& e)
-	//{
-	//	std::cout << e.what();
-	//}
-
+#else
+	try
+	{
+		real::RealEngine engine(g_windowSettings);
+		engine.Run(load);
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what();
+	}
+#endif
 	return 0;
 }
