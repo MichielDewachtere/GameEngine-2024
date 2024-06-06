@@ -18,7 +18,10 @@ void TextFadeIn::Start()
 void TextFadeIn::Update()
 {
 	if (m_AccuChar == m_Text.size())
-		return; // TODO: This component can be removed
+	{
+		Destroy();
+		return;
+	}
 
 	constexpr float displayTime = 0.5f;
 	m_AccuTime += real::GameTime::GetInstance().GetElapsed();
