@@ -8,6 +8,7 @@
 #include <GameObject.h>
 #include <Logger.h>
 
+#include "Game.h"
 #include "PlayerManager.h"
 
 HighScoreDisplay::HighScoreDisplay(real::GameObject* pOwner)
@@ -55,7 +56,7 @@ int HighScoreDisplay::LoadHighScore(const bool singlePlayer) const
 
             // Tokenize the line using ':' as delimiter
             getline(ss, token, ':'); // Get the first token
-            if (token != (singlePlayer ? "1" : "2"))
+            if (token != (singlePlayer ? "1" : Game::GetIsPvP() ? "3" : "2"))
                 continue;
 
             // Tokenize the line using ':' as delimiter

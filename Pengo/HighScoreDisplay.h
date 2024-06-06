@@ -29,7 +29,7 @@ private:
 	static inline int m_HighScore{ 0 }, m_TopFiveScore{ 0 };
 	real::TextComponent* m_pTextComponent{ nullptr };
 
-	int LoadHighScore(bool singlePlayer) const;
+	int LoadHighScore(const bool singlePlayer) const;
 };
 
 #endif // HIGHSCOREDISPLAY_H

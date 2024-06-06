@@ -40,11 +40,11 @@ void BonusTime::Update()
 			if (gameTime >= time.first && gameTime <= time.second)
 			{
 				GetOwner()->GetChildAt(bonusIdx)->GetComponent<real::TextComponent>()->SetColor(real::Colors::yellow);
-				if (PlayerManager::GetInstance().GetAmountOfPlayers() <= 1 
-					|| PlayerManager::GetInstance().GetPlayers().back().isEnemy)
-					HUD::GetInstance().AddScore(bonus, PlayerNumber::playerOne);
-				else if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2)
+
+				HUD::GetInstance().AddScore(bonus, PlayerNumber::playerOne);
+				if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2 && Game::GetIsPvP() == false)
 					HUD::GetInstance().AddScore(bonus, PlayerNumber::playerTwo);
+
 				break;
 			}
 		}

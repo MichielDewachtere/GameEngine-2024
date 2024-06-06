@@ -6,6 +6,8 @@
 #include <Observer.h>
 #include <glm/vec2.hpp>
 
+enum class ScoreEvents : char;
+
 namespace real
 {
 	class SpriteComponent;
@@ -54,6 +56,7 @@ private:
 	bool IsAdjacent(const glm::ivec2& pos1, const glm::ivec2& pos2);
 	bool IsTouchingWall(const glm::ivec2& pos) const;
 	void RemoveObserver();
+	static void AddScore(ScoreEvents score);
 };
 
 #endif // STARBLOCK_H

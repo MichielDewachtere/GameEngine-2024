@@ -4,6 +4,7 @@
 #include <ranges>
 #include <SpriteComponent.h>
 
+#include "Enemy.h"
 #include "Game.h"
 #include "HUD.h"
 #include "Macros.h"
@@ -11,6 +12,8 @@
 #include "Player.h"
 #include "PlayerManager.h"
 #include "ScoreDisplay.h"
+#include "Pushable.h"
+#include "SceneManager.h"
 
 StarBlockManager::StarBlockManager(real::GameObject* pOwner)
 	: Component(pOwner)
@@ -42,8 +45,7 @@ void StarBlockManager::Update()
 
 		if (animationFinished)
 		{
-			// TODO:
-			//GetOwner()->RemoveComponent<StarBlockManager>();
+			GetOwner()->RemoveComponent<StarBlockManager>();
 		}
 	}
 }
@@ -103,24 +105,22 @@ void StarBlockManager::CheckAdjacentBlocks()
 	else if (m_AdjacentBlocks == 2)
 	{
 		if (m_IsTouchingWall)
-		{
-			if (PlayerManager::GetInstance().GetAmountOfPlayers() <= 1)
-				HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerOne);
-			else if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2)
-				HUD::GetInstance().AddScore(ScoreEvents::starBlockWall, PlayerNumber::playerTwo);
-		}
+			AddScore(ScoreEvents::starBlockWall);
 		else
-		{
-			if (PlayerManager::GetInstance().GetAmountOfPlayers() <= 1)
-				HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerOne);
-			else if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2)
-				HUD::GetInstance().AddScore(ScoreEvents::starBlock, PlayerNumber::playerTwo);
-		}
+			AddScore(ScoreEvents::starBlock);
 
 		for (const auto& block : m_pStarBlocks | std::views::keys)
 		{
 			const auto spriteComponent = block->GetComponent<real::SpriteComponent>();
 			spriteComponent->PlayAnimation(9, 17, 2);
+
+			block->RemoveComponent<Pushable>();
+		}
+
+		for (const auto& go : real::SceneManager::GetInstance().GetActiveScene().FindGameObjectsWithTag("Enemy"))
+		{
+			if (const auto pEnemy = go->GetComponent<Enemy>())
+				pEnemy->Stun();
 		}
 
 		m_BonusAdded = true;
@@ -180,4 +180,14 @@ void StarBlockManager::RemoveObserver()
 			move->moved.RemoveObserver(this);
 		}
 	}
+}
+
+void StarBlockManager::AddScore(ScoreEvents score)
+{
+	HUD::GetInstance().AddScore(score, PlayerNumber::playerOne);
+	if (PlayerManager::GetInstance().GetAmountOfPlayers() == 2 && Game::GetIsPvP() == false)
+	{
+		HUD::GetInstance().AddScore(score, PlayerNumber::playerTwo);
+	}
+
 }

@@ -57,7 +57,7 @@ private:
 
 	void LoadLeaderBoard(bool singlePlayer);
 	void InsertPlayerScore(int score);
-	void SaveLeaderBoard(bool singlePlayer);
+	void SaveLeaderBoard(bool singlePlayer) const;
 
 	void WriteData(const Data& data);
 

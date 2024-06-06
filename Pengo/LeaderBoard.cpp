@@ -27,7 +27,7 @@ LeaderBoard::~LeaderBoard() = default;
 void LeaderBoard::Start()
 {
 	const auto i = PlayerManager::GetInstance().GetAmountOfPlayers();
-	LoadLeaderBoard(i < 2 ? true : false);
+    LoadLeaderBoard(i < 2 ? true : false);
     InsertPlayerScore(HUD::GetInstance().GetTotalScore());
 
     WriteCategories(GetOwner(), 50, real::Colors::pink);
@@ -213,7 +213,7 @@ void LeaderBoard::LoadLeaderBoard(const bool singlePlayer)
 
             // Tokenize the line using ':' as delimiter
             getline(ss, token, ':'); // Get the first token
-            if (token != (singlePlayer ? "1" : "2"))
+            if (token != (singlePlayer ? "1" : Game::GetIsPvP() ? "3" : "2"))
                 continue;
 
             Data data;
@@ -249,9 +249,8 @@ void LeaderBoard::InsertPlayerScore(int score)
         m_LeaderBoard[i].place = i + 1;
 }
 
-void LeaderBoard::SaveLeaderBoard(bool singlePlayer)
+void LeaderBoard::SaveLeaderBoard(bool singlePlayer) const
 {
-    std::cout << m_File << '\n';
 	std::istringstream file(m_File);
     std::string line, newFile;
 
@@ -292,6 +291,4 @@ void LeaderBoard::SaveLeaderBoard(bool singlePlayer)
     std::ofstream outFile("../data/high_scores.txt");
     if (outFile.is_open())
         outFile << newFile;
-
-    std::cout << newFile << '\n';
 }
