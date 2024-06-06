@@ -44,6 +44,7 @@ public:
 	virtual void OnSubjectDestroy() override {}
 
 	void Push(Direction direction);
+	void Stun();
 
 	real::Subject<> enemyDied;
 

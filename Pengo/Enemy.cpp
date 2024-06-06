@@ -128,25 +128,30 @@ void Enemy::HandleEvent(GameEvents event)
 
 void Enemy::HandleEvent(WallOrientation orientation)
 {
-	if (dynamic_cast<StunState*>(m_CurrentState.get()) != nullptr)
-		return;
-
 	const auto mazePos = m_pMoveComponent->GetMazePos();
 
 	if (m_OrientationToPos[orientation].x == mazePos.x
 		|| m_OrientationToPos[orientation].y == mazePos.y)
 	{
-		m_pMoveComponent->StopMoving();
-
-		m_CurrentState->Exit();
-		m_CurrentState.reset(new StunState(GetOwner()));
-		m_CurrentState->Enter();
+		Stun();
 	}
 }
 
 void Enemy::Push(Direction direction)
 {
 	PushHelper(m_CurrentState, *m_pMoveComponent, direction);
+}
+
+void Enemy::Stun()
+{
+	if (dynamic_cast<StunState*>(m_CurrentState.get()) != nullptr)
+		return;
+
+	m_pMoveComponent->StopMoving();
+
+	m_CurrentState->Exit();
+	m_CurrentState.reset(new StunState(GetOwner()));
+	m_CurrentState->Enter();
 }
 
 void Enemy::WallObservers(Observer<WallOrientation>* observer, Maze* maze, const bool remove)
