@@ -142,7 +142,6 @@ namespace real
 		static inline uint32_t m_IdCounter = 0;
 	};
 
-	// TODO: use concepts or smthn, so i dont have to check if it is a concept in code
 	template <component_type T, typename ... Args>
 	T* GameObject::AddComponent(Args... args)
 	{
@@ -218,7 +217,6 @@ namespace real
 	}
 
 	template <component_type T>
-	// TODO: Improve this, use mark for destroy on commands
 	bool GameObject::RemoveComponent()
 	{
 		if (IsTransform<T>())
@@ -234,7 +232,7 @@ namespace real
 
 		if (it != m_pComponents.end())
 		{
-			std::erase(m_pComponents, it);
+			(*it)->Destroy();
 			return true;
 		}
 

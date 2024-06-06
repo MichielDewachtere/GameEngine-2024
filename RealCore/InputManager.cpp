@@ -165,7 +165,6 @@ void real::InputManager::RemoveGameObjectCommands(const GameObject* pGo)
 
 void real::InputManager::UpdateKeyboardStates()
 {
-	// TODO: Faster than SDL_PollEvent??
 	std::ranges::copy(m_pCurrentKeyboardState, m_pOldKeyboardState.begin());
 	const Uint8* currentState = SDL_GetKeyboardState(nullptr);
 	std::copy(currentState, currentState + SDL_NUM_SCANCODES, m_pCurrentKeyboardState.begin());

@@ -12,7 +12,6 @@ namespace real
 		load = 1
 	};
 
-	// TODO: Add scene switch events
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
