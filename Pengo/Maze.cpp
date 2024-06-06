@@ -155,29 +155,7 @@ void Maze::MoveObject(const glm::ivec2& from, const glm::ivec2& to, BlockType ty
         return;
     }
 
-    //auto [fromBlockType, fromObjects] = m_Maze[from.x][from.y];
     auto [toBlockType, toObjects] = m_Maze[to.x][to.y];
-
- //   // TODO: Fix this for enemy crushing
- //   if ((type != BlockType::enemy && type != BlockType::player) 
- //       && toBlockType != type/* && toBlockType != BlockType::air*/)
-	//{
-	//	if (toBlockType != type)
-	//	{
-	//		//m_Maze[to.x][to.y].first = type;
-	//		m_Maze[to.x][to.y].second.clear();
-	//		//m_Maze[to.x][to.y].second.push_back(go);
-	//	}
-	//}
-
-    //if (toBlockType != type && toBlockType != BlockType::ice && type != BlockType::enemy)
-    //{
-    //    m_Maze[to.x][to.y].second.clear();
-    //}
-    //else if (toBlockType != type && toBlockType == BlockType::enemy && type == BlockType::ice)
-    //{
-    //    m_Maze[to.x][to.y].second.clear();
-    //}
 
     const auto it = std::ranges::find(m_Maze[from.x][from.y].second, go);
     if (it != m_Maze[from.x][from.y].second.end())
@@ -338,6 +316,14 @@ glm::ivec2 Maze::LocalToMaze(const glm::ivec2& localPos)
         (localPos.x - WALL_WIDTH * PIXEL_SCALE) / (BLOCK_SIZE * PIXEL_SCALE),
         (localPos.y - WALL_WIDTH * PIXEL_SCALE) / (BLOCK_SIZE * PIXEL_SCALE)
     };
+}
+
+bool Maze::IsOutOfMaze(const glm::ivec2& pos)
+{
+    if (pos.x < 0 || pos.x > MAZE_WIDTH - 1 || pos.y < 0 || pos.y > MAZE_HEIGHT - 1)
+        return false;
+
+    return true;
 }
 
 std::pair<bool, WallOrientation> Maze::IsWall(const glm::ivec2& pos)

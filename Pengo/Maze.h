@@ -64,6 +64,7 @@ public:
 
 	static glm::ivec2 MazeToLocal(const glm::ivec2& pos);
 	static glm::ivec2 LocalToMaze(const glm::ivec2& pos);
+	static bool IsOutOfMaze(const glm::ivec2& pos);
 
 private:
 	std::vector<std::vector<std::pair<BlockType, std::vector<real::GameObject*>>>> m_Maze{};
