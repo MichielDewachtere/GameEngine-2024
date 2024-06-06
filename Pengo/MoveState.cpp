@@ -12,7 +12,6 @@
 #include "Locator.h"
 #include "Move.h"
 #include "Player.h"
-#include "PlayerManager.h"
 
 MoveState::MoveState(real::GameObject* pOwner, bool controlledManually)
 	: IEnemyState(pOwner)
