@@ -10,6 +10,8 @@
 #include "Macros.h"
 #include "Maze.h"
 
+#include <Utils.h>
+
 Move::Move(real::GameObject* pOwner, const glm::ivec2& pos, Maze::BlockType type, float movementSpeed, bool animate)
 	: Component(pOwner)
 	, m_MazePosition(pos)
@@ -55,18 +57,15 @@ void Move::Update()
 	{
 		m_Move = false;
 
-		const auto newMazePos = Maze::LocalToMaze(m_NewPosition);
-		m_pMaze->MoveObject(m_MazePosition, newMazePos, m_Type, GetOwner());
-		//m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air, nullptr);
-		m_MazePosition = newMazePos;
+		//if (!(m_Type == Maze::BlockType::enemy && m_MoveUntilStopped))
+		//{
+			const auto newMazePos = Maze::LocalToMaze(m_NewPosition);
+			m_pMaze->MoveObject(m_MazePosition, newMazePos, m_Type, GetOwner());
 
-		//if (m_MoveUntilStopped && (m_Type == Maze::BlockType::ice || m_Type == Maze::BlockType::star)
-		//	|| !m_MoveUntilStopped)
-		//	m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
-
-		transform->SetLocalPosition(m_NewPosition);
-
-		moved.Notify(MoveEvents::moved, m_MazePosition);
+			m_MazePosition = newMazePos;
+			transform->SetLocalPosition(m_NewPosition);
+			moved.Notify(MoveEvents::moved, m_MazePosition);
+		//}
 
 		if (m_MoveUntilStopped)
 		{
@@ -84,17 +83,16 @@ void Move::Reset()
 
 bool Move::MoveInDirection(Direction dir, bool untilStopped)
 {
-	// TODO: maybe already record second move?
 	if (m_Move || IsActive() == false)
 		return false;
+
+	Reset();
 
 	m_DirectionVec = DirectionToVector(dir);
 	const auto newPos = m_MazePosition + m_DirectionVec;
 
 	if (m_Direction != dir)
-	{
 		m_Direction = dir;
-	}
 
 	if (m_pSpriteComponent && m_Animate)
 	{
@@ -103,6 +101,7 @@ bool Move::MoveInDirection(Direction dir, bool untilStopped)
 		if (m_pSpriteComponent->IsPaused())
 			m_pSpriteComponent->Pause(false);
 	}
+
 
 	if (m_pMaze->IsOccupied(newPos))
 		return false;
@@ -124,11 +123,9 @@ void Move::BindAnimationToDirection(Direction dir, const std::pair<int, int> ind
 
 void Move::SetMazePos(const glm::ivec2& newPos)
 {
-	//m_pMaze->SetBlock(m_MazePosition, Maze::BlockType::air);
 	m_pMaze->MoveObject(m_MazePosition, newPos, m_Type, GetOwner());
 	m_MazePosition = newPos;
 	GetOwner()->GetTransform()->SetLocalPosition(m_pMaze->MazeToLocal(m_MazePosition));
-	//m_pMaze->SetBlock(m_MazePosition, m_Type, GetOwner());
 }
 
 void Move::StopMoving()
@@ -138,8 +135,17 @@ void Move::StopMoving()
 
 bool Move::HasReachedPosition() const
 {
+	const auto direction = DirectionToVector(m_Direction);
 	const auto curPos = GetOwner()->GetTransform()->GetLocalPosition();
 
-	return std::abs(m_NewPosition.x - static_cast<int>(curPos.x)) < PIXEL_SCALE * 2
-		&& std::abs(static_cast<int>(curPos.y) - m_NewPosition.y) < PIXEL_SCALE * 2;
+	const auto xDiff = m_NewPosition.x - static_cast<int>(curPos.x);
+	const auto yDiff = static_cast<int>(curPos.y) - m_NewPosition.y;
+
+	if (direction.y == 0)
+		return std::abs(xDiff) < PIXEL_SCALE * 2;
+
+	if (direction.x == 0)
+		return std::abs(yDiff) < PIXEL_SCALE * 2;
+
+	return false;
 }
