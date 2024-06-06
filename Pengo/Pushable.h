@@ -49,6 +49,8 @@ private:
 	void PushEnemies();
 	void AddPoints();
 
+	real::ColliderComponent* GenerateTempColliderComponent() const;
+
 	static std::map<Direction, glm::ivec2> m_DirectionToOffset;
 };
 

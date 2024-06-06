@@ -2,6 +2,7 @@
 
 #include <GameObject.h>
 #include <ColliderComponent.h>
+#include <Utils.h>
 
 #include "Enemy.h"
 #include "EnemyPlayer.h"
@@ -81,44 +82,55 @@ void Pushable::LookForEnemies()
 		|| m_pMazeComponent->GetBlock(m_pMoveComponent->GetMazePos()) == Maze::BlockType::air)
 		return;
 
-	for (int i = 1; i <= 2; ++i)
+	// Fetch all the enemies in a 2x3 rectangle in front of the ice block
+	const auto dirVec = DirectionToVector(m_Direction);
+	for (int i = -1; i <= 1; ++i)
 	{
-		const auto mazePos = m_pMoveComponent->GetMazePos();
-		const auto secondPosToCheck = mazePos + i * DirectionToVector(m_Direction);
-		auto [type, go] = m_pMazeComponent->GetBlockAndObject(secondPosToCheck);
-
-		if (type != Maze::BlockType::enemy)
-			continue;
-
-		for (const auto& enemy : go)
+		for (int j = 1; j <= 2; ++j)
 		{
-			if (std::ranges::find(m_EnemiesToPush, enemy) != m_EnemiesToPush.end()
-				|| enemy->IsMarkedForDestroy())
+			const auto mazePos = m_pMoveComponent->GetMazePos();
+			const auto secondPosToCheck = mazePos + j * dirVec + i * glm::ivec2(std::abs(dirVec.y), std::abs(dirVec.x));
+			auto [type, go] = m_pMazeComponent->GetBlockAndObject(secondPosToCheck);
+
+			if (type != Maze::BlockType::enemy)
 				continue;
 
-			m_EnemiesToPush.push_back(enemy);
+			for (const auto& enemy : go)
+			{
+				if (std::ranges::find(m_EnemiesToPush, enemy) != m_EnemiesToPush.end()
+					|| std::ranges::find(m_EnemiesPushed, enemy) != m_EnemiesPushed.end()
+					|| enemy->IsMarkedForDestroy())
+						continue;
+
+				m_EnemiesToPush.push_back(enemy);
+			}
 		}
 	}
 }
 
 void Pushable::PushEnemies()
 {
-	for (const auto& e : m_EnemiesToPush)
+	const auto tempCol = GenerateTempColliderComponent();
+
+	//for (const auto& e : m_EnemiesToPush)
+	for (auto it = m_EnemiesToPush.begin(); it != m_EnemiesToPush.end(); )
 	{
-		if (std::ranges::find(m_EnemiesPushed, e) != m_EnemiesPushed.end())
-			continue;
+		const auto e = (*it);
 
 		const auto colliderComp = e->GetComponent<real::ColliderComponent>();
-		if (m_pColliderComponent->IsOverlapping(*colliderComp))
+		if (tempCol->IsEntirelyOverlapping(*colliderComp, { 1,1 }))
 		{
-			std::cout << "is overlapping\n";
 			e->GetComponent<Move>()->Reset();
 			if (Game::GetIsPvP())
 				e->GetComponent<EnemyPlayer>()->Push(m_Direction);
 			else
-				e->GetComponent<Enemy>()->Push(m_Direction); 
+				e->GetComponent<Enemy>()->Push(m_Direction);
+
+			it = m_EnemiesToPush.erase(it);
 			m_EnemiesPushed.push_back(e);
 		}
+		else 
+			++it;
 	}
 }
 
@@ -143,4 +155,28 @@ void Pushable::AddPoints()
 	enemiesCrushed.Notify(static_cast<int>(m_EnemiesPushed.size()));
 
 	m_EnemiesPushed.clear();
+}
+
+real::ColliderComponent* Pushable::GenerateTempColliderComponent() const
+{
+	const auto dirVec = DirectionToVector(m_Direction);
+	constexpr int blockSize = BLOCK_SIZE * PIXEL_SCALE;
+	constexpr int halfBlockSize = blockSize / 2;
+
+	const auto blockPos = glm::vec2(GetOwner()->GetTransform()->GetWorldPosition());
+
+	const glm::vec2 tempColPos{
+	blockPos.x + (dirVec.x == 0 ? -halfBlockSize : dirVec.x == 1 ? halfBlockSize : -blockSize),
+	blockPos.y + (dirVec.y == 0 ? -halfBlockSize : dirVec.y == 1 ? halfBlockSize : -blockSize)
+	};
+
+	constexpr int height = blockSize * 2;
+	constexpr int width = blockSize + halfBlockSize;
+	const glm::vec2 tempColSize{
+		dirVec.x != 0 ? width : height,
+		dirVec.y != 0 ? width : height
+	};
+
+	const auto tempCol = new real::ColliderComponent(nullptr, real::ColliderInfo{ tempColPos, tempColSize });
+	return tempCol;
 }
