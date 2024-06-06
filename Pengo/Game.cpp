@@ -205,7 +205,6 @@ void Game::EndAct(bool won)
 void Game::EndGame()
 {
 	m_CurrentState = GameState::gameFinished;
-	std::cout << "Game Ended\n";
 }
 
 void Game::Reset()
