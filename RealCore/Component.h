@@ -29,12 +29,14 @@ namespace real
 
 		void Disable() { m_IsActive = false; }
 		void Enable() { m_IsActive = true; }
-
 		bool IsActive() const { return m_IsActive; }
+
+		void Destroy() { m_MarkedForDestroy = true; }
+		bool IsMarkedForDestroy() const { return m_MarkedForDestroy; }
 
 	private:
 		GameObject* m_pOwner;
-		bool m_IsActive{ true };
+		bool m_IsActive{ true }, m_MarkedForDestroy{ false };
 	};
 }
 

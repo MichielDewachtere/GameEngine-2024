@@ -144,11 +144,29 @@ void real::GameObject::LateUpdate()
 	if (IsActive())
 	{
 		m_pTransform->LateUpdate();
-		std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
+
+		for (auto it = m_pComponents.begin(); it != m_pComponents.end(); )
+		{
+			const auto& pComponent = *it;
+
+			//if (IsActive())
+			pComponent->LateUpdate();
+
+			if (pComponent->IsMarkedForDestroy())
 			{
-				if (c->IsActive())
-					c->LateUpdate();
-			});
+				pComponent->Kill();
+				it->reset();
+				it = m_pComponents.erase(it);
+			}
+			else
+				++it;
+		}
+
+		//std::ranges::for_each(m_pComponents, [](const std::unique_ptr<Component>& c)
+		//	{
+		//		if (c->IsActive())
+		//			c->LateUpdate();
+		//	});
 	}
 }
 
