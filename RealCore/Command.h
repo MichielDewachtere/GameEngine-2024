@@ -1,8 +1,6 @@
 ﻿#ifndef COMMAND_H
 #define COMMAND_H
 
-#include "Observer.h"
-
 namespace real
 {
 	enum class GameObjectEvent : char;
