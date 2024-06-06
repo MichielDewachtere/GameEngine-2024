@@ -7,6 +7,7 @@
 #include <TextureComponent.h>
 
 #include "EggCounter.h"
+#include "Game.h"
 #include "GameInfo.h"
 #include "HealthDisplay.h"
 #include "HighScoreDisplay.h"
@@ -24,7 +25,6 @@ HUD::~HUD()
 
 void HUD::Init()
 {
-	// TODO:
 	InitHud();
 	// TOP:
 	//		Add Score player 1 AND 2
@@ -85,7 +85,7 @@ void HUD::AddScore(ScoreEvents event, PlayerNumber p) const
 	if (p == PlayerNumber::playerTwo)
 		m_pScoreDisplayPlayerTwo->AddScore(event);
 
-	if (m_pScoreDisplayPlayerTwo != nullptr)
+	if (m_pScoreDisplayPlayerTwo != nullptr && Game::GetIsPvP() == false)
 		m_pHighScoreDisplay->CheckForHighScore(m_pScoreDisplayPlayerOne->GetScore() + m_pScoreDisplayPlayerTwo->GetScore());
 	else
 		m_pHighScoreDisplay->CheckForHighScore(m_pScoreDisplayPlayerOne->GetScore());
