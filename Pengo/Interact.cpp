@@ -66,7 +66,8 @@ void Interact::AttemptInteraction()
 			else if (m_pPlayer->IsEnemy() == false)
 			{
 				real::Locator::GetAudioSystem().Play(Sounds::push_ice);
-				object->GetComponent<Pushable>()->Push(direction, m_pPlayer->GetPlayerNumber());
+				if (const auto pushable = object->GetComponent<Pushable>())
+					pushable->Push(direction, m_pPlayer->GetPlayerNumber());
 			}
 		}
 
