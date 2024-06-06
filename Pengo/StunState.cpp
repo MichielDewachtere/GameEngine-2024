@@ -49,7 +49,7 @@ IEnemyState* StunState::Update()
 
 	for (const auto& player : m_Players)
 	{
-		if (m_pColliderComponent->IsEntirelyOverlapping(*player, { 1,1 }))
+		if (m_pColliderComponent->IsEntirelyOverlapping(*player, { 3,3 }))
 		//if (player->GetMazePos() == m_MazePos)
 		{
 			HUD::GetInstance().AddScore(ScoreEvents::stunKill, player->GetOwner()->GetComponent<Player>()->GetPlayerNumber());
